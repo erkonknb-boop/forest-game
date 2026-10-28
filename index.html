@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<title>Тёмный лес</title>
+<style>
+  html, body { margin:0; padding:0; background:#000; height:100%; overflow:hidden; touch-action:none; font-family:sans-serif; }
+  canvas { display:block; width:100vw; height:100vh; }
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+function resize(){ canvas.width = innerWidth; canvas.height = innerHeight; }
+resize(); addEventListener('resize', resize);
+
+// ---------- Мир ----------
+const WORLD = 3000;
+let player, items, trees, fireflies, wolves, score, torch, over, startTime;
+
+function rand(a,b){ return a + Math.random()*(b-a); }
+
+function init(){
+  player = { x: WORLD/2, y: WORLD/2, speed: 3 };
+  score = 0; torch = 100; over = false; startTime = Date.now();
+  trees = []; items = []; wolves = [];
+  for(let i=0;i<260;i++) trees.push({x:rand(0,WORLD), y:rand(0,WORLD), s:rand(30,60)});
+  for(let i=0;i<80;i++) items.push({x:rand(0,WORLD), y:rand(0,WORLD), type:'berry'});
+  for(let i=0;i<80;i++) items.push({x:rand(0,WORLD), y:rand(0,WORLD), type:'grass'});
+  for(let i=0;i<6;i++) wolves.push({x:rand(0,WORLD), y:rand(0,WORLD), speed:rand(1.2,1.8)});
+}
+init();
+
+// ---------- Управление ----------
+const keys = {};
+addEventListener('keydown', e => { keys[e.key.toLowerCase()] = true; });
+addEventListener('keyup', e => { keys[e.key.toLowerCase()] = false; });
+
+let joy = { active:false, sx:0, sy:0, dx:0, dy:0 };
+canvas.addEventListener('touchstart', e => {
+  if(over){ init(); return; }
+  const t = e.touches[0];
+  joy.active = true; joy.sx = t.clientX; joy.sy = t.clientY; joy.dx = 0; joy.dy = 0;
+});
+canvas.addEventListener('touchmove', e => {
+  if(!joy.active) return;
+  const t = e.touches[0];
+  let dx = t.clientX - joy.sx, dy = t.clientY - joy.sy;
+  const len = Math.hypot(dx,dy), max = 60;
+  if(len > max){ dx = dx/len*max; dy = dy/len*max; }
+  joy.dx = dx/max; joy.dy = dy/max;
+});
+canvas.addEventListener('touchend', () => { joy.active = false; joy.dx = 0; joy.dy = 0; });
+canvas.addEventListener('mousedown', () => { if(over) init(); });
+
+// ---------- Логика ----------
+function update(){
+  if(over) return;
+  let mx = 0, my = 0;
+  if(keys['arrowleft'] || keys['a']) mx -= 1;
+  if(keys['arrowright'] || keys['d']) mx += 1;
+  if(keys['arrowup'] || keys['w']) my -= 1;
+  if(keys['arrowdown'] || keys['s']) my += 1;
+  mx += joy.dx; my += joy.dy;
+  const len = Math.hypot(mx,my);
+  if(len > 1){ mx/=len; my/=len; }
+  player.x = Math.max(0, Math.min(WORLD, player.x + mx*player.speed));
+  player.y = Math.max(0, Math.min(WORLD, player.y + my*player.speed));
+
+  // Факел постепенно гаснет
+  torch -= 0.03;
+
+  // Сбор предметов
+  for(let i=items.length-1;i>=0;i--){
+    const it = items[i];
+    if(Math.hypot(it.x-player.x, it.y-player.y) < 25){
+      if(it.type === 'berry'){ score += 10; torch = Math.min(100, torch + 8); }
+      else { score += 5; torch = Math.min(100, torch + 3); }
+      items.splice(i,1);
+      // новый предмет появляется в другом месте
+      items.push({x:rand(0,WORLD), y:rand(0,WORLD), type: it.type});
+    }
+  }
+
+  // Волки: идут к игроку, если он близко
+  for(const w of wolves){
+    const d = Math.hypot(player.x-w.x, player.y-w.y);
+    if(d < 350){
+      w.x += (player.x-w.x)/d * w.speed;
+      w.y += (player.y-w.y)/d * w.speed;
+    }
+    if(d < 22){ torch -= 0.6; }
+  }
+
+  if(torch <= 0){ torch = 0; over = true; }
+}
+
+// ---------- Рисование ----------
+function draw(){
+  const W = canvas.width, H = canvas.height;
+  const camX = player.x - W/2, camY = player.y - H/2;
+
+  // земля
+  ctx.fillStyle = '#16120d';
+  ctx.fillRect(0,0,W,H);
+
+  // трава-фон
+  ctx.fillStyle = '#1d1a10';
+  for(let gx = -(camX%80); gx < W; gx += 80){
+    for(let gy = -(camY%80); gy < H; gy += 80){
+      ctx.fillRect(gx+10, gy+10, 4, 4);
+    }
+  }
+
+  // предметы
+  for(const it of items){
+    const sx = it.x - camX, sy = it.y - camY;
+    if(sx<-30||sx>W+30||sy<-30||sy>H+30) continue;
+    if(it.type === 'berry'){
+      ctx.fillStyle = '#c0392b';
+      ctx.beginPath(); ctx.arc(sx,sy,7,0,7); ctx.fill();
+      ctx.fillStyle = '#e74c3c';
+      ctx.beginPath(); ctx.arc(sx-2,sy-2,2,0,7); ctx.fill();
+    } else {
+      ctx.strokeStyle = '#8a9a3b'; ctx.lineWidth = 2;
+      for(let k=-1;k<=1;k++){
+        ctx.beginPath(); ctx.moveTo(sx+k*4,sy+8); ctx.lineTo(sx+k*7,sy-8); ctx.stroke();
+      }
+    }
+  }
+
+  // волки
+  for(const w of wolves){
+    const sx = w.x - camX, sy = w.y - camY;
+    if(sx<-30||sx>W+30||sy<-30||sy>H+30) continue;
+    ctx.fillStyle = '#555';
+    ctx.beginPath(); ctx.ellipse(sx,sy,16,9,0,0,7); ctx.fill();
+    ctx.fillStyle = '#ff3030';
+    ctx.fillRect(sx+8,sy-4,3,3);
+  }
+
+  // деревья
+  for(const t of trees){
+    const sx = t.x - camX, sy = t.y - camY;
+    if(sx<-80||sx>W+80||sy<-120||sy>H+80) continue;
+    ctx.fillStyle = '#2b1d10';
+    ctx.fillRect(sx-4, sy-10, 8, 20);
+    ctx.fillStyle = '#0f2a17';
+    ctx.beginPath();
+    ctx.moveTo(sx, sy-t.s-10);
+    ctx.lineTo(sx-t.s*0.5, sy-5);
+    ctx.lineTo(sx+t.s*0.5, sy-5);
+    ctx.closePath(); ctx.fill();
+  }
+
+  // игрок
+  const px = W/2, py = H/2;
+  ctx.fillStyle = '#e8d3b0';
+  ctx.beginPath(); ctx.arc(px,py-10,9,0,7); ctx.fill();
+  ctx.fillStyle = '#6b4a2b';
+  ctx.fillRect(px-8,py-2,16,20);
+  // факел в руке
+  ctx.fillStyle = '#5a3a1a';
+  ctx.fillRect(px+10,py-14,3,18);
+  ctx.fillStyle = '#ffb347';
+  ctx.beginPath(); ctx.arc(px+11.5,py-18,5+Math.random()*1.5,0,7); ctx.fill();
+
+  // Тьма с кругом света вокруг игрока
+  const radius = 60 + torch * 2.2;
+  const grad = ctx.createRadialGradient(px,py,radius*0.25, px,py,radius);
+  grad.addColorStop(0,'rgba(0,0,0,0)');
+  grad.addColorStop(1,'rgba(0,0,0,0.97)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0,0,W,H);
+  // за пределами круга полная тьма
+  ctx.fillStyle = 'rgba(0,0,0,0.97)';
+  ctx.beginPath();
+  ctx.rect(0,0,W,H);
+  ctx.arc(px,py,radius,0,Math.PI*2,true);
+  ctx.fill('evenodd');
+
+  // Интерфейс
+  ctx.fillStyle = '#fff';
+  ctx.font = '20px sans-serif';
+  ctx.fillText('Очки: ' + score, 20, 35);
+  ctx.fillStyle = '#333'; ctx.fillRect(20,50,200,14);
+  ctx.fillStyle = '#ff9a2e'; ctx.fillRect(20,50,200*torch/100,14);
+  ctx.fillStyle = '#fff'; ctx.font = '14px sans-serif';
+  ctx.fillText('Факел', 228, 62);
+
+  // Джойстик
+  if(joy.active){
+    ctx.strokeStyle = 'rgba(255,255,255,0.4)'; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.arc(joy.sx,joy.sy,60,0,7); ctx.stroke();
+    ctx.fillStyle = 'rgba(255,255,255,0.4)';
+    ctx.beginPath(); ctx.arc(joy.sx+joy.dx*60, joy.sy+joy.dy*60, 22, 0, 7); ctx.fill();
+  }
+
+  if(over){
+    ctx.fillStyle = 'rgba(0,0,0,0.85)'; ctx.fillRect(0,0,W,H);
+    ctx.fillStyle = '#fff'; ctx.textAlign = 'center';
+    ctx.font = '40px sans-serif';
+    ctx.fillText('Факел погас...', W/2, H/2 - 20);
+    ctx.font = '24px sans-serif';
+    ctx.fillText('Твои очки: ' + score, W/2, H/2 + 20);
+    ctx.fillText('Нажми, чтобы начать заново', W/2, H/2 + 60);
+    ctx.textAlign = 'left';
+  }
+}
+
+function loop(){ update(); draw(); requestAnimationFrame(loop); }
+loop();
+</script>
+</body>
+</html>
