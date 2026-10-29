@@ -2,379 +2,112 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-<title>Возрождение Вождя</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Погода">
+<title>Погода</title>
 <style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;background:#0b0806;color:#e8d9b8;font-family:Georgia,serif;min-height:100vh}
-#top{position:sticky;top:0;z-index:5;background:#1a120b;border-bottom:2px solid #5a3a1a;padding:8px 10px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;font-size:15px}
-#top span{background:#2a1c10;padding:4px 9px;border-radius:8px}
-#tabs{display:flex;background:#140e08;position:sticky;top:44px;z-index:4}
-#tabs button{flex:1;padding:12px 2px;background:#140e08;color:#c9b48a;border:0;border-bottom:3px solid transparent;font-size:14px;font-family:inherit}
-#tabs button.on{color:#ffb347;border-bottom-color:#ff9a2e;background:#221509}
-#main{padding:12px;max-width:760px;margin:0 auto}
-.card{background:#1e140b;border:1px solid #4a3118;border-radius:12px;padding:12px;margin-bottom:10px}
-.card h3{margin:0 0 6px;color:#ffb347;font-size:17px}
-.row{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
-button.act{background:#a8531a;color:#fff;border:0;border-radius:8px;padding:9px 14px;font-size:14px;font-family:inherit}
-button.act:disabled{background:#3a2c20;color:#7a6a58}
-button.small{padding:6px 10px}
-.muted{color:#a8946e;font-size:13px}
-.bar{height:10px;background:#2c1d10;border-radius:6px;overflow:hidden;margin:4px 0}
-.bar i{display:block;height:100%;background:#d94a2b}
-.bar.mp i{background:#3b8fd9}
-.bar.xp i{background:#d9b13b}
-#fire{text-align:center;font-size:64px;animation:fl 1s infinite alternate;margin:8px 0}
-@keyframes fl{from{transform:scale(1);filter:drop-shadow(0 0 10px #ff8a1e)}to{transform:scale(1.1);filter:drop-shadow(0 0 22px #ffb347)}}
-#log{background:#0d0905;border:1px solid #3a2810;border-radius:8px;padding:8px;height:110px;overflow-y:auto;font-size:13px;margin-top:8px}
-.grid{display:grid;grid-template-columns:repeat(6,1fr);gap:4px}
-.tile{aspect-ratio:1;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:20px;border:1px solid #3a2810;background:#1a120b}
-.tile.mine{background:#2d5a1e}
-.tile.enemy{background:#5a1e1e}
-.tile.boss{background:#7a1010;border-color:#ff4040}
-.tile.sel{outline:3px solid #ffb347}
-.tile.fog{background:#0a0705;color:#443}
-.hero{border-left:4px solid #ffb347}
-.legend{border-left-color:#d86bff}
-.unit{padding:8px;border-radius:8px;background:#2a1c10;margin:4px 0}
-.unit.dead{opacity:.35}
-#toast{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:#a8531a;color:#fff;padding:10px 16px;border-radius:10px;display:none;z-index:9;max-width:90%}
-#start{position:fixed;inset:0;background:#0b0806;z-index:20;padding:22px;overflow:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
-#start h1{color:#ffb347;font-size:30px;margin:0 0 12px}
-#start p{max-width:560px;line-height:1.5;font-size:16px}
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+    background: linear-gradient(160deg, #1c2b4a, #3a6ea5);
+    color: #fff;
+  }
+  .widget {
+    width: 170px;
+    height: 170px;
+    border-radius: 24px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+  }
+  .city { font-size: 14px; opacity: 0.85; }
+  .icon { font-size: 44px; line-height: 1; }
+  .temp { font-size: 40px; font-weight: 600; }
+  .desc { font-size: 13px; opacity: 0.9; }
 </style>
 </head>
 <body>
-<div id="start">
-  <h1>Возрождение Вождя</h1>
-  <p>Задолго до появления королевств и стали миром правила тьма. Под небом из пепла и костей жили дикие племена. Они жались к кострам и молились Древним, злым богам, которые забирали души слабых. Почти все племена погасли. Выжили единицы. И тогда духи послали Вождя.</p>
-  <p>Ты и есть этот Вождь. Собери потерянных людей, призови героев, построй поселение и пережди ночь.</p>
-  <button class="act" id="go" style="font-size:18px;padding:14px 28px">Разжечь костёр</button>
-  <p class="muted" id="contin"></p>
-</div>
-
-<div id="top"></div>
-<div id="tabs"></div>
-<div id="main"></div>
-<div id="toast"></div>
+  <div class="widget">
+    <div class="city" id="city">Загрузка...</div>
+    <div class="icon" id="icon">⏳</div>
+    <div class="temp" id="temp">--°</div>
+    <div class="desc" id="desc"></div>
+  </div>
 
 <script>
-// ================= ДАННЫЕ =================
-const RES = {food:'🍖 Еда', wood:'🪵 Дерево', stone:'🪨 Камень', faith:'✨ Вера'};
-const JOBS = {
-  idle:{n:'Без дела', r:null},
-  gatherer:{n:'Собиратель', r:'food', rate:0.6},
-  hunter:{n:'Охотник', r:'food', rate:1.0, danger:true},
-  woodcutter:{n:'Дровосек', r:'wood', rate:0.7},
-  miner:{n:'Шахтёр', r:'stone', rate:0.5},
-  shaman:{n:'Шаман', r:'faith', rate:0.3}
-};
-const BUILD = {
-  hearth:{n:'Главный очаг', desc:'Вмещает больше людей и усиливает племя.', cost:{wood:30,stone:10}, max:10, base:1},
-  hut:{n:'Хижина', desc:'Больше мест для жителей.', cost:{wood:20}, max:20, base:0},
-  sawmill:{n:'Лесопилка', desc:'Дровосеки работают на 25% быстрее за уровень.', cost:{wood:40,stone:15}, max:8, base:0},
-  mine:{n:'Шахта', desc:'Шахтёры работают на 25% быстрее за уровень.', cost:{wood:35,stone:25}, max:8, base:0},
-  altar:{n:'Алтарь веры', desc:'Шаманы работают на 25% быстрее за уровень.', cost:{wood:25,stone:30}, max:8, base:0},
-  barracks:{n:'Казарма', desc:'Герои получают больше опыта.', cost:{wood:50,stone:40}, max:8, base:0}
-};
-const HEROES = [
-  {id:'hunter', n:'Свирепый охотник', icon:'🏹', cls:'Охотник', hp:70, atk:14, def:3, cost:{faith:30,food:40}, rarity:'common'},
-  {id:'guard', n:'Страж в костяной броне', icon:'🛡️', cls:'Страж', hp:120, atk:9, def:8, cost:{faith:40,stone:40}, rarity:'common'},
-  {id:'seer', n:'Мудрый провидец', icon:'🔮', cls:'Провидец', hp:60, atk:18, def:2, cost:{faith:60,food:30}, rarity:'rare'},
-  {id:'beast', n:'Тень Зверя', icon:'🐺', cls:'Легенда', hp:150, atk:24, def:6, cost:{faith:150,food:100,stone:60}, rarity:'legend'}
-];
-const WEAPONS = [
-  {n:'Костяное копьё', atk:4, cost:{wood:20,stone:10}},
-  {n:'Каменный топор', atk:7, cost:{wood:30,stone:30}},
-  {n:'Древний тотем', atk:12, cost:{faith:60,stone:40}}
-];
-const EXPED = [
-  {n:'Заросшая тропа', icon:'🌲', pow:1, enemy:{n:'Дикий кабан', hp:60, atk:9, def:1}, loot:{food:[30,60],wood:[20,40]}, xp:20},
-  {n:'Пещеры костей', icon:'🦴', pow:2, enemy:{n:'Костяной страж', hp:110, atk:14, def:4}, loot:{stone:[40,80],faith:[10,25]}, xp:40},
-  {n:'Пепельные холмы', icon:'🌋', pow:3, enemy:{n:'Тёмный чемпион', hp:190, atk:20, def:6}, loot:{stone:[80,140],faith:[30,60],wood:[40,80]}, xp:80},
-  {n:'Храм Древних', icon:'👁️', pow:4, enemy:{n:'Древний', hp:320, atk:28, def:9}, loot:{faith:[100,180],stone:[100,200],food:[80,150]}, xp:160}
-];
+  const DEFAULT = { lat: 56.84, lon: 60.61, name: "Екатеринбург" };
 
-// ================= СОСТОЯНИЕ =================
-let S;
-function newState(){
-  return {
-    res:{food:60, wood:60, stone:20, faith:10},
-    people:[{job:'gatherer'},{job:'idle'}],
-    wild:3, // дикарей поблизости
-    build:{hearth:1,hut:0,sawmill:0,mine:0,altar:0,barracks:0},
-    heroes:[],
-    map:null, tiles:0, day:1, log:[], tab:'camp', lastSeen:Date.now()
-  };
-}
-function save(){ S.lastSeen = Date.now(); localStorage.setItem('chief_save', JSON.stringify(S)); }
-function load(){ try{ const d = localStorage.getItem('chief_save'); return d ? JSON.parse(d) : null; }catch(e){ return null; } }
+  function describe(code) {
+    if (code === 0) return ["☀️", "Ясно"];
+    if (code <= 2) return ["🌤️", "Малооблачно"];
+    if (code === 3) return ["☁️", "Облачно"];
+    if (code === 45 || code === 48) return ["🌫️", "Туман"];
+    if (code >= 51 && code <= 57) return ["🌦️", "Морось"];
+    if (code >= 61 && code <= 67) return ["🌧️", "Дождь"];
+    if (code >= 71 && code <= 77) return ["❄️", "Снег"];
+    if (code >= 80 && code <= 82) return ["🌧️", "Ливень"];
+    if (code >= 95) return ["⛈️", "Гроза"];
+    return ["🌡️", "Погода"];
+  }
 
-function rnd(a,b){ return Math.floor(a + Math.random()*(b-a+1)); }
-function cap(){ return 4 + S.build.hearth*3 + S.build.hut*2; }
-function canPay(c){ return Object.keys(c).every(k=>S.res[k]>=c[k]); }
-function pay(c){ Object.keys(c).forEach(k=>S.res[k]-=c[k]); }
-function costText(c){ return Object.keys(c).map(k=>RES[k].split(' ')[0]+c[k]).join(' '); }
-function scaled(c,lvl){ const o={}; Object.keys(c).forEach(k=>o[k]=Math.round(c[k]*Math.pow(1.6,lvl))); return o; }
-function toast(t){ const e=document.getElementById('toast'); e.textContent=t; e.style.display='block'; clearTimeout(toast.t); toast.t=setTimeout(()=>e.style.display='none',2200); }
-function log(t){ S.log.unshift(t); S.log=S.log.slice(0,30); }
-
-// ================= ЭКОНОМИКА =================
-function multFor(job){
-  const b = {woodcutter:'sawmill', miner:'mine', shaman:'altar'}[job];
-  return 1 + (b ? S.build[b]*0.25 : 0);
-}
-function tick(sec){
-  const total = {};
-  S.people.forEach(p=>{
-    const j = JOBS[p.job]; if(!j||!j.r) return;
-    total[j.r] = (total[j.r]||0) + j.rate*multFor(p.job)*sec;
-  });
-  // люди едят
-  const eat = S.people.length*0.25*sec;
-  Object.keys(total).forEach(k=>S.res[k]+=total[k]);
-  S.res.food -= eat;
-  if(S.res.food < 0){
-    S.res.food = 0;
-    if(S.people.length>1 && Math.random() < 0.02*sec){
-      S.people.pop(); log('Голод: один из жителей ушёл во тьму.'); toast('Голод! Житель ушёл.');
+  async function cityName(lat, lon) {
+    try {
+      const r = await fetch(
+        `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=ru`
+      );
+      const j = await r.json();
+      return j.city || j.locality || "Ваш город";
+    } catch (e) {
+      return "Ваш город";
     }
   }
-  // охотники иногда ранятся
-  S.people.forEach(p=>{ if(p.job==='hunter' && Math.random()<0.002*sec){ S.res.food += 10; } });
-  // дикари приходят
-  if(Math.random() < 0.01*sec && S.wild<6) S.wild++;
-}
-setInterval(()=>{ if(!S) return; tick(1); renderTop(); if(S.tab==='camp') renderCampNumbers(); save(); }, 1000);
 
-// ================= ИНТЕРФЕЙС =================
-const TABS = [['camp','🔥 Лагерь'],['build','🏠 Постройки'],['heroes','⚔️ Герои'],['exped','🗡️ Походы'],['map','🗺️ Карта']];
-function renderTabs(){
-  const t = document.getElementById('tabs');
-  t.innerHTML = TABS.map(([k,n])=>`<button class="${S.tab===k?'on':''}" onclick="setTab('${k}')">${n}</button>`).join('');
-}
-function setTab(k){ S.tab=k; renderTabs(); render(); }
-function renderTop(){
-  document.getElementById('top').innerHTML =
-    Object.keys(RES).map(k=>`<span>${RES[k].split(' ')[0]} ${Math.floor(S.res[k])}</span>`).join('') +
-    `<span>👥 ${S.people.length}/${cap()}</span>`;
-}
-function render(){
-  renderTop();
-  const m = document.getElementById('main');
-  if(S.tab==='camp') m.innerHTML = campHTML();
-  if(S.tab==='build') m.innerHTML = buildHTML();
-  if(S.tab==='heroes') m.innerHTML = heroesHTML();
-  if(S.tab==='exped') m.innerHTML = expedHTML();
-  if(S.tab==='map') m.innerHTML = mapHTML();
-}
-
-// ---------- ЛАГЕРЬ ----------
-function campHTML(){
-  const idle = S.people.filter(p=>p.job==='idle').length;
-  let html = `<div class="card"><div id="fire">🔥</div>
-    <div class="muted" style="text-align:center">Вокруг костра ждут дикари: <b id="wildn">${S.wild}</b></div>
-    <div class="row" style="justify-content:center;margin-top:8px">
-      <button class="act" onclick="wake()">Разбудить дикаря (🍖20)</button>
-      <button class="act" onclick="gatherNow()">Собрать хворост</button>
-    </div></div>`;
-  html += `<div class="card"><h3>Жители и работа</h3><div class="muted">Свободных: ${idle}. Нажми на кнопку, чтобы дать работу свободному жителю.</div>`;
-  Object.keys(JOBS).filter(j=>j!=='idle').forEach(j=>{
-    const c = S.people.filter(p=>p.job===j).length;
-    html += `<div class="row" style="margin:6px 0"><div>${JOBS[j].n}: <b>${c}</b> <span class="muted">(+${(JOBS[j].rate*multFor(j)).toFixed(2)}/с каждый)</span></div>
-      <div><button class="act small" onclick="assign('${j}',-1)">−</button> <button class="act small" onclick="assign('${j}',1)">+</button></div></div>`;
-  });
-  html += `</div><div class="card"><h3>Хроника</h3><div id="log">${S.log.map(l=>'<div>'+l+'</div>').join('')}</div></div>`;
-  html += `<div class="row"><button class="act small" onclick="resetGame()">Начать заново</button></div>`;
-  return html;
-}
-function renderCampNumbers(){ const e=document.getElementById('wildn'); if(e) e.textContent=S.wild; }
-function wake(){
-  if(S.wild<=0) return toast('Рядом нет диких людей. Подожди.');
-  if(S.people.length>=cap()) return toast('Нет места. Построй хижину или улучши очаг.');
-  if(S.res.food<20) return toast('Не хватает еды.');
-  S.res.food-=20; S.wild--; S.people.push({job:'idle'}); log('Дикарь присоединился к племени.'); render();
-}
-function gatherNow(){ S.res.wood+=3; S.res.food+=2; renderTop(); }
-function assign(job,d){
-  if(d>0){ const p=S.people.find(p=>p.job==='idle'); if(!p) return toast('Нет свободных жителей.'); p.job=job; }
-  else { const p=S.people.find(p=>p.job===job); if(!p) return; p.job='idle'; }
-  render();
-}
-
-// ---------- ПОСТРОЙКИ ----------
-function buildHTML(){
-  return Object.keys(BUILD).map(k=>{
-    const b=BUILD[k], lvl=S.build[k], c=scaled(b.cost,lvl), full=lvl>=b.max;
-    return `<div class="card"><div class="row"><h3>${b.n} <span class="muted">ур. ${lvl}/${b.max}</span></h3></div>
-      <div class="muted">${b.desc}</div>
-      <div class="row" style="margin-top:8px"><span>${full?'Максимум':costText(c)}</span>
-      <button class="act" ${full||!canPay(c)?'disabled':''} onclick="upgrade('${k}')">${lvl?'Улучшить':'Построить'}</button></div></div>`;
-  }).join('');
-}
-function upgrade(k){
-  const b=BUILD[k], c=scaled(b.cost,S.build[k]);
-  if(!canPay(c)||S.build[k]>=b.max) return;
-  pay(c); S.build[k]++; log(b.n+' теперь уровня '+S.build[k]+'.'); render();
-}
-
-// ---------- ГЕРОИ ----------
-function heroStats(h){
-  const base = HEROES.find(x=>x.id===h.id);
-  const lv = h.lvl;
-  return { hp: base.hp + (lv-1)*12, atk: base.atk + (lv-1)*2 + h.weapon*0 + (h.wAtk||0), def: base.def + Math.floor((lv-1)/2) };
-}
-function heroesHTML(){
-  let html = `<div class="card"><h3>Призвать героя</h3><div class="muted">Духи откликаются на веру. Герои уходят в походы и на карту мира.</div></div>`;
-  html += HEROES.map(b=>{
-    const have = S.heroes.some(h=>h.id===b.id);
-    return `<div class="card hero ${b.rarity==='legend'?'legend':''}"><div class="row"><h3>${b.icon} ${b.n}</h3><span class="muted">${b.cls}</span></div>
-      <div class="muted">Здоровье ${b.hp}, атака ${b.atk}, защита ${b.def}</div>
-      <div class="row" style="margin-top:6px"><span>${costText(b.cost)}</span>
-      <button class="act" ${have||!canPay(b.cost)?'disabled':''} onclick="summon('${b.id}')">${have?'Уже в племени':'Призвать'}</button></div></div>`;
-  }).join('');
-  if(S.heroes.length){
-    html += `<h3 style="color:#ffb347">Твои герои</h3>`;
-    html += S.heroes.map((h,i)=>{
-      const b=HEROES.find(x=>x.id===h.id), st=heroStats(h);
-      const next = WEAPONS[h.wlvl||0];
-      return `<div class="card hero ${b.rarity==='legend'?'legend':''}"><div class="row"><h3>${b.icon} ${b.n} <span class="muted">ур. ${h.lvl}</span></h3></div>
-      <div>❤️ ${st.hp} ⚔️ ${st.atk} 🛡️ ${st.def}</div>
-      <div class="bar xp"><i style="width:${Math.min(100,h.xp/(h.lvl*50)*100)}%"></i></div>
-      <div class="muted">Оружие: ${h.wlvl?WEAPONS[h.wlvl-1].n:'нет'}</div>
-      ${next?`<div class="row" style="margin-top:6px"><span>${next.n}: ${costText(next.cost)}</span><button class="act small" ${canPay(next.cost)?'':'disabled'} onclick="giveWeapon(${i})">Выдать</button></div>`:''}</div>`;
-    }).join('');
+  async function showWeather(lat, lon, name) {
+    try {
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code`;
+      const r = await fetch(url);
+      const j = await r.json();
+      const t = Math.round(j.current.temperature_2m);
+      const [icon, text] = describe(j.current.weather_code);
+      document.getElementById("city").textContent = name;
+      document.getElementById("icon").textContent = icon;
+      document.getElementById("temp").textContent = t + "°";
+      document.getElementById("desc").textContent = text;
+    } catch (e) {
+      document.getElementById("city").textContent = "Нет связи";
+      document.getElementById("icon").textContent = "⚠️";
+    }
   }
-  return html;
-}
-function summon(id){
-  const b=HEROES.find(x=>x.id===id); if(!canPay(b.cost)) return;
-  pay(b.cost); S.heroes.push({id:id,lvl:1,xp:0,wlvl:0,wAtk:0});
-  log('Призван герой: '+b.n+'.'); toast('Герой призван!'); render();
-}
-function giveWeapon(i){
-  const h=S.heroes[i], w=WEAPONS[h.wlvl||0]; if(!w||!canPay(w.cost)) return;
-  pay(w.cost); h.wlvl=(h.wlvl||0)+1; h.wAtk=(h.wAtk||0)+w.atk; log('Герой получил: '+w.n+'.'); render();
-}
-function addXp(h,x){
-  h.xp += Math.round(x*(1+S.build.barracks*0.2));
-  while(h.xp >= h.lvl*50){ h.xp -= h.lvl*50; h.lvl++; }
-}
 
-// ---------- ПОХОДЫ (пошаговый бой) ----------
-let B = null;
-function expedHTML(){
-  if(B) return battleHTML();
-  if(!S.heroes.length) return `<div class="card"><h3>Походы</h3><div class="muted">Сначала призови хотя бы одного героя во вкладке «Герои».</div></div>`;
-  return `<div class="card"><h3>Экспедиции</h3><div class="muted">Выбери землю. Бой пошаговый: твои герои против тёмного чемпиона.</div></div>` +
-    EXPED.map((e,i)=>`<div class="card"><div class="row"><h3>${e.icon} ${e.n}</h3><span class="muted">Враг: ${e.enemy.n}</span></div>
-      <div class="muted">Здоровье врага ${e.enemy.hp}, атака ${e.enemy.atk}</div>
-      <div class="row" style="margin-top:6px"><span class="muted">Награда: ${Object.keys(e.loot).map(k=>RES[k].split(' ')[0]).join(' ')}</span>
-      <button class="act" onclick="startBattle(${i})">В поход</button></div></div>`).join('');
-}
-function startBattle(i, boss){
-  const e = boss || EXPED[i];
-  B = { e:i, name:e.enemy.n, ehp:e.enemy.hp, emax:e.enemy.hp, eatk:e.enemy.atk, edef:e.enemy.def, loot:e.loot, xp:e.xp,
-        team:S.heroes.map(h=>{ const s=heroStats(h); return {ref:h, n:HEROES.find(x=>x.id===h.id).n, hp:s.hp, max:s.hp, atk:s.atk, def:s.def, guard:false}; }),
-        turn:0, msg:['Бой начался!'], over:false, map:!!boss };
-  render();
-}
-function battleHTML(){
-  let h = `<div class="card"><h3>⚔️ ${B.name}</h3><div class="bar"><i style="width:${B.ehp/B.emax*100}%"></i></div><div class="muted">${Math.max(0,B.ehp)} / ${B.emax}</div></div>`;
-  h += B.team.map(t=>`<div class="unit ${t.hp<=0?'dead':''}"><div class="row"><span>${t.n}</span><span>${Math.max(0,t.hp)}/${t.max}</span></div><div class="bar"><i style="width:${Math.max(0,t.hp)/t.max*100}%"></i></div></div>`).join('');
-  if(!B.over){
-    const alive = B.team.filter(t=>t.hp>0);
-    const cur = alive[B.turn % alive.length];
-    h += `<div class="card"><div class="muted">Ход героя: <b>${cur.n}</b></div><div class="row" style="margin-top:8px">
-      <button class="act" onclick="bAct('atk')">Удар</button>
-      <button class="act" onclick="bAct('power')">Мощный удар</button>
-      <button class="act" onclick="bAct('guard')">Защита</button>
-      <button class="act small" onclick="bAct('flee')">Бежать</button></div></div>`;
-  } else {
-    h += `<div class="card"><button class="act" onclick="endBattle()">Вернуться в лагерь</button></div>`;
+  function start() {
+    if (!navigator.geolocation) {
+      showWeather(DEFAULT.lat, DEFAULT.lon, DEFAULT.name);
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        const { latitude, longitude } = pos.coords;
+        const name = await cityName(latitude, longitude);
+        showWeather(latitude, longitude, name);
+      },
+      () => showWeather(DEFAULT.lat, DEFAULT.lon, DEFAULT.name),
+      { timeout: 8000 }
+    );
   }
-  h += `<div id="log">${B.msg.slice(-8).map(m=>'<div>'+m+'</div>').join('')}</div>`;
-  return h;
-}
-function bAct(a){
-  const alive = B.team.filter(t=>t.hp>0);
-  const cur = alive[B.turn % alive.length];
-  cur.guard = false;
-  if(a==='flee'){ B.msg.push('Отряд отступил.'); B.over=true; B.fled=true; return render(); }
-  if(a==='guard'){ cur.guard=true; B.msg.push(cur.n+' встал в защиту.'); }
-  else {
-    const mult = a==='power' ? 1.8 : 1;
-    if(a==='power' && Math.random()<0.3){ B.msg.push(cur.n+' промахнулся!'); }
-    else { const d = Math.max(1, Math.round((cur.atk*mult - B.edef) * (0.85+Math.random()*0.3))); B.ehp-=d; B.msg.push(cur.n+' бьёт на '+d+'.'); }
-  }
-  if(B.ehp<=0){ B.over=true; B.won=true; winBattle(); return render(); }
-  // ход врага
-  const target = alive[Math.floor(Math.random()*alive.length)];
-  let d = Math.max(1, Math.round((B.eatk - target.def) * (0.85+Math.random()*0.3)));
-  if(target.guard) d = Math.ceil(d/2);
-  target.hp -= d; B.msg.push(B.name+' бьёт '+target.n+' на '+d+'.');
-  B.turn++;
-  if(B.team.every(t=>t.hp<=0)){ B.over=true; B.msg.push('Все герои пали...'); }
-  render();
-}
-function winBattle(){
-  const got=[];
-  Object.keys(B.loot).forEach(k=>{ const v=rnd(B.loot[k][0],B.loot[k][1]); S.res[k]+=v; got.push(RES[k].split(' ')[0]+v); });
-  B.team.forEach(t=>addXp(t.ref,B.xp));
-  B.msg.push('Победа! Добыча: '+got.join(' ')+'. Герои получили опыт.');
-  log('Победа над '+B.name+'. Добыча: '+got.join(' '));
-  if(B.map){ S.tiles++; }
-}
-function endBattle(){ const wasMap=B.map, won=B.won; if(wasMap && won && S.mapTarget!=null){ S.map[S.mapTarget]='mine'; S.mapTarget=null; } B=null; render(); }
 
-// ---------- КАРТА МИРА ----------
-function genMap(){
-  const m=[]; for(let i=0;i<36;i++){ const r=Math.random(); m.push(r<0.08?'boss':(r<0.55?'enemy':'wild')); }
-  m[14]='mine'; return m;
-}
-function mapHTML(){
-  if(B) return battleHTML();
-  if(!S.map) S.map=genMap();
-  const icons={mine:'🏕️',enemy:'💀',boss:'👹',wild:'🌫️'};
-  const mineCount=S.map.filter(t=>t==='mine').length;
-  let h=`<div class="card"><h3>Карта мира</h3><div class="muted">Захвачено земель: ${mineCount}/36. Каждая земля даёт постоянный доход. Нажми на соседнюю клетку, чтобы напасть. 💀 враги, 👹 боссы, 🌫️ нейтральные земли.</div></div><div class="grid">`;
-  S.map.forEach((t,i)=>{
-    h+=`<div class="tile ${t}" onclick="tileClick(${i})">${icons[t]}</div>`;
-  });
-  h+='</div>';
-  return h;
-}
-function neighbors(i){ const r=Math.floor(i/6), c=i%6, n=[]; if(r>0)n.push(i-6); if(r<5)n.push(i+6); if(c>0)n.push(i-1); if(c<5)n.push(i+1); return n; }
-function tileClick(i){
-  const t=S.map[i]; if(t==='mine') return toast('Это твоя земля.');
-  if(!neighbors(i).some(n=>S.map[n]==='mine')) return toast('Нападать можно только на соседние с твоими землями.');
-  if(!S.heroes.length) return toast('Нужен хотя бы один герой.');
-  S.mapTarget=i;
-  if(t==='wild'){
-    if(S.res.food<30) return toast('Нужно 🍖30 на дорогу.');
-    S.res.food-=30; S.map[i]='mine'; log('Занята свободная земля.'); toast('Земля занята!'); render(); return;
-  }
-  const boss = t==='boss';
-  const k = Math.min(3,Math.floor(S.tiles/3));
-  const en = boss ? {enemy:{n:'Босс Древних',hp:350+k*60,atk:30+k*3,def:10}, loot:{faith:[150,250],stone:[150,250],food:[100,180]}, xp:200}
-                   : {enemy:{n:'Вражеское племя',hp:120+k*40,atk:15+k*3,def:4+k}, loot:{wood:[40,90],stone:[30,70],food:[30,70]}, xp:50};
-  startBattle(0,en);
-}
-// доход от земель
-setInterval(()=>{ if(!S||!S.map) return; const c=S.map.filter(t=>t==='mine').length-1; if(c>0){ S.res.food+=c*0.2; S.res.wood+=c*0.2; S.res.stone+=c*0.15; S.res.faith+=c*0.05; } },1000);
-
-// ================= СТАРТ =================
-function resetGame(){ if(confirm('Начать племя заново? Прогресс будет потерян.')){ S=newState(); S.map=genMap(); save(); renderTabs(); render(); } }
-document.getElementById('go').onclick=()=>{
-  document.getElementById('start').style.display='none';
-  S = load() || newState();
-  if(!S.map) S.map=genMap();
-  // доход за время отсутствия (до 2 часов)
-  const off=Math.min(7200,(Date.now()-S.lastSeen)/1000);
-  if(off>10){ tick(off*0.3); log('Пока тебя не было, племя продолжало жить.'); }
-  S.tab='camp'; renderTabs(); render();
-};
-if(load()) document.getElementById('contin').textContent='Найдено сохранение: игра продолжится с того же места.';
+  start();
+  setInterval(start, 30 * 60 * 1000);
 </script>
 </body>
 </html>
