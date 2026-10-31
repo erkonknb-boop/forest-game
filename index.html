@@ -2,8 +2,79 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>iPhone - Мои Сайты</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,Inter,sans-serif;-webkit-tap-highlight-color:transparent}
+body{background:#000;display:flex;justify-content:center;align-items:center;min-height:100vh;overflow:hidden}
+.iphone{width:390px;height:844px;max-width:100vw;max-height:100vh;position:relative;background:#000;border-radius:54px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.6);border:8px solid #111}
+@media(max-width:400px){.iphone{width:100vw;height:100vh;border-radius:0;border:none}
+.wallpaper{position:absolute;inset:0;background:#0a0a1a}
+.wallpaper{background-image:url('./wa_image_9080556301484690093');background-size:cover;background-position:center;background-color:#0a0a1a}
+.wallpaper::after{content:'';position:absolute;inset:0;background:radial-gradient(120% 60% at 20% 10%, rgba(150,170,255,.25), transparent 60%), radial-gradient(100% 50% at 80% 90%, rgba(100,140,255,.2), transparent 60%)}
+.status-bar{position:absolute;top:0;left:0;right:0;height:54px;display:flex;justify-content:space-between;align-items:center;padding:0 32px 0 34px;z-index:10;color:#fff;font-weight:600;font-size:17px}
+.status-right{display:flex;gap:6px;align-items:center}
+.battery{border:1.5px solid rgba(255,255,255,.5);border-radius:4px;width:26px;height:12px;position:relative;display:grid;place-items:center;font-size:9px;font-weight:800}
+.battery::after{content:'';position:absolute;right:-3px;top:2.5px;width:1.8px;height:5px;background:rgba(255,255,255,.5);border-radius:0 2px 2px 0}
+.home-screen{position:absolute;inset:54px 0 0 0;padding:20px 18px 0 18px;z-index:5}
+.app-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px 14px}
+.app{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:.15s}
+.app:active{transform:scale(.92)}
+.app-icon{width:64px;height:64px;border-radius:16px;display:grid;place-items:center;font-size:28px;font-weight:800;color:#fff;box-shadow:0 4px 12px rgba(0,0,0,.35);overflow:hidden}
+.app-name{font-size:11px;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.9);text-align:center;max-width:70px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dock{position:absolute;bottom:34px;left:14px;right:14px;height:92px;background:rgba(255,255,255,.22);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border-radius:32px;display:flex;justify-content:space-around;align-items:center;padding:0 10px;z-index:6}
+.dock .app-icon{width:60px;height:60px;border-radius:15px}
+.home-indicator{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;background:#fff;border-radius:3px;z-index:10}
+.app-window{position:absolute;inset:0;background:#f4f6f9;z-index:20;transform:translateY(100%) scale(.9);opacity:0;transition:all .38s cubic-bezier(.32,.72,0,1);border-radius:54px;overflow:hidden;display:flex;flex-direction:column}
+.app-window.open{transform:translateY(0) scale(1);opacity:1;border-radius:0}
+.app-window-header{height:54px;background:#fff;border-bottom:1px solid #e5e8eb;display:flex;align-items:center;padding:0 16px;gap:12px;flex-shrink:0}
+.app-close{width:28px;height:28px;background:#111;color:#fff;border-radius:50%;display:grid;place-items:center;cursor:pointer;font-weight:700;font-size:14px}
+.app-content{flex:1;overflow:hidden;position:relative}
+.app-content iframe{width:100%;height:100%;border:none;background:#f4f6f9}
+</style>
+</head>
+<body>
+<div class="iphone">
+  <div class="wallpaper"></div>
+  <div class="status-bar"><div>9:41</div><div class="status-right"><span style="letter-spacing:2px">●●●</span><span></span><div class="battery">100</div></div></div>
+
+  <div class="home-screen">
+    <div class="app-grid">
+      <div class="app" onclick="openApp('vip')"><div class="app-icon" style="background:linear-gradient(135deg,#2a5db0,#1a3a7a)">KZ</div><div class="app-name">VIP Номера</div></div>
+      <div class="app"><div class="app-icon" style="background:linear-gradient(135deg,#00d084,#00a86b)">💼</div><div class="app-name">Бизнес</div></div>
+      <div class="app"><div class="app-icon" style="background:linear-gradient(135deg,#ff3b30,#bf2a22)">🚗</div><div class="app-name">Авто KZ</div></div>
+      <div class="app"><div class="app-icon" style="background:#8e8e93">📷</div><div class="app-name">Камера</div></div>
+      <div class="app"><div class="app-icon" style="background:linear-gradient(135deg,#af52de,#7a32a8)">🎨</div><div class="app-name">Дизайн</div></div>
+      <div class="app"><div class="app-icon" style="background:#007aff">💬</div><div class="app-name">Чат</div></div>
+      <div class="app"><div class="app-icon" style="background:#ff9500">🛒</div><div class="app-name">Shop</div></div>
+      <div class="app"><div class="app-icon" style="background:#000">🎬</div><div class="app-name">Видео</div></div>
+    </div>
+  </div>
+
+  <div class="dock">
+    <div class="app"><div class="app-icon" style="background:#34c759">📞</div></div>
+    <div class="app"><div class="app-icon" style="background:#007aff">🧭</div></div>
+    <div class="app" onclick="openApp('vip')"><div class="app-icon" style="background:linear-gradient(135deg,#2a5db0,#1a3a7a)">KZ</div></div>
+    <div class="app"><div class="app-icon" style="background:#8e8e93">⚙️</div></div>
+  </div>
+  <div class="home-indicator"></div>
+
+  <!-- ПЕРВОЕ ПРИЛОЖЕНИЕ - ТВОЙ КОД ВНУТРИ -->
+  <div class="app-window" id="app-vip">
+    <div class="app-window-header"><div class="app-close" onclick="closeApp()">✕</div><div style="font-weight:700">VIP номера Казахстана</div><div style="margin-left:auto;font-size:12px;color:#6b7280">KZ • eGov</div></div>
+    <div class="app-content">
+      <iframe id="vipFrame" srcdoc=""></iframe>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const vipHTML = `<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VIP номера Казахстана - как eGov</title>
 <style>
 *{box-sizing:border-box;font-family:Inter,-apple-system,sans-serif}
 body{margin:0;background:#f4f6f9;color:#1a1a1a}
@@ -11,8 +82,6 @@ body{margin:0;background:#f4f6f9;color:#1a1a1a}
 .egov-logo{width:32px;height:32px;background:#2a5db0;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:900}
 .egov-title{font-weight:700;font-size:15px}
 .egov-sub{font-size:12px;color:#6b7280}
-.hero{background:#2a5db0;color:#fff;padding:16px;text-align:center}
-.hero h1{margin:0;font-size:18px}
 .container{max-width:800px;margin:0 auto;padding:16px}
 .card{background:#fff;border-radius:12px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:12px;border:1px solid #eef1f4}
 label{font-size:11px;color:#6b7280;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
@@ -27,8 +96,6 @@ select,input{width:100%;padding:12px 14px;border:1.5px solid #dfe3e8;border-radi
 .chip{white-space:nowrap;padding:7px 14px;border-radius:20px;background:#eef2f7;font-size:13px;font-weight:700;border:1px solid #dfe3e8;cursor:pointer}
 .chip.active{background:#2a5db0;color:#fff;border-color:#2a5db0}
 .small{font-size:11px;color:#888;line-height:1.4;margin-top:12px}
-
-/* === ПЛАСТИНКА КАК НА ТВОЕМ СКРИНЕ === */
 .plate-wrap{display:flex;justify-content:center;padding:30px 0 20px}
 .plate{display:flex;align-items:center;border:2px solid #cbd5e1;border-radius:12px;background:#fff;overflow:hidden;height:56px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
 .plate-kz{width:52px;height:100%;background:#f8fafc;border-right:2px solid #cbd5e1;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;font-weight:800;line-height:1}
@@ -40,7 +107,6 @@ select,input{width:100%;padding:12px 14px;border:1.5px solid #dfe3e8;border-radi
 .plate-reg input{border:none;padding:0;margin:0;width:40px;font-size:24px;font-weight:800;text-align:center;background:transparent}
 .plate-reg input:focus{outline:none}
 .plate-hint{font-size:11px;color:#888;text-align:center;margin-top:6px}
-
 .result-box{background:#f8fafc;border-radius:12px;padding:14px;margin-top:16px;border:1px solid #eef1f4}
 .result-box .free{color:#16a34a;font-weight:700;font-size:13px}
 .result-box .price{font-size:22px;font-weight:900;margin-top:6px}
@@ -49,16 +115,12 @@ select,input{width:100%;padding:12px 14px;border:1.5px solid #dfe3e8;border-radi
 </head>
 <body>
 <div class="egov-header"><div class="egov-logo">KZ</div><div><div class="egov-title">VIP номера Казахстана</div><div class="egov-sub">Заказ номерного знака для авто</div></div></div>
-
 <div class="container">
-
 <div class="card" style="border:2px solid #2a5db0">
 <label style="color:#2a5db0">✨ ПОДБОР ПО ИМЕНИ - только английскими буквами</label>
 <div style="display:flex;gap:8px;margin-top:6px"><input id="nameInput" placeholder="DIAS" maxlength="12" style="text-transform:uppercase;flex:2"><button class="btn" style="margin:0;flex:1" onclick="findByName()">Найти</button></div>
 <div id="nameResults"></div>
 </div>
-
-<!-- ВОТ ТВОЯ ПЛАСТИНКА ПО СЕРЕДИНЕ КАК НА СКРИНЕ -->
 <div class="card">
 <label style="text-align:center;display:block">Нажми на номер, буквы или регион чтобы изменить</label>
 <div class="plate-wrap">
@@ -69,7 +131,6 @@ select,input{width:100%;padding:12px 14px;border:1.5px solid #dfe3e8;border-radi
 </div>
 </div>
 <div class="plate-hint">777 = цифры (только 3) • OOE = буквы (только 3 англ) • 05 = регион (2 цифры)</div>
-
 <div class="result-box" id="resultBox">
 <div class="free">Уважаемый Пользователь, выбранный Вами ГРНЗ свободен</div>
 <div style="font-size:12px;color:#666;margin-top:4px" id="resultCat">Стоимость составляет 228 МРП</div>
@@ -77,7 +138,6 @@ select,input{width:100%;padding:12px 14px;border:1.5px solid #dfe3e8;border-radi
 </div>
 <button class="btn" onclick="render()" style="margin-top:12px">Продолжить</button>
 </div>
-
 <div class="card">
 <label>Фильтр по категории</label>
 <div class="filter-bar" id="filterBar"></div>
@@ -86,25 +146,20 @@ select,input{width:100%;padding:12px 14px;border:1.5px solid #dfe3e8;border-radi
 <b>Официально 2026:</b> Случайный 2,8 МРП, Кастом 10 МРП (43 250 ₸), Зеркальные 15 МРП, Зеркальные+AAA 72 МРП, 010...707 57/114 МРП, 100-999 137/194 МРП, 001-009,777 228/285 МРП
 </div>
 </div>
-
 </div>
-
 <script>
 const MRP=4325;
 const CAT_010 = ["010","020","030","040","050","060","070","077","080","090","707"];
 const CAT_100 = ["100","111","200","222","300","333","400","444","500","555","600","666","700","800","888","900","999"];
 const CAT_001 = ["001","002","003","004","005","006","007","008","009","777"];
 const CAT_MIRROR = ["101","121","131","141","151","161","171","181","191","202","212","232","242","252","262","272","282","292","303","313","323","343","353","363","373","383","393","404","414","424","434","454","464","474","484","494","505","515","525","535","545","565","575","585","595","606","616","626","636","646","656","676","686","696","717","727","737","747","757","767","787","797","808","818","828","838","848","858","868","878","898","909","919","929","939","949","959","969","979","989"];
-
 let currentFilter='all';
 const filters = [{id:'all',label:'Все'},{id:'10',label:'10 МРП'},{id:'15',label:'15 МРП'},{id:'57',label:'57 МРП'},{id:'72',label:'72 МРП'},{id:'114',label:'114 МРП'},{id:'137',label:'137 МРП'},{id:'194',label:'194 МРП'},{id:'228',label:'228 МРП'},{id:'285',label:'285 МРП'}];
-
 function initFilters(){
   const bar=document.getElementById('filterBar');
-  bar.innerHTML=filters.map(f=>`<div class="chip ${f.id==='all'?'active':''}" onclick="setFilter('${f.id}',this)">${f.label}</div>`).join('');
+  bar.innerHTML=filters.map(f=>\`<div class="chip \${f.id==='all'?'active':''}" onclick="setFilter('\${f.id}',this)">\${f.label}</div>\`).join('');
 }
 function setFilter(f,el){currentFilter=f;document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');render();}
-
 function getCategory(num, same){
   if(CAT_001.includes(num)) return same ? {mrp:285} : {mrp:228};
   if(CAT_100.includes(num)) return same ? {mrp:194} : {mrp:137};
@@ -113,22 +168,20 @@ function getCategory(num, same){
   if(same) return {mrp:57};
   return {mrp:10};
 }
-
 function updateResult(){
-  let d=(document.getElementById('digits').value||'').replace(/\D/g,'').slice(0,3).padStart(3,'0');
+  let d=(document.getElementById('digits').value||'').replace(/\\D/g,'').slice(0,3).padStart(3,'0');
   let l=(document.getElementById('letters').value||'').toUpperCase().replace(/[^A-Z]/g,'').slice(0,3).padEnd(3,'A');
-  let r=(document.getElementById('region').value||'').replace(/\D/g,'').slice(0,2).padStart(2,'0');
+  let r=(document.getElementById('region').value||'').replace(/\\D/g,'').slice(0,2).padStart(2,'0');
   const same = l[0]===l[1] && l[1]===l[2];
   const cat=getCategory(d, same);
   const price=cat.mrp*MRP;
-  document.getElementById('resultCat').innerText=`Стоимость составляет ${cat.mrp} МРП`;
-  document.getElementById('resultPrice').innerText=`${price.toLocaleString('ru-RU')} тенге`;
+  document.getElementById('resultCat').innerText=\`Стоимость составляет \${cat.mrp} МРП\`;
+  document.getElementById('resultPrice').innerText=\`\${price.toLocaleString('ru-RU')} тенге\`;
 }
-
 function render(){
-  let d=(document.getElementById('digits').value||'').replace(/\D/g,'').slice(0,3);
+  let d=(document.getElementById('digits').value||'').replace(/\\D/g,'').slice(0,3);
   let l=(document.getElementById('letters').value||'').toUpperCase().replace(/[^A-Z]/g,'').slice(0,3);
-  let r=(document.getElementById('region').value||'').replace(/\D/g,'').slice(0,2);
+  let r=(document.getElementById('region').value||'').replace(/\\D/g,'').slice(0,2);
   document.getElementById('digits').value=d;
   document.getElementById('letters').value=l;
   document.getElementById('region').value=r;
@@ -154,13 +207,12 @@ function render(){
   list.forEach(item=>{
     const price=item.cat.mrp*MRP;
     const div=document.createElement('div');div.className='num-card';
-    div.innerHTML=`<b>${item.num} ${item.letters}</b><span>${region}</span><div class="price-tag">${price.toLocaleString('ru-RU')} ₸</div><span>${item.cat.mrp} МРП</span>`;
+    div.innerHTML=\`<b>\${item.num} \${item.letters}</b><span>\${region}</span><div class="price-tag">\${price.toLocaleString('ru-RU')} ₸</div><span>\${item.cat.mrp} МРП</span>\`;
     div.onclick=()=>{document.getElementById('digits').value=item.num; document.getElementById('letters').value=item.letters; updateResult(); window.scrollTo({top:0,behavior:'smooth'})};
     grid.appendChild(div);
   });
   updateResult();
 }
-
 function findByName(){
   let raw=(document.getElementById('nameInput').value||'').toUpperCase().trim().replace(/[^A-Z]/g,'').slice(0,12);
   document.getElementById('nameInput').value=raw;
@@ -169,23 +221,36 @@ function findByName(){
   let nums=''; for(let ch of raw){ if(mapNum[ch]) nums+=mapNum[ch]; }
   nums=nums.slice(0,3).padStart(3,'0');
   let letters=raw.slice(0,3).padEnd(3, raw[0]||'A');
-  const sugg=[{num:nums, let:letters, desc:`${raw} → цифры похожи`},{num:'707', let:letters, desc:`707 + ${raw}`},{num:'777', let:letters, desc:`777 + ${raw}`}];
+  const sugg=[{num:nums, let:letters, desc:\`\${raw} → цифры похожи\`},{num:'707', let:letters, desc:\`707 + \${raw}\`},{num:'777', let:letters, desc:\`777 + \${raw}\`}];
   const box=document.getElementById('nameResults');
   box.innerHTML=sugg.map(s=>{
     const cat=getCategory(s.num, s.let[0]===s.let[1]&&s.let[1]===s.let[2]);
     const price=cat.mrp*MRP;
-    return `<div class="name-result"><b>${s.num} ${s.let} - ${s.desc}</b><br><span style="color:#2a5db0;font-weight:800">${price.toLocaleString('ru-RU')} ₸ • ${cat.mrp} МРП</span> <button onclick="applySug('${s.num}','${s.let}')" style="margin-left:8px;padding:4px 8px;border-radius:6px;border:1px solid #2a5db0;background:#fff;color:#2a5db0;font-weight:700;cursor:pointer">Выбрать</button></div>`;
+    return \`<div class="name-result"><b>\${s.num} \${s.let} - \${s.desc}</b><br><span style="color:#2a5db0;font-weight:800">\${price.toLocaleString('ru-RU')} ₸ • \${s.mrp} МРП</span> <button onclick="applySug('\${s.num}','\${s.let}')" style="margin-left:8px;padding:4px 8px;border-radius:6px;border:1px solid #2a5db0;background:#fff;color:#2a5db0;font-weight:700;cursor:pointer">Выбрать</button></div>\`;
   }).join('');
 }
 function applySug(num, lettrs){document.getElementById('digits').value=num; document.getElementById('letters').value=lettrs; render();}
-
-document.getElementById('digits').addEventListener('input', e=>{e.target.value=e.target.value.replace(/\D/g,'').slice(0,3); updateResult();});
+document.getElementById('digits').addEventListener('input', e=>{e.target.value=e.target.value.replace(/\\D/g,'').slice(0,3); updateResult();});
 document.getElementById('letters').addEventListener('input', e=>{e.target.value=e.target.value.toUpperCase().replace(/[^A-Z]/g,'').slice(0,3); updateResult();});
-document.getElementById('region').addEventListener('input', e=>{e.target.value=e.target.value.replace(/\D/g,'').slice(0,2); updateResult();});
+document.getElementById('region').addEventListener('input', e=>{e.target.value=e.target.value.replace(/\\D/g,'').slice(0,2); updateResult();});
 document.getElementById('nameInput').addEventListener('input', e=>{e.target.value=e.target.value.toUpperCase().replace(/[^A-Z]/g,'').slice(0,12);});
-
 initFilters();
 render();
+<\/script>
+</body>
+</html>`;
+
+function openApp(id){
+  if(id==='vip'){
+    document.getElementById('vipFrame').srcdoc = vipHTML;
+    document.getElementById('app-vip').classList.add('open');
+    if(navigator.vibrate) navigator.vibrate(20);
+  }
+}
+function closeApp(){
+  document.querySelectorAll('.app-window').forEach(w=>w.classList.remove('open'));
+  setTimeout(()=>{ document.getElementById('vipFrame').srcdoc=''; },300);
+}
 </script>
 </body>
 </html>
