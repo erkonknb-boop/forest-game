@@ -3,65 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>iPhone - Главный экран</title>
+<title>Вид номер Казахстана</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,Inter,sans-serif;-webkit-tap-highlight-color:transparent}
 body{background:#000;display:flex;justify-content:center;align-items:center;min-height:100vh}
-.iphone{width:390px;height:844px;max-width:100vw;max-height:100vh;position:relative;background:#000;border-radius:54px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.6);border:8px solid #111;display:flex;flex-direction:column}
-.wallpaper{position:absolute;inset:0;background-image:url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD...');background-size:cover;background-position:center;z-index:1}
-.status-bar{position:relative;z-index:10;height:44px;display:flex;justify-content:space-between;align-items:center;padding:0 28px;color:#fff;font-weight:600;font-size:15px}
-.home{position:relative;z-index:5;flex:1;padding:12px 14px 0 14px;display:flex;flex-direction:column}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px 10px}
-.app{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer}.app:active{transform:scale(.92)}
-.icon{width:60px;height:60px;border-radius:13px;display:grid;place-items:center;font-size:11px;font-weight:900;color:#fff;position:relative;box-shadow:0 3px 8px rgba(0,0,0,.3)}
-.badge{position:absolute;top:-6px;right:-6px;background:#ff3b30;color:#fff;min-width:20px;height:20px;border-radius:10px;display:grid;place-items:center;font-size:11px;font-weight:700;padding:0 5px;border:1.5px solid #fff}
-.name{font-size:11px;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.8);text-align:center;line-height:1.1}
-.dock{position:relative;z-index:6;margin:10px 10px 18px 10px;height:84px;background:rgba(255,255,255,.25);backdrop-filter:blur(20px);border-radius:28px;display:flex;justify-content:space-around;align-items:center}
-.dock .icon{width:56px;height:56px;border-radius:12px}
-.home-indicator{position:relative;z-index:10;height:18px;display:flex;justify-content:center;align-items:center}.home-indicator div{width:134px;height:5px;background:#fff;border-radius:3px}
-.window{position:absolute;inset:0;background:#f4f6f9;z-index:20;transform:translateY(100%);transition:transform .35s cubic-bezier(.32,.72,0,1);display:flex;flex-direction:column}.window.open{transform:translateY(0)}
-.window-h{height:44px;background:#fff;border-bottom:1px solid #e5e8eb;display:flex;align-items:center;padding:0 12px;gap:10px}.close{width:26px;height:26px;background:#111;color:#fff;border-radius:50%;display:grid;place-items:center;font-size:14px;cursor:pointer}.frame{flex:1;border:none;width:100%}
+.iphone{width:390px;height:844px;max-width:100vw;max-height:100vh;position:relative;background:#050a1e;border-radius:54px;overflow:hidden;border:8px solid #111;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.7)}
+.wallpaper{position:absolute;inset:0;z-index:1;background:#050a1e;background-image:radial-gradient(40% 30% at 20% 15%,rgba(60,90,150,.5) 0%,transparent 60%),radial-gradient(50% 40% at 80% 20%,rgba(80,110,180,.4) 0%,transparent 60%),radial-gradient(60% 50% at 50% 50%,rgba(30,50,100,.6) 0%,transparent 70%),radial-gradient(70% 60% at 30% 80%,rgba(20,40,90,.5) 0%,transparent 60%),linear-gradient(180deg,#0a1430 0%,#050a1e 100%)}
+.status{position:relative;z-index:10;height:44px;display:flex;justify-content:space-between;align-items:center;padding:0 28px;color:#fff;font-size:15px;font-weight:600}
+.home{position:relative;z-index:5;flex:1;display:flex;flex-direction:column;align-items:center;padding-top:120px}
+.app{display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer}.app:active{transform:scale(.93)}
+.icon{width:76px;height:76px;border-radius:17px;background:linear-gradient(135deg,#2a5db0,#1a2e7a);display:grid;place-items:center;color:#fff;font-weight:900;box-shadow:0 8px 20px rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.15);font-size:28px}
+.label{color:#fff;font-size:13px;font-weight:600;text-shadow:0 1px 4px rgba(0,0,0,.9);text-align:center;line-height:1.2;max-width:120px}
+.indicator{position:relative;z-index:10;height:20px;display:flex;justify-content:center;align-items:center;padding-bottom:6px}.indicator div{width:134px;height:5px;background:#fff;border-radius:3px}
+.window{position:absolute;inset:0;background:#f4f6f9;z-index:20;transform:translateY(100%);transition:transform .38s cubic-bezier(.32,.72,0,1);display:flex;flex-direction:column;border-radius:54px}.window.open{transform:translateY(0);border-radius:0}
+.bar{height:52px;background:#fff;border-bottom:1px solid #e5e8eb;display:flex;align-items:center;padding:0 16px;gap:12px}.close{width:28px;height:28px;background:#111;color:#fff;border-radius:50%;display:grid;place-items:center;font-size:14px;cursor:pointer}.frame{flex:1;border:none;width:100%}
 </style>
 </head>
 <body>
 <div class="iphone">
-<div class="wallpaper"></div>
-<div class="status-bar"><div>16:27</div><div>📶 LTE 🔋</div></div>
-<div class="home">
-<div class="grid">
-<div class="app"><div class="icon" style="background:#1c1c1e">🔧</div><div class="name">Утилиты</div></div>
-<div class="app"><div class="icon" style="background:#0a84ff">📁</div><div class="name">Файлы</div></div>
-<div class="app"><div class="icon" style="background:#000">🎯</div><div class="name">Фитнес</div></div>
-<div class="app"><div class="icon" style="background:#2c2c2e">📁<div class="badge">49</div></div><div class="name">Папка</div></div>
-<div class="app"><div class="icon" style="background:#fff;color:#0066ff">kolesa<div class="badge">3</div></div><div class="name">Kolesa.kz</div></div>
-<div class="app" onclick="openVip()"><div class="icon" style="background:linear-gradient(135deg,#2a5db0,#1a3a7a)">eGov</div><div class="name">eGov Mobile</div></div>
-<div class="app"><div class="icon" style="background:#fff;color:#2a5db0">PDD</div><div class="name">PDDTest</div></div>
-<div class="app"><div class="icon" style="background:#f14635">👥<div class="badge">5</div></div><div class="name">Kaspi.kz</div></div>
-<div class="app"><div class="icon" style="background:#00d632;color:#000">iD</div><div class="name">inDrive</div></div>
-<div class="app"><div class="icon" style="background:#ffcc00;color:#000">Go</div><div class="name">Яндекс Go</div></div>
-<div class="app"><div class="icon" style="background:#fff;color:#000">◎</div><div class="name">ChatGPT</div></div>
-<div class="app"><div class="icon" style="background:#000">♪<div class="badge">1</div></div><div class="name">TikTok</div></div>
-<div class="app"><div class="icon" style="background:#ff0000">▶<div class="badge">1</div></div><div class="name">YouTube</div></div>
-<div class="app"><div class="icon" style="background:#000">PUBG</div><div class="name">PUBG MOBILE</div></div>
-<div class="app"><div class="icon" style="background:#000">@</div><div class="name">Threads</div></div>
-<div class="app"><div class="icon" style="background:#fff;color:#000">TELE2</div><div class="name">Tele2</div></div>
-<div class="app"><div class="icon" style="background:#ff0066">5G A</div><div class="name">Altel</div></div>
-<div class="app"><div class="icon" style="background:#00a651">ЦОН</div><div class="name">ЦОН</div></div>
-<div class="app"><div class="icon" style="background:#fff">Chrome</div><div class="name">Chrome</div></div>
-<div class="app"><div class="icon" style="background:#fff;color:#000">P</div><div class="name">Расход</div></div>
-</div>
-<div style="flex:1"></div>
-<div class="dock"><div class="app"><div class="icon" style="background:#30d158">📞</div></div><div class="app"><div class="icon" style="background:#0a84ff">🧭</div></div><div class="app"><div class="icon" style="background:#30d158">💬<div class="badge">490</div></div></div><div class="app"><div class="icon" style="background:#ff375f">♪</div></div></div>
-</div>
-<div class="home-indicator"><div></div></div>
-<div class="window" id="win"><div class="window-h"><div class="close" onclick="closeVip()">✕</div><div style="font-weight:700">eGov Mobile • VIP номера</div></div><iframe class="frame" id="frame"></iframe></div>
+  <div class="wallpaper"></div>
+  <div class="status"><div>16:27</div><div>LTE ●○</div></div>
+  <div class="home">
+    <div class="app" onclick="openApp()">
+      <div class="icon">KZ</div>
+      <div class="label">Вид номер Казахстана</div>
+    </div>
+  </div>
+  <div class="indicator"><div></div></div>
+  <div class="window" id="win">
+    <div class="bar"><div class="close" onclick="closeApp()">✕</div><div style="font-weight:700">Вид номер Казахстана</div></div>
+    <iframe class="frame" id="frame"></iframe>
+  </div>
 </div>
 <script>
-const b64="ТУТ_ВЕСЬ_ТВОЙ_VIP_КОД_В_BASE64_36КБ";
-// Декодируем и открываем
-function dec(s){const c='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';let o='',i=0;s=s.replace(/[^A-Za-z0-9+/=]/g,'');while(i<s.length){const e1=c.indexOf(s.charAt(i++)),e2=c.indexOf(s.charAt(i++)),e3=c.indexOf(s.charAt(i++)),e4=c.indexOf(s.charAt(i++));const n1=(e1<<2)|(e2>>4),n2=((e2&15)<<4)|(e3>>2),n3=((e3&3)<<6)|e4;o+=String.fromCharCode(n1);if(e3!=64)o+=String.fromCharCode(n2);if(e4!=64)o+=String.fromCharCode(n3);}return o;}
-function openVip(){const h=decodeURIComponent(escape(dec(b64)));document.getElementById('frame').srcdoc=h;document.getElementById('win').classList.add('open');}
-function closeVip(){document.getElementById('win').classList.remove('open');}
-</script>
-</body>
-</html>
+const appHTML = `<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>VIP номера Казахстана - как eGov</title><style>*{box-sizing:border-box;font-family:Inter,-apple-system,sans-serif}body{margin:0;background:#f4f6f9;color:#1a1a1a}.egov-header{background:#fff;border-bottom:1px solid #e5e8eb;padding:12px 16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10}.egov-logo{width:32px;height:32px;background:#2a5db0;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:900}.egov-title{font-weight:700;font-size:15px}.egov-sub{font-size:12px;color:#6b7280}.container{max-width:800px;margin:0 auto;padding:16px}.card{background:#fff;border-radius:12px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:12px;border:1px solid #eef1f4}label{font-size:11px;color:#6b7280;font-weight:700;text-transform:uppercase;letter-spacing:.5px}input{width:100%;padding:12px 14px;border:1.5px solid #dfe3e8;border-radius:8px;font-size:16px;font-weight:700;margin-top:6px;text-transform:uppercase}.btn{width:100%;background:#2a5db0;color:#fff;border:none;padding:14px;border-radius:8px;font-weight:800;font-size:15px;margin-top:12px;cursor:pointer}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.num-card{border:1.5px solid #e5e8eb;border-radius:10px;padding:12px;text-align:center;cursor:pointer;background:#fff}.num-card b{font-size:18px;display:block}.price-tag{font-weight:800;color:#2a5db0;margin-top:4px;font-size:15px}.filter-bar{display:flex;gap:8px;overflow:auto;padding-bottom:6px;margin-top:8px}.chip{white-space:nowrap;padding:7px 14px;border-radius:20px;background:#eef2f7;font-size:13px;font-weight:700;border:1px solid #dfe3e8;cursor:pointer}.chip.active{background:#2a5db0;color:#fff;border-color:#2a5db0}.small
