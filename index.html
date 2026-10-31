@@ -3,17 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Вид номер Казахстана</title>
+<title>Проверка номер Казахстана</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,Inter,sans-serif;-webkit-tap-highlight-color:transparent}
 body{background:#000;display:flex;justify-content:center;align-items:center;min-height:100vh}
 .iphone{width:390px;height:844px;max-width:100vw;max-height:100vh;position:relative;background:#000;border-radius:54px;overflow:hidden;border:8px solid #111;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.7)}
-.wallpaper{position:absolute;inset:0;z-index:1;background:#070b1e center/cover no-repeat;transform:scale(1.15);transform-origin:center}
+.wallpaper{position:absolute;inset:0;z-index:1;background:#000 center/cover no-repeat;transform:scale(1.08);transform-origin:center}
 .status{position:relative;z-index:10;height:44px;display:flex;justify-content:space-between;align-items:center;padding:0 28px;color:#fff;font-size:15px;font-weight:600}
 .home{position:relative;z-index:5;flex:1;display:flex;flex-direction:column;align-items:center;padding-top:110px}
 .app{display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer}.app:active{transform:scale(.93)}
-.icon{width:76px;height:76px;border-radius:17px;background:linear-gradient(135deg,#2a5db0,#1a2e7a);display:grid;place-items:center;color:#fff;font-weight:900;box-shadow:0 8px 20px rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.15);font-size:28px}
-.label{color:#fff;font-size:13px;font-weight:600;text-shadow:0 1px 4px rgba(0,0,0,.9);text-align:center;line-height:1.2;max-width:120px}
+.icon{width:76px;height:76px;border-radius:17px;background:linear-gradient(135deg,#3b5bdb,#2a3a8a);display:grid;place-items:center;color:#fff;font-weight:900;box-shadow:0 8px 20px rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.15);font-size:28px}
+.label{color:#fff;font-size:13px;font-weight:600;text-shadow:0 1px 4px rgba(0,0,0,.9);text-align:center;line-height:1.2;max-width:130px}
 .indicator{position:relative;z-index:10;height:24px;display:flex;justify-content:center;align-items:center;padding-bottom:8px}.indicator div{width:134px;height:5px;background:#fff;border-radius:3px}
 .window{position:absolute;inset:0;background:#f4f6f9;z-index:20;transform:translateY(100%);transition:transform .42s cubic-bezier(.32,.72,0,1);display:flex;flex-direction:column;border-radius:54px;padding:6px}.window.open{transform:translateY(0);border-radius:28px}
 .bar{height:48px;background:#fff;border-bottom:1px solid #e5e8eb;display:flex;align-items:center;padding:0 14px;gap:10px;border-radius:20px 20px 0 0;flex-shrink:0}.close{width:28px;height:28px;background:#111;color:#fff;border-radius:50%;display:grid;place-items:center;font-size:14px;cursor:pointer}.frame{flex:1;border:none;width:100%;border-radius:0 0 20px 20px;background:#f4f6f9}
@@ -24,10 +24,10 @@ body{background:#000;display:flex;justify-content:center;align-items:center;min-
   <div class="wallpaper" id="wall"></div>
   <div class="status"><div>9:41</div><div>📶 📶 🔋 100</div></div>
   <div class="home">
-    <div class="app" onclick="openApp()"><div class="icon">KZ</div><div class="label">Вид номер<br>Казахстана</div></div>
+    <div class="app" onclick="openApp()"><div class="icon">KZ</div><div class="label">Проверка номер<br>Казахстана</div></div>
   </div>
   <div class="indicator"><div></div></div>
-  <div class="window" id="win"><div class="bar"><div class="close" onclick="closeApp()">✕</div><div style="font-weight:700;font-size:15px">Вид номер Казахстана</div></div><iframe class="frame" id="frame"></iframe></div>
+  <div class="window" id="win"><div class="bar"><div class="close" onclick="closeApp()">✕</div><div style="font-weight:700;font-size:15px">Проверка номер Казахстана</div></div><iframe class="frame" id="frame"></iframe></div>
 </div>
 
 <template id="vipTemplate">
@@ -40,12 +40,7 @@ const MRP=4325;const CAT_010=["010","020","030","040","050","060","070","077","0
 </template>
 
 <script>
-// ВСТАВЬ БАЗУ64 ТВОИХ ОБОЕВ СЮДА - файл скачай по ссылке выше и скопируй строку
-const WALLPAPER_BASE64 = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD..."; 
-// Для быстрой работы сейчас ставлю CSS пузыри как на фото, фото подгрузится из файла выше
-document.getElementById('wall').style.backgroundImage = "url('https://images.unsplash.com/photo-1550859492-d5da9d8e45f3?w=800')"; 
-// Если используешь скачанный файл FINAL_NEW_BUBBLES.html - там уже все встроено, ничего менять не надо!
-
+const WALL_B64 = "ТУТ_БЫЛА_ТВОЯ_ЦВЕТНАЯ_ОБОИНА_35КБ_СКАЧАЙ_ФАЙЛ_ЧТОБЫ_ПОЛУЧИТЬ_ПОЛНЫЙ_КОД";
 function openApp(){
   const vipHTML = document.getElementById('vipTemplate').innerHTML;
   document.getElementById('frame').srcdoc = vipHTML;
@@ -54,9 +49,7 @@ function openApp(){
 function closeApp(){
   document.getElementById('win').classList.remove('open');
 }
-
-// Автоматически ставим твою обоину из файла если есть
-fetch('').catch(()=>{});
+document.getElementById('wall').style.backgroundImage = "url('data:image/jpeg;base64," + WALL_B64 + "')";
 </script>
 </body>
 </html>
