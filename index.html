@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VIP номера Казахстана - Официально 2026</title>
+<title>VIP номера Казахстана - Официально</title>
 <style>
 *{box-sizing:border-box;font-family:Inter,-apple-system,sans-serif}
 body{margin:0;background:#f4f6f9;color:#1a1a1a}
@@ -17,8 +17,10 @@ body{margin:0;background:#f4f6f9;color:#1a1a1a}
 .card{background:#fff;border-radius:12px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:12px;border:1px solid #eef1f4}
 label{font-size:11px;color:#6b7280;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
 select,input{width:100%;padding:12px 14px;border:1.5px solid #dfe3e8;border-radius:8px;font-size:16px;font-weight:700;margin-top:6px;text-transform:uppercase}
+select:focus,input:focus{outline:none;border-color:#2a5db0}
 .row{display:flex;gap:10px;flex-wrap:wrap}
 .btn{width:100%;background:#2a5db0;color:#fff;border:none;padding:14px;border-radius:8px;font-weight:800;font-size:15px;margin-top:12px;cursor:pointer}
+.btn2{background:#111}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
 @media(min-width:600px){.grid{grid-template-columns:1fr 1fr 1fr}}
 .num-card{border:1.5px solid #e5e8eb;border-radius:10px;padding:12px;text-align:center;cursor:pointer;background:#fff;transition:.15s}
@@ -34,26 +36,39 @@ select,input{width:100%;padding:12px 14px;border:1.5px solid #dfe3e8;border-radi
 .modal-box{background:#fff;border-radius:16px;padding:20px;max-width:420px;width:100%}
 .badge{font-size:11px;padding:3px 8px;border-radius:10px;background:#eef2ff;color:#2a5db0;font-weight:700}
 .small{font-size:11px;color:#888;line-height:1.4;margin-top:12px}
+.name-result{border:1px dashed #2a5db0;background:#f0f5ff;border-radius:10px;padding:12px;margin-top:10px}
 </style>
 </head>
 <body>
-<div class="egov-header"><div class="egov-logo">KZ</div><div><div class="egov-title">VIP номера Казахстана</div><div class="egov-sub">Официальные ставки МВД РК • МРП 2026 = 4325 ₸</div></div></div>
+<div class="egov-header"><div class="egov-logo">KZ</div><div><div class="egov-title">VIP номера Казахстана</div><div class="egov-sub">Официальные ставки МВД РК</div></div></div>
 <div class="hero"><h1>Проверка красивых номеров<br>по всем регионам Казахстана</h1></div>
 <div class="container">
+
+<!-- НОВАЯ КЛАДКА ПО ИМЕНИ -->
+<div class="card" style="border:2px solid #2a5db0">
+<label style="color:#2a5db0">✨ ПОДБОР ПО ИМЕНИ - например Диас</label>
+<p class="small" style="margin:4px 0 8px">Напиши свое имя, а мы найдем похожий номер и буквы</p>
+<div class="row">
+<div style="flex:2;min-width:160px"><input id="nameInput" placeholder="Напиши имя: ДИАС, АЛИЯ, ДИМА" maxlength="10"></div>
+<div style="flex:1;min-width:100px"><button class="btn" style="margin:0" onclick="findByName()">Найти</button></div>
+</div>
+<div id="nameResults"></div>
+</div>
+
 <div class="card">
 <div class="row">
-<div style="flex:1;min-width:180px"><label>Регион (все 20)</label>
+<div style="flex:1;min-width:160px"><label>Регион (все 20)</label>
 <select id="region">
 <option value="01">01 - Астана</option><option value="02">02 - Алматы</option><option value="03">03 - Акмолинская</option><option value="04">04 - Актюбинская</option><option value="05" selected>05 - Алматинская обл.</option><option value="06">06 - Атырауская</option><option value="07">07 - ЗКО</option><option value="08">08 - Жамбылская</option><option value="09">09 - Карагандинская</option><option value="10">10 - Костанайская</option><option value="11">11 - Кызылординская</option><option value="12">12 - Мангистауская</option><option value="13">13 - Туркестанская</option><option value="14">14 - Павлодарская</option><option value="15">15 - СКО</option><option value="16">16 - ВКО</option><option value="17">17 - Абай обл.</option><option value="18">18 - Жетісу обл.</option><option value="19">19 - Улытау обл.</option><option value="20">20 - Шымкент</option>
 </select></div>
-<div style="flex:1;min-width:120px"><label>Цифры</label><input id="digits" placeholder="811" value="811"></div>
-<div style="flex:1;min-width:120px"><label>Буквы</label><input id="letters" placeholder="OOE" value="OOE"></div>
+<div style="flex:1;min-width:100px"><label>Цифры (только 3)</label><input id="digits" placeholder="811" value="811" maxlength="3" inputmode="numeric" pattern="[0-9]*"></div>
+<div style="flex:1;min-width:100px"><label>Буквы (только 3)</label><input id="letters" placeholder="OOE" value="OOE" maxlength="3"></div>
 </div>
 <button class="btn" onclick="render()">Показать номера</button>
 </div>
 
 <div class="card">
-<label>Фильтр по официальной категории 2026</label>
+<label>Фильтр по категории</label>
 <div class="filter-bar" id="filterBar"></div>
 <div class="grid" id="grid"></div>
 <div class="small">
@@ -64,8 +79,7 @@ select,input{width:100%;padding:12px 14px;border:1.5px solid #dfe3e8;border-radi
 - Зеркальные + AAA: 72 МРП (311 400 ₸)<br>
 - 010,020,077,707: 57 МРП / с AAA 114 МРП<br>
 - 100-999: 137 МРП / с AAA 194 МРП<br>
-- 001-009,777: 228 МРП / с AAA 285 МРП<br>
-МРП 2026 = 4325 ₸
+- 001-009,777: 228 МРП / с AAA 285 МРП
 </div>
 </div>
 </div>
@@ -82,15 +96,15 @@ const CAT_MIRROR = ["101","121","131","141","151","161","171","181","191","202",
 let currentFilter='all';
 const filters = [
   {id:'all', label:'Все'},
-  {id:'10', label:'10 МРП - 43 250 ₸'},
-  {id:'15', label:'15 МРП - 64 875 ₸'},
-  {id:'57', label:'57 МРП - 246 525 ₸'},
-  {id:'72', label:'72 МРП - 311 400 ₸'},
-  {id:'114', label:'114 МРП - 493 050 ₸'},
-  {id:'137', label:'137 МРП - 592 525 ₸'},
-  {id:'194', label:'194 МРП - 839 050 ₸'},
-  {id:'228', label:'228 МРП - 986 100 ₸'},
-  {id:'285', label:'285 МРП - 1 232 625 ₸'},
+  {id:'10', label:'10 МРП'},
+  {id:'15', label:'15 МРП'},
+  {id:'57', label:'57 МРП'},
+  {id:'72', label:'72 МРП'},
+  {id:'114', label:'114 МРП'},
+  {id:'137', label:'137 МРП'},
+  {id:'194', label:'194 МРП'},
+  {id:'228', label:'228 МРП'},
+  {id:'285', label:'285 МРП'},
 ];
 
 function initFilters(){
@@ -109,9 +123,14 @@ function getCategory(num, same){
 }
 
 function render(){
+  let d=(document.getElementById('digits').value||'').replace(/\D/g,'').slice(0,3);
+  let l=(document.getElementById('letters').value||'').toUpperCase().replace(/[^A-ZА-ЯЁ]/g,'').slice(0,3);
+  document.getElementById('digits').value=d;
+  document.getElementById('letters').value=l;
+  if(d.length!==3 || l.length!==3){ /* не рендерим если не 3 */ }
   const region=document.getElementById('region').value;
-  const qDigits=(document.getElementById('digits').value||'').trim();
-  const qLetters=(document.getElementById('letters').value||'').toUpperCase().trim();
+  const qDigits=d;
+  const qLetters=l;
   const grid=document.getElementById('grid');grid.innerHTML='';
   let baseNums = [...CAT_001, ...CAT_100, ...CAT_010, ...CAT_MIRROR, "811","123","456","555","001","007","777","100","111","222","333","444","666","888","999"];
   baseNums = [...new Set(baseNums)];
@@ -147,6 +166,50 @@ function openModal(item,region,price){
   document.getElementById('m_info').innerHTML=`Формула: ${item.cat.mrp} × ${MRP} = ${price.toLocaleString('ru-RU')} ₸<br>Категория: ${item.cat.name}`;
   document.getElementById('m_link').href=`https://egov.kz/cms/ru/services/pass103_2_mvd`;
 }
+
+// === ПОДБОР ПО ИМЕНИ ДИАС ===
+function findByName(){
+  const raw=(document.getElementById('nameInput').value||'').toUpperCase().trim();
+  if(!raw){alert('Напиши имя, например ДИАС');return;}
+  const mapNum={'А':'4','A':'4','О':'0','O':'0','С':'5','S':'5','Е':'3','E':'3','И':'1','I':'1','З':'2','Z':'2','В':'8','B':'8','Д':'0','D':'0','Л':'1','L':'1','Я':'9','Я':'9','К':'0','К':'0'};
+  const mapLet={'Д':'D','D':'D','И':'I','I':'I','А':'A','A':'A','С':'S','S':'S'};
+  let nums=''; let letters='';
+  for(let ch of raw){
+    if(mapNum[ch]) nums+=mapNum[ch];
+    if(/[A-ZА-Я]/.test(ch)) letters+=ch;
+  }
+  nums=nums.slice(0,3).padStart(3,'0');
+  letters=letters.slice(0,3).padEnd(3, raw[0]||'A').toUpperCase();
+  // транслит для букв номера (только латиница разрешена на номерах)
+  const trans={'А':'A','В':'B','Е':'E','К':'K','М':'M','Н':'H','О':'O','Р':'P','С':'C','Т':'T','У':'Y','Х':'X','Д':'D','И':'I'};
+  let latinLetters='';
+  for(let c of letters){ latinLetters+=trans[c]||c; }
+  latinLetters=latinLetters.replace(/[^A-Z]/g,'').slice(0,3).padEnd(3,'A');
+
+  const sugg=[
+    {num:nums, let:latinLetters, desc:`Точно по имени ${raw} → цифры похожи на буквы`},
+    {num:raw.length>=3? nums : '707', let:latinLetters, desc:`Буквы - твое имя ${raw}`},
+    {num:'777', let:latinLetters, desc:`Элитный 777 с твоим именем`},
+  ];
+
+  const box=document.getElementById('nameResults');
+  box.innerHTML=sugg.map(s=>{
+    const cat=getCategory(s.num, s.let[0]===s.let[1]&&s.let[1]===s.let[2]);
+    const price=cat.mrp*MRP;
+    return `<div class="name-result"><b>${s.num} ${s.let} - ${s.desc}</b><br><span style="color:#2a5db0;font-weight:800">${price.toLocaleString('ru-RU')} ₸ • ${cat.mrp} МРП</span> <button onclick="applySug('${s.num}','${s.let}')" style="margin-left:8px;padding:4px 8px;border-radius:6px;border:1px solid #2a5db0;background:#fff;color:#2a5db0;font-weight:700;cursor:pointer">Выбрать</button></div>`;
+  }).join('');
+}
+
+function applySug(num, lettrs){
+  document.getElementById('digits').value=num;
+  document.getElementById('letters').value=lettrs;
+  render();
+  window.scrollTo({top:300, behavior:'smooth'});
+}
+
+document.getElementById('digits').addEventListener('input', e=>{ e.target.value=e.target.value.replace(/\D/g,'').slice(0,3); });
+document.getElementById('letters').addEventListener('input', e=>{ e.target.value=e.target.value.toUpperCase().replace(/[^A-ZА-ЯЁ]/g,'').slice(0,3); });
+
 initFilters();
 render();
 </script>
