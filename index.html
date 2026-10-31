@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VIP номера Казахстана - Официально</title>
+<title>VIP номера Казахстана</title>
 <style>
 *{box-sizing:border-box;font-family:Inter,-apple-system,sans-serif}
 body{margin:0;background:#f4f6f9;color:#1a1a1a}
@@ -20,11 +20,9 @@ select,input{width:100%;padding:12px 14px;border:1.5px solid #dfe3e8;border-radi
 select:focus,input:focus{outline:none;border-color:#2a5db0}
 .row{display:flex;gap:10px;flex-wrap:wrap}
 .btn{width:100%;background:#2a5db0;color:#fff;border:none;padding:14px;border-radius:8px;font-weight:800;font-size:15px;margin-top:12px;cursor:pointer}
-.btn2{background:#111}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
 @media(min-width:600px){.grid{grid-template-columns:1fr 1fr 1fr}}
-.num-card{border:1.5px solid #e5e8eb;border-radius:10px;padding:12px;text-align:center;cursor:pointer;background:#fff;transition:.15s}
-.num-card:hover{border-color:#2a5db0;transform:translateY(-1px)}
+.num-card{border:1.5px solid #e5e8eb;border-radius:10px;padding:12px;text-align:center;cursor:pointer;background:#fff}
 .num-card b{font-size:18px;letter-spacing:1px;display:block}
 .num-card span{font-size:11px;color:#6b7280}
 .price-tag{font-weight:800;color:#2a5db0;margin-top:4px;font-size:15px}
@@ -44,12 +42,11 @@ select:focus,input:focus{outline:none;border-color:#2a5db0}
 <div class="hero"><h1>Проверка красивых номеров<br>по всем регионам Казахстана</h1></div>
 <div class="container">
 
-<!-- НОВАЯ КЛАДКА ПО ИМЕНИ -->
 <div class="card" style="border:2px solid #2a5db0">
-<label style="color:#2a5db0">✨ ПОДБОР ПО ИМЕНИ - например Диас</label>
-<p class="small" style="margin:4px 0 8px">Напиши свое имя, а мы найдем похожий номер и буквы</p>
+<label style="color:#2a5db0">✨ ПОДБОР ПО ИМЕНИ - только английскими буквами</label>
+<p class="small" style="margin:4px 0 8px">Напиши имя на английском: DIAS, ALIYA, DIMA</p>
 <div class="row">
-<div style="flex:2;min-width:160px"><input id="nameInput" placeholder="Напиши имя: ДИАС, АЛИЯ, ДИМА" maxlength="10"></div>
+<div style="flex:2;min-width:160px"><input id="nameInput" placeholder="DIAS" maxlength="12" style="text-transform:uppercase"></div>
 <div style="flex:1;min-width:100px"><button class="btn" style="margin:0" onclick="findByName()">Найти</button></div>
 </div>
 <div id="nameResults"></div>
@@ -61,8 +58,8 @@ select:focus,input:focus{outline:none;border-color:#2a5db0}
 <select id="region">
 <option value="01">01 - Астана</option><option value="02">02 - Алматы</option><option value="03">03 - Акмолинская</option><option value="04">04 - Актюбинская</option><option value="05" selected>05 - Алматинская обл.</option><option value="06">06 - Атырауская</option><option value="07">07 - ЗКО</option><option value="08">08 - Жамбылская</option><option value="09">09 - Карагандинская</option><option value="10">10 - Костанайская</option><option value="11">11 - Кызылординская</option><option value="12">12 - Мангистауская</option><option value="13">13 - Туркестанская</option><option value="14">14 - Павлодарская</option><option value="15">15 - СКО</option><option value="16">16 - ВКО</option><option value="17">17 - Абай обл.</option><option value="18">18 - Жетісу обл.</option><option value="19">19 - Улытау обл.</option><option value="20">20 - Шымкент</option>
 </select></div>
-<div style="flex:1;min-width:100px"><label>Цифры (только 3)</label><input id="digits" placeholder="811" value="811" maxlength="3" inputmode="numeric" pattern="[0-9]*"></div>
-<div style="flex:1;min-width:100px"><label>Буквы (только 3)</label><input id="letters" placeholder="OOE" value="OOE" maxlength="3"></div>
+<div style="flex:1;min-width:100px"><label>Цифры (только 3)</label><input id="digits" placeholder="707" value="707" maxlength="3" inputmode="numeric"></div>
+<div style="flex:1;min-width:100px"><label>Буквы (только 3)</label><input id="letters" placeholder="DIA" value="DIA" maxlength="3"></div>
 </div>
 <button class="btn" onclick="render()">Показать номера</button>
 </div>
@@ -73,10 +70,10 @@ select:focus,input:focus{outline:none;border-color:#2a5db0}
 <div class="grid" id="grid"></div>
 <div class="small">
 <b>Официальная таблица 2026:</b><br>
-- Случайный в СпецЦОН: 2,8 МРП (12 110 ₸) + техпаспорт 1,25 МРП<br>
-- Кастом любой (811, 123...): 10 МРП (43 250 ₸)<br>
-- Зеркальные 101,202,212,303,808,818,909...: 15 МРП (64 875 ₸)<br>
-- Зеркальные + AAA: 72 МРП (311 400 ₸)<br>
+- Случайный в СпецЦОН: 2,8 МРП + техпаспорт 1,25 МРП<br>
+- Кастом любой: 10 МРП (43 250 ₸)<br>
+- Зеркальные 101,202,212,303,808,818,909: 15 МРП<br>
+- Зеркальные + AAA: 72 МРП<br>
 - 010,020,077,707: 57 МРП / с AAA 114 МРП<br>
 - 100-999: 137 МРП / с AAA 194 МРП<br>
 - 001-009,777: 228 МРП / с AAA 285 МРП
@@ -84,7 +81,7 @@ select:focus,input:focus{outline:none;border-color:#2a5db0}
 </div>
 </div>
 
-<div class="modal" id="modal" onclick="this.classList.remove('active')"><div class="modal-box" onclick="event.stopPropagation()"><div style="display:flex;justify-content:space-between"><span class="badge" id="m_cat">10 МРП</span><span style="font-size:12px;color:#666" id="m_region">05</span></div><div style="font-size:28px;font-weight:900;margin-top:10px" id="m_price">43 250 ₸</div><div style="font-size:22px;font-weight:800;margin:8px 0" id="m_num">811 OOE 05</div><div style="font-size:13px;line-height:1.5;color:#444" id="m_info"></div><a id="m_link" target="_blank" style="display:block;text-align:center;margin-top:14px;background:#2a5db0;color:#fff;padding:12px;border-radius:8px;text-decoration:none;font-weight:700">Проверить на eGov.kz →</a></div></div>
+<div class="modal" id="modal" onclick="this.classList.remove('active')"><div class="modal-box" onclick="event.stopPropagation()"><div style="display:flex;justify-content:space-between"><span class="badge" id="m_cat">10 МРП</span><span style="font-size:12px;color:#666" id="m_region">05</span></div><div style="font-size:28px;font-weight:900;margin-top:10px" id="m_price">43 250 ₸</div><div style="font-size:22px;font-weight:800;margin:8px 0" id="m_num">707 DIA 05</div><div style="font-size:13px;line-height:1.5;color:#444" id="m_info"></div><a id="m_link" target="_blank" style="display:block;text-align:center;margin-top:14px;background:#2a5db0;color:#fff;padding:12px;border-radius:8px;text-decoration:none;font-weight:700">Проверить на eGov.kz →</a></div></div>
 
 <script>
 const MRP=4325;
@@ -94,18 +91,7 @@ const CAT_001 = ["001","002","003","004","005","006","007","008","009","777"];
 const CAT_MIRROR = ["101","121","131","141","151","161","171","181","191","202","212","232","242","252","262","272","282","292","303","313","323","343","353","363","373","383","393","404","414","424","434","454","464","474","484","494","505","515","525","535","545","565","575","585","595","606","616","626","636","646","656","676","686","696","717","727","737","747","757","767","787","797","808","818","828","838","848","858","868","878","898","909","919","929","939","949","959","969","979","989"];
 
 let currentFilter='all';
-const filters = [
-  {id:'all', label:'Все'},
-  {id:'10', label:'10 МРП'},
-  {id:'15', label:'15 МРП'},
-  {id:'57', label:'57 МРП'},
-  {id:'72', label:'72 МРП'},
-  {id:'114', label:'114 МРП'},
-  {id:'137', label:'137 МРП'},
-  {id:'194', label:'194 МРП'},
-  {id:'228', label:'228 МРП'},
-  {id:'285', label:'285 МРП'},
-];
+const filters = [{id:'all',label:'Все'},{id:'10',label:'10 МРП'},{id:'15',label:'15 МРП'},{id:'57',label:'57 МРП'},{id:'72',label:'72 МРП'},{id:'114',label:'114 МРП'},{id:'137',label:'137 МРП'},{id:'194',label:'194 МРП'},{id:'228',label:'228 МРП'},{id:'285',label:'285 МРП'}];
 
 function initFilters(){
   const bar=document.getElementById('filterBar');
@@ -124,21 +110,18 @@ function getCategory(num, same){
 
 function render(){
   let d=(document.getElementById('digits').value||'').replace(/\D/g,'').slice(0,3);
-  let l=(document.getElementById('letters').value||'').toUpperCase().replace(/[^A-ZА-ЯЁ]/g,'').slice(0,3);
+  let l=(document.getElementById('letters').value||'').toUpperCase().replace(/[^A-Z]/g,'').slice(0,3);
   document.getElementById('digits').value=d;
   document.getElementById('letters').value=l;
-  if(d.length!==3 || l.length!==3){ /* не рендерим если не 3 */ }
   const region=document.getElementById('region').value;
-  const qDigits=d;
-  const qLetters=l;
   const grid=document.getElementById('grid');grid.innerHTML='';
-  let baseNums = [...CAT_001, ...CAT_100, ...CAT_010, ...CAT_MIRROR, "811","123","456","555","001","007","777","100","111","222","333","444","666","888","999"];
+  let baseNums = [...CAT_001, ...CAT_100, ...CAT_010, ...CAT_MIRROR, "707","777","010","101","202","303","404","505","606","808","909","123","321"];
   baseNums = [...new Set(baseNums)];
-  if(qDigits) baseNums = baseNums.filter(n=>n.includes(qDigits));
-  if(baseNums.length===0 && qDigits.length===3) baseNums=[qDigits];
+  if(d) baseNums = baseNums.filter(n=>n.includes(d));
+  if(baseNums.length===0 && d.length===3) baseNums=[d];
   let list=[];
   baseNums.forEach(n=>{
-    const variants = qLetters ? [{letters:qLetters, same: qLetters.length===3 && qLetters[0]===qLetters[1] && qLetters[1]===qLetters[2]}] : [{letters:"OOO",same:true},{letters:"OOE",same:false}];
+    const variants = l ? [{letters:l, same: l.length===3 && l[0]===l[1] && l[1]===l[2]}] : [{letters:"DIA",same:false},{letters:"AAA",same:true}];
     variants.forEach(v=>{
       const cat=getCategory(n, v.same);
       if(currentFilter!=='all' && String(cat.mrp)!==currentFilter) return;
@@ -167,31 +150,22 @@ function openModal(item,region,price){
   document.getElementById('m_link').href=`https://egov.kz/cms/ru/services/pass103_2_mvd`;
 }
 
-// === ПОДБОР ПО ИМЕНИ ДИАС ===
 function findByName(){
-  const raw=(document.getElementById('nameInput').value||'').toUpperCase().trim();
-  if(!raw){alert('Напиши имя, например ДИАС');return;}
-  const mapNum={'А':'4','A':'4','О':'0','O':'0','С':'5','S':'5','Е':'3','E':'3','И':'1','I':'1','З':'2','Z':'2','В':'8','B':'8','Д':'0','D':'0','Л':'1','L':'1','Я':'9','Я':'9','К':'0','К':'0'};
-  const mapLet={'Д':'D','D':'D','И':'I','I':'I','А':'A','A':'A','С':'S','S':'S'};
-  let nums=''; let letters='';
-  for(let ch of raw){
-    if(mapNum[ch]) nums+=mapNum[ch];
-    if(/[A-ZА-Я]/.test(ch)) letters+=ch;
-  }
+  let raw=(document.getElementById('nameInput').value||'').toUpperCase().trim();
+  raw=raw.replace(/[^A-Z]/g,'').slice(0,12);
+  document.getElementById('nameInput').value=raw;
+  if(!raw || raw.length<2){alert('Напиши имя на английском, например DIAS');return;}
+  const mapNum={'A':'4','O':'0','S':'5','E':'3','I':'1','Z':'2','B':'8','D':'0','L':'1','G':'6','Q':'9'};
+  let nums=''; 
+  for(let ch of raw){ if(mapNum[ch]) nums+=mapNum[ch]; }
   nums=nums.slice(0,3).padStart(3,'0');
-  letters=letters.slice(0,3).padEnd(3, raw[0]||'A').toUpperCase();
-  // транслит для букв номера (только латиница разрешена на номерах)
-  const trans={'А':'A','В':'B','Е':'E','К':'K','М':'M','Н':'H','О':'O','Р':'P','С':'C','Т':'T','У':'Y','Х':'X','Д':'D','И':'I'};
-  let latinLetters='';
-  for(let c of letters){ latinLetters+=trans[c]||c; }
-  latinLetters=latinLetters.replace(/[^A-Z]/g,'').slice(0,3).padEnd(3,'A');
-
+  let letters=raw.slice(0,3).padEnd(3, raw[0]||'A');
   const sugg=[
-    {num:nums, let:latinLetters, desc:`Точно по имени ${raw} → цифры похожи на буквы`},
-    {num:raw.length>=3? nums : '707', let:latinLetters, desc:`Буквы - твое имя ${raw}`},
-    {num:'777', let:latinLetters, desc:`Элитный 777 с твоим именем`},
+    {num:nums, let:letters, desc:`${raw} → цифры похожи на буквы`},
+    {num:'707', let:letters, desc:`Популярный 707 + имя ${raw}`},
+    {num:'777', let:letters, desc:`Элитный 777 + имя ${raw}`},
+    {num:'010', let:letters, desc:`010 + имя ${raw}`},
   ];
-
   const box=document.getElementById('nameResults');
   box.innerHTML=sugg.map(s=>{
     const cat=getCategory(s.num, s.let[0]===s.let[1]&&s.let[1]===s.let[2]);
@@ -204,11 +178,13 @@ function applySug(num, lettrs){
   document.getElementById('digits').value=num;
   document.getElementById('letters').value=lettrs;
   render();
-  window.scrollTo({top:300, behavior:'smooth'});
+  window.scrollTo({top:350, behavior:'smooth'});
 }
 
+// Ограничение только 3 цифры / 3 английские буквы + только английское имя
 document.getElementById('digits').addEventListener('input', e=>{ e.target.value=e.target.value.replace(/\D/g,'').slice(0,3); });
-document.getElementById('letters').addEventListener('input', e=>{ e.target.value=e.target.value.toUpperCase().replace(/[^A-ZА-ЯЁ]/g,'').slice(0,3); });
+document.getElementById('letters').addEventListener('input', e=>{ e.target.value=e.target.value.toUpperCase().replace(/[^A-Z]/g,'').slice(0,3); });
+document.getElementById('nameInput').addEventListener('input', e=>{ e.target.value=e.target.value.toUpperCase().replace(/[^A-Z]/g,'').slice(0,12); });
 
 initFilters();
 render();
