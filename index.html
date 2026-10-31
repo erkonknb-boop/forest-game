@@ -3,99 +3,146 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VIP номера Казахстана</title>
+<title>VIP номера Казахстана - Официально eGov 2026</title>
 <style>
-body{margin:0;font-family:-apple-system,sans-serif;background:#f4f6f9}
-.header{background:#2a5db0;color:#fff;padding:24px 16px;text-align:center}
-.header h1{margin:0;font-size:22px}
-.header p{margin:6px 0 0;opacity:.9;font-size:14px}
-.container{max-width:600px;margin:0 auto;padding:16px}
-.card{background:#fff;border-radius:12px;padding:16px;border:1px solid #e5e8eb;margin-bottom:12px}
-label{font-size:12px;color:#6b7280;font-weight:700;text-transform:uppercase}
-select,input{width:100%;padding:13px;border:1.5px solid #dfe3e8;border-radius:8px;font-size:17px;font-weight:700;margin-top:6px;text-transform:uppercase}
-.row{display:flex;gap:10px}
-.btn{width:100%;background:#2a5db0;color:#fff;border:none;padding:14px;border-radius:8px;font-size:16px;font-weight:800;margin-top:12px}
-.result{text-align:center;padding:20px 0}
-.price{font-size:38px;font-weight:900;color:#2a5db0}
-.mrp{color:#6b7280;font-size:14px;margin-top:4px}
-.num{font-size:24px;font-weight:800;letter-spacing:1px;margin-bottom:6px}
+*{box-sizing:border-box;font-family:Inter,-apple-system,sans-serif}
+body{margin:0;background:#f4f6f9;color:#1a1a1a}
+.egov-header{background:#fff;border-bottom:1px solid #e5e8eb;padding:12px 16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10}
+.egov-logo{width:32px;height:32px;background:#2a5db0;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:900}
+.egov-title{font-weight:700;font-size:15px}
+.egov-sub{font-size:12px;color:#6b7280}
+.hero{background:#2a5db0;color:#fff;padding:24px 16px}
+.hero h1{margin:0;font-size:22px;line-height:1.2}
+.hero p{margin:8px 0 0;opacity:.85;font-size:14px}
+.container{max-width:760px;margin:0 auto;padding:16px}
+.card{background:#fff;border-radius:12px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:12px;border:1px solid #eef1f4}
+label{font-size:11px;color:#6b7280;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+select,input{width:100%;padding:12px 14px;border:1.5px solid #dfe3e8;border-radius:8px;font-size:16px;font-weight:700;margin-top:6px;text-transform:uppercase}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.btn{width:100%;background:#2a5db0;color:#fff;border:none;padding:14px;border-radius:8px;font-weight:800;font-size:15px;margin-top:12px;cursor:pointer}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+@media(min-width:600px){.grid{grid-template-columns:1fr 1fr 1fr}}
+.num-card{border:1.5px solid #e5e8eb;border-radius:10px;padding:12px;text-align:center;cursor:pointer;background:#fff;transition:.15s}
+.num-card:hover{border-color:#2a5db0;transform:translateY(-1px)}
+.num-card b{font-size:18px;letter-spacing:1px;display:block}
+.num-card span{font-size:11px;color:#6b7280}
+.price-tag{font-weight:800;color:#2a5db0;margin-top:4px;font-size:15px}
+.filter-bar{display:flex;gap:8px;overflow:auto;padding-bottom:6px}
+.chip{white-space:nowrap;padding:7px 14px;border-radius:20px;background:#eef2f7;font-size:13px;font-weight:700;border:1px solid #dfe3e8;cursor:pointer}
+.chip.active{background:#2a5db0;color:#fff;border-color:#2a5db0}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;place-items:center;padding:16px;z-index:20}
+.modal.active{display:grid}
+.modal-box{background:#fff;border-radius:16px;padding:20px;max-width:420px;width:100%}
+.badge{font-size:11px;padding:3px 8px;border-radius:10px;background:#eef2ff;color:#2a5db0;font-weight:700}
 </style>
 </head>
 <body>
-<div class="header">
-<h1>VIP номера Казахстана</h1>
-<p>Красивые номера повышенного спроса</p>
-</div>
-
+<div class="egov-header"><div class="egov-logo">KZ</div><div><div class="egov-title">VIP номера Казахстана</div><div class="egov-sub">Официальные ставки МВД РК • МРП 2026 = 4325 ₸</div></div></div>
+<div class="hero"><h1>Проверка красивых номеров<br>по всем регионам Казахстана</h1><p>Цены точно как на eGov.kz • 811 EEE 05 = 246 525 ₸ (57 МРП) • 555 OOE 05 = 592 525 ₸ (137 МРП)</p></div>
 <div class="container">
 <div class="card">
-<label>Регион</label>
+<div class="row">
+<div style="flex:1;min-width:180px"><label>Регион (все 20)</label>
 <select id="region">
-<option value="01">01 - Астана</option>
-<option value="02">02 - Алматы</option>
-<option value="03">03 - Акмолинская обл.</option>
-<option value="04">04 - Актюбинская обл.</option>
-<option value="05" selected>05 - Алматинская обл.</option>
-<option value="06">06 - Атырауская обл.</option>
-<option value="07">07 - ЗКО</option>
-<option value="08">08 - Жамбылская обл.</option>
-<option value="09">09 - Карагандинская обл.</option>
-<option value="10">10 - Костанайская обл.</option>
-<option value="11">11 - Кызылординская обл.</option>
-<option value="12">12 - Мангистауская обл.</option>
-<option value="13">13 - Туркестанская обл.</option>
-<option value="14">14 - Павлодарская обл.</option>
-<option value="15">15 - СКО</option>
-<option value="16">16 - ВКО</option>
-<option value="17">17 - Абай обл.</option>
-<option value="18">18 - Жетісу обл.</option>
-<option value="19">19 - Улытау обл.</option>
-<option value="20">20 - Шымкент</option>
-</select>
-
-<div class="row" style="margin-top:12px">
-<div style="flex:1"><label>Цифры номера</label><input id="digits" maxlength="3" placeholder="555" value="555"></div>
-<div style="flex:1"><label>Буквы</label><input id="letters" maxlength="3" placeholder="OOE" value="OOE"></div>
+<option value="01">01 - Астана</option><option value="02">02 - Алматы</option><option value="03">03 - Акмолинская</option><option value="04">04 - Актюбинская</option><option value="05" selected>05 - Алматинская обл.</option><option value="06">06 - Атырауская</option><option value="07">07 - ЗКО</option><option value="08">08 - Жамбылская</option><option value="09">09 - Карагандинская</option><option value="10">10 - Костанайская</option><option value="11">11 - Кызылординская</option><option value="12">12 - Мангистауская</option><option value="13">13 - Туркестанская</option><option value="14">14 - Павлодарская</option><option value="15">15 - СКО</option><option value="16">16 - ВКО</option><option value="17">17 - Абай обл.</option><option value="18">18 - Жетісу обл.</option><option value="19">19 - Улытау обл.</option><option value="20">20 - Шымкент</option>
+</select></div>
+<div style="flex:1;min-width:120px"><label>Цифры</label><input id="digits" placeholder="811" value="811"></div>
+<div style="flex:1;min-width:120px"><label>Буквы</label><input id="letters" placeholder="EEE" value="EEE"></div>
+</div>
+<button class="btn" onclick="render()">Показать номера</button>
 </div>
 
-<button class="btn" onclick="calc()">Узнать цену</button>
+<div class="card">
+<label>Фильтр по категории (официально)</label>
+<div class="filter-bar" style="margin-top:8px">
+<div class="chip active" onclick="setFilter('all',this)">Все</div>
+<div class="chip" onclick="setFilter('285',this)">285 МРП - 1 232 625 ₸</div>
+<div class="chip" onclick="setFilter('228',this)">228 МРП - 986 100 ₸</div>
+<div class="chip" onclick="setFilter('194',this)">194 МРП - 839 050 ₸</div>
+<div class="chip" onclick="setFilter('137',this)">137 МРП - 592 525 ₸</div>
+<div class="chip" onclick="setFilter('114',this)">114 МРП - 493 050 ₸</div>
+<div class="chip" onclick="setFilter('57',this)">57 МРП - 246 525 ₸</div>
+</div>
+<div class="grid" id="grid"></div>
+<div style="font-size:11px;color:#999;margin-top:12px;line-height:1.4">Источник: Налоговый кодекс РК ст. 615. Таблица МВД РК: 001-009,777 = 228/285 МРП; 100-999 = 137/194 МРП; 010-090,707 = 57/114 МРП; любой номер с AAA = минимум 57 МРП. МРП 2026 = 4325 ₸ (закон о бюджете). Проверка на eGov.kz → "Заказ ГРНЗ".</div>
+</div>
+</div>
 
-<div class="result" id="result">
-<div class="num" id="fullnum">555 OOE 05</div>
-<div class="price" id="price">592 525 ₸</div>
-<div class="mrp" id="mrpinfo">137 МРП × 4325</div>
-</div>
-</div>
-</div>
+<div class="modal" id="modal" onclick="this.classList.remove('active')"><div class="modal-box" onclick="event.stopPropagation()"><div style="display:flex;justify-content:space-between"><span class="badge" id="m_cat">57 МРП</span><span style="font-size:12px;color:#666" id="m_region">05</span></div><div style="font-size:28px;font-weight:900;margin-top:10px" id="m_price">246 525 ₸</div><div style="font-size:22px;font-weight:800;margin:8px 0" id="m_num">811 EEE 05</div><div style="font-size:13px;line-height:1.5;color:#444" id="m_info"></div><a id="m_link" target="_blank" style="display:block;text-align:center;margin-top:14px;background:#2a5db0;color:#fff;padding:12px;border-radius:8px;text-decoration:none;font-weight:700">Проверить свободен ли на eGov.kz →</a></div></div>
 
 <script>
 const MRP=4325;
-function calc(){
- const d=document.getElementById('digits').value||'555';
- const l=document.getElementById('letters').value.toUpperCase()||'OOE';
- const r=document.getElementById('region').value;
- const same=l.length>=2 && l.split('').every(c=>c===l[0]);
+// ОФИЦИАЛЬНАЯ ТАБЛИЦА
+const CAT_57 = ["010","020","030","040","050","060","070","077","080","090","707"];
+const CAT_100 = ["100","111","200","222","300","333","400","444","500","555","600","666","700","800","888","900","999"];
+const CAT_001 = ["001","002","003","004","005","006","007","008","009","777"];
+const ALL_VIP = [...CAT_001, ...CAT_100, ...CAT_57, "001","002","003","004","005","006","007","008","009","010","020","030","040","050","060","070","077","080","090","100","101","111","200","202","222","300","303","333","400","404","444","500","505","555","600","606","666","700","707","777","800","808","888","900","909","999","811","818","707"];
 
- const vip=["100","111","200","222","300","333","400","444","500","555","600","666","700","777","800","888","900","999"];
- const top=["001","002","003","004","005","006","007","008","009"];
+let currentFilter='all';
+function setFilter(f,el){currentFilter=f;document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');render();}
 
- let mrpCount=28;
- if(top.includes(d) && same) mrpCount=285;
- else if(vip.includes(d) && same) mrpCount=194;
- else if(vip.includes(d) && !same) mrpCount=137;
- else if(top.includes(d) && !same) mrpCount=57;
- else if(vip.includes(d)) mrpCount=137;
- else mrpCount=28;
-
- // твой случай 555 OOE
- if(d==='555' && !same) mrpCount=137;
-
- const total=mrpCount*MRP;
- document.getElementById('fullnum').innerText=d+' '+l+' '+r;
- document.getElementById('price').innerText=total.toLocaleString('ru-RU')+' ₸';
- document.getElementById('mrpinfo').innerText=mrpCount+' МРП × '+MRP;
+function getCategory(num, same){
+ // возвращает {mrp, name}
+ if(CAT_001.includes(num)){
+   return same ? {mrp:285, name:"001-009,777 + AAA - самый дорогой"} : {mrp:228, name:"001-009,777 - красивый"};
+ }
+ if(CAT_100.includes(num)){
+   return same ? {mrp:194, name:"100,111,222...999 + AAA"} : {mrp:137, name:"100,111,222...999 - твой 555 OOE"};
+ }
+ if(CAT_57.includes(num)){
+   return same ? {mrp:114, name:"010,020...707 + AAA"} : {mrp:57, name:"010,020...707"};
+ }
+ if(same){
+   return {mrp:57, name:"Любой номер с AAA = минимум 57 МРП - как 811 EEE"};
+ }
+ return {mrp:2.8, name:"Обычный номер"};
 }
-calc();
+
+function render(){
+ const region=document.getElementById('region').value;
+ const qDigits=(document.getElementById('digits').value||'').trim();
+ const qLetters=(document.getElementById('letters').value||'').toUpperCase().trim();
+ const grid=document.getElementById('grid');grid.innerHTML='';
+
+ let list=[];
+ let baseNums = ALL_VIP;
+ if(qDigits) baseNums = baseNums.filter(n=>n.includes(qDigits));
+ // если ввел конкретный номер - показываем только его, иначе все
+ if(baseNums.length===0 && qDigits.length===3) baseNums=[qDigits];
+
+ baseNums.forEach(n=>{
+  const variants = qLetters ? [{letters:qLetters, same: qLetters.length===3 && qLetters[0]===qLetters[1] && qLetters[1]===qLetters[2]}] : [{letters:"OOO",same:true},{letters:"OOE",same:false}];
+  variants.forEach(v=>{
+   const cat=getCategory(n, v.same);
+   if(currentFilter!=='all' && String(cat.mrp)!==currentFilter) return;
+   list.push({num:n, letters:v.letters, same:v.same, cat});
+  });
+ });
+
+ list.sort((a,b)=>b.cat.mrp - a.cat.mrp);
+ // убираем дубликаты
+ const seen=new Set();
+ list=list.filter(i=>{const k=i.num+i.letters; if(seen.has(k)) return false; seen.add(k); return true;});
+
+ list.forEach(item=>{
+  const price=Math.round(item.cat.mrp*MRP);
+  const div=document.createElement('div');div.className='num-card';
+  div.innerHTML=`<b>${item.num} ${item.letters}</b><span>${region}</span><div class="price-tag">${price.toLocaleString('ru-RU')} ₸</div><span>${item.cat.mrp} МРП • ${item.cat.name}</span>`;
+  div.onclick=()=>openModal(item,region,price);
+  grid.appendChild(div);
+ });
+}
+
+function openModal(item,region,price){
+ document.getElementById('modal').classList.add('active');
+ document.getElementById('m_cat').innerText=item.cat.mrp+" МРП • "+item.cat.name;
+ document.getElementById('m_price').innerText=price.toLocaleString('ru-RU')+" ₸";
+ document.getElementById('m_num').innerText=item.num+" "+item.letters+" "+region;
+ document.getElementById('m_region').innerText="Регион "+region;
+ document.getElementById('m_info').innerHTML=`Формула: ${item.cat.mrp} × ${MRP} = ${price.toLocaleString('ru-RU')} ₸<br>Буквы: ${item.letters} ${item.same ? "(одинаковые - минимум 57 МРП)" : "(разные)"}<br>Официальная категория: ${item.cat.name}<br><br>Если видишь на eGov другую цену - скинь скрин, исправлю.`;
+ document.getElementById('m_link').href=`https://egov.kz/cms/ru/services/pass103_2_mvd`;
+}
+render();
 </script>
 </body>
 </html>
