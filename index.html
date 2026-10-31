@@ -1,15 +1,55 @@
-ov{position:fixed;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;background:rgba(10,14,20,.78);text-align:center;padding:20px}
-.ov h1{margin:0;font-size:32px}.ov p{margin:0;font-size:18px;max-width:320px}
-button{font:inherit;font-weight:700;font-size:22px;padding:14px 32px;border-radius:16px;border:0;background:#e8b13a;color:#241a05}
-#rs{position:fixed;z-index:6;left:10px;top:calc(env(safe-area-inset-top,0px) + 140px);padding:8px 14px;font-size:20px}
-button:focus-visible{outline:3px solid #fff;outline-offset:3px}
-.hide{display:none!important}
-
-#menu{position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;background:radial-gradient(ellipse at 50% 25%,#3d4149,#101216 78%);padding:20px;box-sizing:border-box;overflow:auto}
-#menu h1{margin:0;font-size:36px;text-shadow:0 2px 6px #000}
-#menu .sub{margin:0;font-size:17px;opacity:.8}
-.games{display:flex;flex-direction:column;gap:14px;width:100%;max-width:340px}
-.gc{display:flex;align-items:center;gap:14px;width:100%;box-sizing:border-box;padding:16px 18px;border-radius:18px;border:2px solid #e8b13a;background:rgba(255,255,255,.07);color:#fff;text-align:left;font-size:20px;cursor:pointer}
-.gc:active{transform:scale(.98)}
-.gc .num{flex:none;width:44px;height:44px;border-radius:50%;background:#e8b13a;color:#241a05;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700}
-.gc .ti{disp
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ГРЗН KZ 2026</title>
+<style>
+body{margin:0;font-family:sans-serif;background:#f2f4f7}
+.header{background:#2a5db0;color:#fff;padding:20px;text-align:center}
+.card{max-width:600px;margin:16px auto;background:#fff;padding:16px;border-radius:12px}
+select,input{width:100%;padding:12px;margin-top:6px;border:1px solid #ccc;border-radius:8px;font-size:16px}
+.btn{width:100%;padding:12px;background:#2a5db0;color:#fff;border:none;border-radius:8px;font-weight:700;margin-top:10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.item{border:1px solid #ddd;padding:10px;border-radius:8px;text-align:center}
+.item b{font-size:18px;display:block}
+.price{color:#2a5db0;font-weight:800}
+</style>
+</head>
+<body>
+<div class="header"><h2 style="margin:0">Красивые номера KZ 2026</h2><p style="margin:5px 0 0">1 МРП = 4325 ₸ • 555 OOE 05 = 592 525 ₸</p></div>
+<div class="card">
+<label>Регион</label>
+<select id="region"><option value="05">05 - Алматинская</option><option value="02">02 - Алматы</option><option value="01">01 - Астана</option></select>
+<label style="margin-top:10px;display:block">Поиск цифр (например 555)</label>
+<input id="search" value="555" placeholder="555">
+<button class="btn" onclick="show()">Показать</button>
+<div class="grid" id="grid"></div>
+</div>
+<script>
+function show(){
+ const r=document.getElementById('region').value;
+ const q=document.getElementById('search').value||'';
+ const g=document.getElementById('grid');
+ g.innerHTML='';
+ const nums=['001','007','100','111','200','222','300','333','400','444','500','555','600','666','700','777','800','888','900','999'];
+ const mrp=4325;
+ nums.forEach(n=>{
+   if(q && !n.includes(q)) return;
+   // разные буквы = 137 МРП
+   let price1=137*mrp;
+   // одинаковые буквы = 194 МРП
+   let price2=194*mrp;
+   if(['001','007','777'].includes(n)) price2=285*mrp;
+   const d1=document.createElement('div'); d1.className='item';
+   d1.innerHTML=`<b>${n}OOE</b><div>${r}</div><div class="price">${price1.toLocaleString()} ₸</div><div style="font-size:12px">137 МРП - разные</div>`;
+   g.appendChild(d1);
+   const d2=document.createElement('div'); d2.className='item';
+   d2.innerHTML=`<b>${n}OOO</b><div>${r}</div><div class="price">${price2.toLocaleString()} ₸</div><div style="font-size:12px">${price2==285*mrp?'285 МРП':'194 МРП'} - одинаковые</div>`;
+   g.appendChild(d2);
+ });
+}
+show();
+</script>
+</body>
+</html>
