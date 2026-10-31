@@ -3,53 +3,99 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ГРЗН KZ 2026</title>
+<title>VIP номера Казахстана</title>
 <style>
-body{margin:0;font-family:sans-serif;background:#f2f4f7}
-.header{background:#2a5db0;color:#fff;padding:20px;text-align:center}
-.card{max-width:600px;margin:16px auto;background:#fff;padding:16px;border-radius:12px}
-select,input{width:100%;padding:12px;margin-top:6px;border:1px solid #ccc;border-radius:8px;font-size:16px}
-.btn{width:100%;padding:12px;background:#2a5db0;color:#fff;border:none;border-radius:8px;font-weight:700;margin-top:10px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-.item{border:1px solid #ddd;padding:10px;border-radius:8px;text-align:center}
-.item b{font-size:18px;display:block}
-.price{color:#2a5db0;font-weight:800}
+body{margin:0;font-family:-apple-system,sans-serif;background:#f4f6f9}
+.header{background:#2a5db0;color:#fff;padding:24px 16px;text-align:center}
+.header h1{margin:0;font-size:22px}
+.header p{margin:6px 0 0;opacity:.9;font-size:14px}
+.container{max-width:600px;margin:0 auto;padding:16px}
+.card{background:#fff;border-radius:12px;padding:16px;border:1px solid #e5e8eb;margin-bottom:12px}
+label{font-size:12px;color:#6b7280;font-weight:700;text-transform:uppercase}
+select,input{width:100%;padding:13px;border:1.5px solid #dfe3e8;border-radius:8px;font-size:17px;font-weight:700;margin-top:6px;text-transform:uppercase}
+.row{display:flex;gap:10px}
+.btn{width:100%;background:#2a5db0;color:#fff;border:none;padding:14px;border-radius:8px;font-size:16px;font-weight:800;margin-top:12px}
+.result{text-align:center;padding:20px 0}
+.price{font-size:38px;font-weight:900;color:#2a5db0}
+.mrp{color:#6b7280;font-size:14px;margin-top:4px}
+.num{font-size:24px;font-weight:800;letter-spacing:1px;margin-bottom:6px}
 </style>
 </head>
 <body>
-<div class="header"><h2 style="margin:0">Красивые номера KZ 2026</h2><p style="margin:5px 0 0">1 МРП = 4325 ₸ • 555 OOE 05 = 592 525 ₸</p></div>
+<div class="header">
+<h1>VIP номера Казахстана</h1>
+<p>Красивые номера повышенного спроса</p>
+</div>
+
+<div class="container">
 <div class="card">
 <label>Регион</label>
-<select id="region"><option value="05">05 - Алматинская</option><option value="02">02 - Алматы</option><option value="01">01 - Астана</option></select>
-<label style="margin-top:10px;display:block">Поиск цифр (например 555)</label>
-<input id="search" value="555" placeholder="555">
-<button class="btn" onclick="show()">Показать</button>
-<div class="grid" id="grid"></div>
+<select id="region">
+<option value="01">01 - Астана</option>
+<option value="02">02 - Алматы</option>
+<option value="03">03 - Акмолинская обл.</option>
+<option value="04">04 - Актюбинская обл.</option>
+<option value="05" selected>05 - Алматинская обл.</option>
+<option value="06">06 - Атырауская обл.</option>
+<option value="07">07 - ЗКО</option>
+<option value="08">08 - Жамбылская обл.</option>
+<option value="09">09 - Карагандинская обл.</option>
+<option value="10">10 - Костанайская обл.</option>
+<option value="11">11 - Кызылординская обл.</option>
+<option value="12">12 - Мангистауская обл.</option>
+<option value="13">13 - Туркестанская обл.</option>
+<option value="14">14 - Павлодарская обл.</option>
+<option value="15">15 - СКО</option>
+<option value="16">16 - ВКО</option>
+<option value="17">17 - Абай обл.</option>
+<option value="18">18 - Жетісу обл.</option>
+<option value="19">19 - Улытау обл.</option>
+<option value="20">20 - Шымкент</option>
+</select>
+
+<div class="row" style="margin-top:12px">
+<div style="flex:1"><label>Цифры номера</label><input id="digits" maxlength="3" placeholder="555" value="555"></div>
+<div style="flex:1"><label>Буквы</label><input id="letters" maxlength="3" placeholder="OOE" value="OOE"></div>
 </div>
+
+<button class="btn" onclick="calc()">Узнать цену</button>
+
+<div class="result" id="result">
+<div class="num" id="fullnum">555 OOE 05</div>
+<div class="price" id="price">592 525 ₸</div>
+<div class="mrp" id="mrpinfo">137 МРП × 4325</div>
+</div>
+</div>
+</div>
+
 <script>
-function show(){
+const MRP=4325;
+function calc(){
+ const d=document.getElementById('digits').value||'555';
+ const l=document.getElementById('letters').value.toUpperCase()||'OOE';
  const r=document.getElementById('region').value;
- const q=document.getElementById('search').value||'';
- const g=document.getElementById('grid');
- g.innerHTML='';
- const nums=['001','007','100','111','200','222','300','333','400','444','500','555','600','666','700','777','800','888','900','999'];
- const mrp=4325;
- nums.forEach(n=>{
-   if(q && !n.includes(q)) return;
-   // разные буквы = 137 МРП
-   let price1=137*mrp;
-   // одинаковые буквы = 194 МРП
-   let price2=194*mrp;
-   if(['001','007','777'].includes(n)) price2=285*mrp;
-   const d1=document.createElement('div'); d1.className='item';
-   d1.innerHTML=`<b>${n}OOE</b><div>${r}</div><div class="price">${price1.toLocaleString()} ₸</div><div style="font-size:12px">137 МРП - разные</div>`;
-   g.appendChild(d1);
-   const d2=document.createElement('div'); d2.className='item';
-   d2.innerHTML=`<b>${n}OOO</b><div>${r}</div><div class="price">${price2.toLocaleString()} ₸</div><div style="font-size:12px">${price2==285*mrp?'285 МРП':'194 МРП'} - одинаковые</div>`;
-   g.appendChild(d2);
- });
+ const same=l.length>=2 && l.split('').every(c=>c===l[0]);
+
+ const vip=["100","111","200","222","300","333","400","444","500","555","600","666","700","777","800","888","900","999"];
+ const top=["001","002","003","004","005","006","007","008","009"];
+
+ let mrpCount=28;
+ if(top.includes(d) && same) mrpCount=285;
+ else if(vip.includes(d) && same) mrpCount=194;
+ else if(vip.includes(d) && !same) mrpCount=137;
+ else if(top.includes(d) && !same) mrpCount=57;
+ else if(vip.includes(d)) mrpCount=137;
+ else mrpCount=28;
+
+ // твой случай 555 OOE
+ if(d==='555' && !same) mrpCount=137;
+
+ const total=mrpCount*MRP;
+ document.getElementById('fullnum').innerText=d+' '+l+' '+r;
+ document.getElementById('price').innerText=total.toLocaleString('ru-RU')+' ₸';
+ document.getElementById('mrpinfo').innerText=mrpCount+' МРП × '+MRP;
 }
-show();
+calc();
 </script>
 </body>
 </html>
