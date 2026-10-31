@@ -11,7 +11,7 @@ body{background:#000;display:flex;justify-content:center;align-items:center}
 .status{position:relative;z-index:10;height:44px;display:flex;justify-content:space-between;align-items:center;padding:0 28px;color:#fff;font-size:15px;font-weight:600}
 .home{position:relative;z-index:5;flex:1;padding-top:90px}.apps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px 6px;padding:0 10px;justify-items:center;align-items:start}
 .app{display:flex;flex-direction:column;align-items:center;gap:10px;cursor:pointer}.app:active{transform:scale(.93)}
-.icon{width:76px;height:76px;border-radius:17px;background:linear-gradient(135deg,#3b5bdb,#2a3a8a);display:grid;place-items:center;color:#fff;font-weight:900;box-shadow:0 8px 20px rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.15);font-size:28px}
+.icon{overflow:hidden;width:76px;height:76px;border-radius:17px;background:linear-gradient(135deg,#3b5bdb,#2a3a8a);display:grid;place-items:center;color:#fff;font-weight:900;box-shadow:0 8px 20px rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.15);font-size:28px}
 .icon.g1{background:linear-gradient(135deg,#e8b13a,#8a5a10);font-size:38px}.icon.g2{background:linear-gradient(135deg,#e58aa0,#a8566a);font-size:38px}.label{color:#fff;font-size:13px;font-weight:600;text-shadow:0 1px 4px rgba(0,0,0,.9);text-align:center;line-height:1.2;max-width:130px}
 .indicator{position:relative;z-index:10;height:24px;display:flex;justify-content:center;align-items:center;padding-bottom:8px}.indicator div{width:134px;height:5px;background:#fff;border-radius:3px}
 .window{position:absolute;inset:0;background:#f4f6f9;z-index:20;transform:translateY(100%);visibility:hidden;transition:transform .42s cubic-bezier(.32,.72,0,1),visibility 0s .42s;display:flex;flex-direction:column;border-radius:54px;padding:6px}
@@ -19,7 +19,7 @@ body{background:#000;display:flex;justify-content:center;align-items:center}
 .bar{height:48px;background:#fff;border-bottom:1px solid #e5e8eb;display:flex;align-items:center;padding:0 14px;gap:10px;border-radius:20px 20px 0 0;flex-shrink:0}
 .close{width:28px;height:28px;background:#111;color:#fff;border-radius:50%;display:grid;place-items:center;font-size:14px;cursor:pointer}
 .frame{flex:1;border:none;width:100%;border-radius:0 0 20px 20px;background:#f4f6f9}
-@media(max-width:480px){body{display:block}.iphone{width:100vw;height:100dvh;max-height:none;border:none;border-radius:0}.window,.window.open{border-radius:0}.bar{border-radius:0}.frame{border-radius:0}}
+@media(max-width:900px),(pointer:coarse){body{display:block}.status{height:calc(44px + env(safe-area-inset-top,0px));padding-top:env(safe-area-inset-top,0px)}.iphone{width:100vw;height:100dvh;max-height:none;border:none;border-radius:0}.window,.window.open{border-radius:0;padding:env(safe-area-inset-top,0px) 0 0}.bar{border-radius:0}.frame{border-radius:0}}
 </style></head><body>
 <div class="iphone">
 <div class="wallpaper" id="wall"></div>
