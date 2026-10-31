@@ -58,6 +58,8 @@ button:focus-visible{outline:3px solid #fff;outline-offset:3px}
 #mj #mj-win h2{margin:0 0 10px;font-size:26px}
 #mj #mj-win p{margin:6px 0;font-size:17px}
 #mj #mj-hint{color:#bbb;font-size:14px;margin-top:8px;min-height:18px}
+#mj #mj-snd{position:fixed;right:12px;top:calc(env(safe-area-inset-top,0px) + 10px);z-index:3;width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.18);color:#fff;font-size:22px;padding:0;line-height:44px}
+#mj #mj-top{padding-right:60px}
 </style></head><body>
 <div id="w" class="hud">&nbsp;</div><div id="sc" class="hud">Ты 0 : 0 Альпин</div><div id="rd" class="hud">Раунд 1 из 3</div><div id="inf" class="hud">&nbsp;</div>
 <button id="rs" aria-label="Заново">↻</button>
@@ -69,7 +71,7 @@ button:focus-visible{outline:3px solid #fff;outline-offset:3px}
 <button id="bk" class="hide" aria-label="В меню">☰</button>
 <div id="st" class="ov hide"><h1>Хватай!</h1><p>На экране появится название предмета. Тапни его на столе раньше соперника, и он твой. Всего 10 предметов.</p><button id="go">Начать игру</button></div>
 <div id="en" class="ov hide"><h1 id="et"></h1><p id="es"></p><button id="ag">Играть ещё</button></div>
-<div id="mj" class="hide"><div class="mj-wrap">
+<div id="mj" class="hide"><button id="mj-snd" aria-label="Звук">🔊</button><div class="mj-wrap">
 <div id="mj-menu">
 <h1>🀄 Маджонг Мемори</h1>
 <div class="mj-sub">Найди все пары картинок под розовыми плитками</div>
@@ -277,6 +279,28 @@ toMenu();
 <script>
 (function(){
 const g=id=>document.getElementById(id);
+let AC=null,muted=false;
+try{muted=localStorage.getItem('mjMute')==='1'}catch(e){}
+function actx(){try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();}catch(e){}return AC}
+function tone(f,d,type,v,delay,slide){
+ if(muted)return;const c=actx();if(!c)return;
+ try{
+  const t=c.currentTime+(delay||0),o=c.createOscillator(),gn=c.createGain();
+  o.type=type||'sine';o.frequency.setValueAtTime(f,t);
+  if(slide)o.frequency.exponentialRampToValueAtTime(slide,t+d);
+  gn.gain.setValueAtTime(.0001,t);gn.gain.exponentialRampToValueAtTime(v||.15,t+.01);gn.gain.exponentialRampToValueAtTime(.0001,t+d);
+  o.connect(gn);gn.connect(c.destination);o.start(t);o.stop(t+d+.03);
+ }catch(e){}
+}
+const SND={
+ flip(){tone(520,.09,'triangle',.12);tone(780,.07,'triangle',.08,.03)},
+ match(){tone(660,.15,'sine',.16);tone(880,.15,'sine',.16,.1);tone(1320,.25,'sine',.14,.2)},
+ miss(){tone(220,.25,'sawtooth',.08,0,140)},
+ hint(){tone(900,.12,'sine',.1);tone(1200,.18,'sine',.1,.1)},
+ start(){tone(440,.1,'triangle',.1);tone(660,.15,'triangle',.1,.1)},
+ win(){[523,659,784,1047,1319].forEach((f,i)=>tone(f,.3,'triangle',.15,i*.15))},
+ lose(){tone(330,.3,'sawtooth',.1,0,200);tone(220,.5,'sawtooth',.1,.25,110)}
+};
 const S='stroke="#5a2d1a" stroke-width="3.5" stroke-linecap="round"';
 const MOUTH={
  happy:'<path d="M38 66 Q50 80 62 66" '+S+' fill="#fff"/>',
@@ -341,7 +365,7 @@ function showRecords(){
  g('mj-records').innerHTML=t?'🏆 Рекорды<br>'+t:'';
 }
 function startGame(i){
- lv=i;
+ lv=i;SND.start();
  g('mj-menu').style.display='none';
  g('mj-game').style.display='block';
  g('mj-win').style.display='none';
@@ -384,7 +408,7 @@ function update(){
 }
 function flip(t){
  if(lock||t.classList.contains('open')||t.classList.contains('done'))return;
- t.classList.add('open');show(t);sel.push(t);
+ t.classList.add('open');show(t);sel.push(t);SND.flip();
  if(sel.length<2)return;
  moves++;
  const a=sel[0],b=sel[1];
@@ -392,11 +416,11 @@ function flip(t){
   setTimeout(()=>{
    a.classList.remove('open');b.classList.remove('open');
    a.classList.add('done');b.classList.add('done');
-   sel=[];pairs++;update();
+   SND.match();sel=[];pairs++;update();
    if(pairs===total)end(true);
   },350);
  }else{
-  errors++;lock=true;
+  errors++;lock=true;setTimeout(SND.miss,200);
   a.classList.add('shake');b.classList.add('shake');
   setTimeout(()=>{
    [a,b].forEach(x=>{x.classList.remove('open','shake');hide(x);});
@@ -414,7 +438,7 @@ function useHint(){
  const first=tiles[Math.floor(Math.random()*tiles.length)];
  const mate=tiles.find(t=>t!==first&&t.dataset.pic===first.dataset.pic);
  if(!mate)return;
- hintsLeft--;
+ hintsLeft--;SND.hint();
  g('mj-hintsLeft').textContent=hintsLeft;
  lock=true;
  [first,mate].forEach(t=>t.classList.add('sel'));
@@ -434,7 +458,7 @@ function end(won,reason){
  const spent=L.time?L.time-seconds:seconds;
  let title,text;
  if(won){
-  title='🎉 Победа!';
+  title='🎉 Победа!';SND.win();
   text='Ходов: '+moves+'<br>Время: '+fmt(spent);
   const r=getRec();
   if(!r[lv]||moves<r[lv].moves||(moves===r[lv].moves&&spent<r[lv].time)){
@@ -442,7 +466,7 @@ function end(won,reason){
    text+='<br>🏆 Новый рекорд!';
   }
  }else{
-  title='😢 Не получилось';
+  title='😢 Не получилось';SND.lose();
   text=reason+'<br>Найдено пар: '+pairs+' из '+total;
  }
  g('mj-winTitle').textContent=title;
@@ -474,6 +498,9 @@ g('mj-again2').onclick=()=>startGame(lv);
 g('mj-tomenu').onclick=levels;
 g('mj-tomenu2').onclick=levels;
 g('mj-home').onclick=closeMahjong;
+function paintSnd(){g('mj-snd').textContent=muted?'🔇':'🔊'}
+g('mj-snd').onclick=()=>{muted=!muted;try{localStorage.setItem('mjMute',muted?'1':'0')}catch(e){}paintSnd();if(!muted)SND.flip();};
+paintSnd();
 document.getElementById('g2').onclick=window.openMahjong;
 })();
 </script>
