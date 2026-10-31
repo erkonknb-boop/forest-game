@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VIP номера Казахстана</title>
+<title>VIP номера Казахстана - как eGov</title>
 <style>
 *{box-sizing:border-box;font-family:Inter,-apple-system,sans-serif}
 body{margin:0;background:#f4f6f9;color:#1a1a1a}
@@ -11,57 +11,71 @@ body{margin:0;background:#f4f6f9;color:#1a1a1a}
 .egov-logo{width:32px;height:32px;background:#2a5db0;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:900}
 .egov-title{font-weight:700;font-size:15px}
 .egov-sub{font-size:12px;color:#6b7280}
-.hero{background:#2a5db0;color:#fff;padding:24px 16px}
-.hero h1{margin:0;font-size:22px;line-height:1.2}
+.hero{background:#2a5db0;color:#fff;padding:16px;text-align:center}
+.hero h1{margin:0;font-size:18px}
 .container{max-width:800px;margin:0 auto;padding:16px}
 .card{background:#fff;border-radius:12px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:12px;border:1px solid #eef1f4}
 label{font-size:11px;color:#6b7280;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
 select,input{width:100%;padding:12px 14px;border:1.5px solid #dfe3e8;border-radius:8px;font-size:16px;font-weight:700;margin-top:6px;text-transform:uppercase}
-select:focus,input:focus{outline:none;border-color:#2a5db0}
-.row{display:flex;gap:10px;flex-wrap:wrap}
 .btn{width:100%;background:#2a5db0;color:#fff;border:none;padding:14px;border-radius:8px;font-weight:800;font-size:15px;margin-top:12px;cursor:pointer}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
 @media(min-width:600px){.grid{grid-template-columns:1fr 1fr 1fr}}
 .num-card{border:1.5px solid #e5e8eb;border-radius:10px;padding:12px;text-align:center;cursor:pointer;background:#fff}
-.num-card b{font-size:18px;letter-spacing:1px;display:block}
-.num-card span{font-size:11px;color:#6b7280}
+.num-card b{font-size:18px;display:block}
 .price-tag{font-weight:800;color:#2a5db0;margin-top:4px;font-size:15px}
 .filter-bar{display:flex;gap:8px;overflow:auto;padding-bottom:6px;margin-top:8px}
 .chip{white-space:nowrap;padding:7px 14px;border-radius:20px;background:#eef2f7;font-size:13px;font-weight:700;border:1px solid #dfe3e8;cursor:pointer}
 .chip.active{background:#2a5db0;color:#fff;border-color:#2a5db0}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;place-items:center;padding:16px;z-index:20}
-.modal.active{display:grid}
-.modal-box{background:#fff;border-radius:16px;padding:20px;max-width:420px;width:100%}
-.badge{font-size:11px;padding:3px 8px;border-radius:10px;background:#eef2ff;color:#2a5db0;font-weight:700}
 .small{font-size:11px;color:#888;line-height:1.4;margin-top:12px}
+
+/* === ПЛАСТИНКА КАК НА ТВОЕМ СКРИНЕ === */
+.plate-wrap{display:flex;justify-content:center;padding:30px 0 20px}
+.plate{display:flex;align-items:center;border:2px solid #cbd5e1;border-radius:12px;background:#fff;overflow:hidden;height:56px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.plate-kz{width:52px;height:100%;background:#f8fafc;border-right:2px solid #cbd5e1;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;font-weight:800;line-height:1}
+.plate-kz i{font-style:normal;font-size:14px}
+.plate-main{padding:0 14px;display:flex;gap:6px;align-items:center}
+.plate-main input{border:none;padding:0;margin:0;width:110px;font-size:26px;font-weight:800;letter-spacing:2px;text-align:center;background:transparent}
+.plate-main input:focus{outline:none}
+.plate-reg{border-left:2px solid #cbd5e1;height:100%;display:flex;align-items:center;padding:0 14px}
+.plate-reg input{border:none;padding:0;margin:0;width:40px;font-size:24px;font-weight:800;text-align:center;background:transparent}
+.plate-reg input:focus{outline:none}
+.plate-hint{font-size:11px;color:#888;text-align:center;margin-top:6px}
+
+.result-box{background:#f8fafc;border-radius:12px;padding:14px;margin-top:16px;border:1px solid #eef1f4}
+.result-box .free{color:#16a34a;font-weight:700;font-size:13px}
+.result-box .price{font-size:22px;font-weight:900;margin-top:6px}
 .name-result{border:1px dashed #2a5db0;background:#f0f5ff;border-radius:10px;padding:12px;margin-top:10px}
 </style>
 </head>
 <body>
-<div class="egov-header"><div class="egov-logo">KZ</div><div><div class="egov-title">VIP номера Казахстана</div><div class="egov-sub">Официальные ставки МВД РК</div></div></div>
-<div class="hero"><h1>Проверка красивых номеров<br>по всем регионам Казахстана</h1></div>
+<div class="egov-header"><div class="egov-logo">KZ</div><div><div class="egov-title">VIP номера Казахстана</div><div class="egov-sub">Заказ номерного знака для авто</div></div></div>
+
 <div class="container">
 
 <div class="card" style="border:2px solid #2a5db0">
 <label style="color:#2a5db0">✨ ПОДБОР ПО ИМЕНИ - только английскими буквами</label>
-<p class="small" style="margin:4px 0 8px">Напиши имя на английском: DIAS, ALIYA, DIMA</p>
-<div class="row">
-<div style="flex:2;min-width:160px"><input id="nameInput" placeholder="DIAS" maxlength="12" style="text-transform:uppercase"></div>
-<div style="flex:1;min-width:100px"><button class="btn" style="margin:0" onclick="findByName()">Найти</button></div>
-</div>
+<div style="display:flex;gap:8px;margin-top:6px"><input id="nameInput" placeholder="DIAS" maxlength="12" style="text-transform:uppercase;flex:2"><button class="btn" style="margin:0;flex:1" onclick="findByName()">Найти</button></div>
 <div id="nameResults"></div>
 </div>
 
+<!-- ВОТ ТВОЯ ПЛАСТИНКА ПО СЕРЕДИНЕ КАК НА СКРИНЕ -->
 <div class="card">
-<div class="row">
-<div style="flex:1;min-width:160px"><label>Регион (все 20)</label>
-<select id="region">
-<option value="01">01 - Астана</option><option value="02">02 - Алматы</option><option value="03">03 - Акмолинская</option><option value="04">04 - Актюбинская</option><option value="05" selected>05 - Алматинская обл.</option><option value="06">06 - Атырауская</option><option value="07">07 - ЗКО</option><option value="08">08 - Жамбылская</option><option value="09">09 - Карагандинская</option><option value="10">10 - Костанайская</option><option value="11">11 - Кызылординская</option><option value="12">12 - Мангистауская</option><option value="13">13 - Туркестанская</option><option value="14">14 - Павлодарская</option><option value="15">15 - СКО</option><option value="16">16 - ВКО</option><option value="17">17 - Абай обл.</option><option value="18">18 - Жетісу обл.</option><option value="19">19 - Улытау обл.</option><option value="20">20 - Шымкент</option>
-</select></div>
-<div style="flex:1;min-width:100px"><label>Цифры (только 3)</label><input id="digits" placeholder="707" value="707" maxlength="3" inputmode="numeric"></div>
-<div style="flex:1;min-width:100px"><label>Буквы (только 3)</label><input id="letters" placeholder="DIA" value="DIA" maxlength="3"></div>
+<label style="text-align:center;display:block">Нажми на номер, буквы или регион чтобы изменить</label>
+<div class="plate-wrap">
+<div class="plate">
+<div class="plate-kz"><i>🇰🇿</i>KZ</div>
+<div class="plate-main"><input id="digits" value="777" maxlength="3" inputmode="numeric" placeholder="777"><input id="letters" value="OOE" maxlength="3" placeholder="OOE" style="width:80px"></div>
+<div class="plate-reg"><input id="region" value="05" maxlength="2" inputmode="numeric" placeholder="05"></div>
 </div>
-<button class="btn" onclick="render()">Показать номера</button>
+</div>
+<div class="plate-hint">777 = цифры (только 3) • OOE = буквы (только 3 англ) • 05 = регион (2 цифры)</div>
+
+<div class="result-box" id="resultBox">
+<div class="free">Уважаемый Пользователь, выбранный Вами ГРНЗ свободен</div>
+<div style="font-size:12px;color:#666;margin-top:4px" id="resultCat">Стоимость составляет 228 МРП</div>
+<div class="price" id="resultPrice">986100 тенге</div>
+</div>
+<button class="btn" onclick="render()" style="margin-top:12px">Продолжить</button>
 </div>
 
 <div class="card">
@@ -69,19 +83,11 @@ select:focus,input:focus{outline:none;border-color:#2a5db0}
 <div class="filter-bar" id="filterBar"></div>
 <div class="grid" id="grid"></div>
 <div class="small">
-<b>Официальная таблица 2026:</b><br>
-- Случайный в СпецЦОН: 2,8 МРП + техпаспорт 1,25 МРП<br>
-- Кастом любой: 10 МРП (43 250 ₸)<br>
-- Зеркальные 101,202,212,303,808,818,909: 15 МРП<br>
-- Зеркальные + AAA: 72 МРП<br>
-- 010,020,077,707: 57 МРП / с AAA 114 МРП<br>
-- 100-999: 137 МРП / с AAA 194 МРП<br>
-- 001-009,777: 228 МРП / с AAA 285 МРП
-</div>
+<b>Официально 2026:</b> Случайный 2,8 МРП, Кастом 10 МРП (43 250 ₸), Зеркальные 15 МРП, Зеркальные+AAA 72 МРП, 010...707 57/114 МРП, 100-999 137/194 МРП, 001-009,777 228/285 МРП
 </div>
 </div>
 
-<div class="modal" id="modal" onclick="this.classList.remove('active')"><div class="modal-box" onclick="event.stopPropagation()"><div style="display:flex;justify-content:space-between"><span class="badge" id="m_cat">10 МРП</span><span style="font-size:12px;color:#666" id="m_region">05</span></div><div style="font-size:28px;font-weight:900;margin-top:10px" id="m_price">43 250 ₸</div><div style="font-size:22px;font-weight:800;margin:8px 0" id="m_num">707 DIA 05</div><div style="font-size:13px;line-height:1.5;color:#444" id="m_info"></div><a id="m_link" target="_blank" style="display:block;text-align:center;margin-top:14px;background:#2a5db0;color:#fff;padding:12px;border-radius:8px;text-decoration:none;font-weight:700">Проверить на eGov.kz →</a></div></div>
+</div>
 
 <script>
 const MRP=4325;
@@ -100,28 +106,42 @@ function initFilters(){
 function setFilter(f,el){currentFilter=f;document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');render();}
 
 function getCategory(num, same){
-  if(CAT_001.includes(num)) return same ? {mrp:285, name:"001-009,777 + AAA"} : {mrp:228, name:"001-009,777"};
-  if(CAT_100.includes(num)) return same ? {mrp:194, name:"100-999 + AAA"} : {mrp:137, name:"100-999"};
-  if(CAT_010.includes(num)) return same ? {mrp:114, name:"010,020,077,707 + AAA"} : {mrp:57, name:"010,020,077,707"};
-  if(CAT_MIRROR.includes(num)) return same ? {mrp:72, name:"Зеркальный + AAA"} : {mrp:15, name:"Зеркальный"};
-  if(same) return {mrp:57, name:"Любой AAA = 57 МРП"};
-  return {mrp:10, name:"Кастом на заказ - 10 МРП"};
+  if(CAT_001.includes(num)) return same ? {mrp:285} : {mrp:228};
+  if(CAT_100.includes(num)) return same ? {mrp:194} : {mrp:137};
+  if(CAT_010.includes(num)) return same ? {mrp:114} : {mrp:57};
+  if(CAT_MIRROR.includes(num)) return same ? {mrp:72} : {mrp:15};
+  if(same) return {mrp:57};
+  return {mrp:10};
+}
+
+function updateResult(){
+  let d=(document.getElementById('digits').value||'').replace(/\D/g,'').slice(0,3).padStart(3,'0');
+  let l=(document.getElementById('letters').value||'').toUpperCase().replace(/[^A-Z]/g,'').slice(0,3).padEnd(3,'A');
+  let r=(document.getElementById('region').value||'').replace(/\D/g,'').slice(0,2).padStart(2,'0');
+  const same = l[0]===l[1] && l[1]===l[2];
+  const cat=getCategory(d, same);
+  const price=cat.mrp*MRP;
+  document.getElementById('resultCat').innerText=`Стоимость составляет ${cat.mrp} МРП`;
+  document.getElementById('resultPrice').innerText=`${price.toLocaleString('ru-RU')} тенге`;
 }
 
 function render(){
   let d=(document.getElementById('digits').value||'').replace(/\D/g,'').slice(0,3);
   let l=(document.getElementById('letters').value||'').toUpperCase().replace(/[^A-Z]/g,'').slice(0,3);
+  let r=(document.getElementById('region').value||'').replace(/\D/g,'').slice(0,2);
   document.getElementById('digits').value=d;
   document.getElementById('letters').value=l;
-  const region=document.getElementById('region').value;
+  document.getElementById('region').value=r;
+  if(d.length!==3 || l.length!==3 || r.length!==2){ updateResult(); return; }
+  const region=r;
   const grid=document.getElementById('grid');grid.innerHTML='';
   let baseNums = [...CAT_001, ...CAT_100, ...CAT_010, ...CAT_MIRROR, "707","777","010","101","202","303","404","505","606","808","909","123","321"];
   baseNums = [...new Set(baseNums)];
   if(d) baseNums = baseNums.filter(n=>n.includes(d));
-  if(baseNums.length===0 && d.length===3) baseNums=[d];
+  if(baseNums.length===0) baseNums=[d];
   let list=[];
   baseNums.forEach(n=>{
-    const variants = l ? [{letters:l, same: l.length===3 && l[0]===l[1] && l[1]===l[2]}] : [{letters:"DIA",same:false},{letters:"AAA",same:true}];
+    const variants = [{letters:l, same: l[0]===l[1] && l[1]===l[2]}];
     variants.forEach(v=>{
       const cat=getCategory(n, v.same);
       if(currentFilter!=='all' && String(cat.mrp)!==currentFilter) return;
@@ -132,40 +152,24 @@ function render(){
   const seen=new Set();
   list=list.filter(i=>{const k=i.num+i.letters; if(seen.has(k)) return false; seen.add(k); return true;});
   list.forEach(item=>{
-    const price=Math.round(item.cat.mrp*MRP);
+    const price=item.cat.mrp*MRP;
     const div=document.createElement('div');div.className='num-card';
-    div.innerHTML=`<b>${item.num} ${item.letters}</b><span>${region}</span><div class="price-tag">${price.toLocaleString('ru-RU')} ₸</div><span>${item.cat.mrp} МРП • ${item.cat.name}</span>`;
-    div.onclick=()=>openModal(item,region,price);
+    div.innerHTML=`<b>${item.num} ${item.letters}</b><span>${region}</span><div class="price-tag">${price.toLocaleString('ru-RU')} ₸</div><span>${item.cat.mrp} МРП</span>`;
+    div.onclick=()=>{document.getElementById('digits').value=item.num; document.getElementById('letters').value=item.letters; updateResult(); window.scrollTo({top:0,behavior:'smooth'})};
     grid.appendChild(div);
   });
-}
-
-function openModal(item,region,price){
-  document.getElementById('modal').classList.add('active');
-  document.getElementById('m_cat').innerText=item.cat.mrp+" МРП • "+item.cat.name;
-  document.getElementById('m_price').innerText=price.toLocaleString('ru-RU')+" ₸";
-  document.getElementById('m_num').innerText=item.num+" "+item.letters+" "+region;
-  document.getElementById('m_region').innerText="Регион "+region;
-  document.getElementById('m_info').innerHTML=`Формула: ${item.cat.mrp} × ${MRP} = ${price.toLocaleString('ru-RU')} ₸<br>Категория: ${item.cat.name}`;
-  document.getElementById('m_link').href=`https://egov.kz/cms/ru/services/pass103_2_mvd`;
+  updateResult();
 }
 
 function findByName(){
-  let raw=(document.getElementById('nameInput').value||'').toUpperCase().trim();
-  raw=raw.replace(/[^A-Z]/g,'').slice(0,12);
+  let raw=(document.getElementById('nameInput').value||'').toUpperCase().trim().replace(/[^A-Z]/g,'').slice(0,12);
   document.getElementById('nameInput').value=raw;
   if(!raw || raw.length<2){alert('Напиши имя на английском, например DIAS');return;}
   const mapNum={'A':'4','O':'0','S':'5','E':'3','I':'1','Z':'2','B':'8','D':'0','L':'1','G':'6','Q':'9'};
-  let nums=''; 
-  for(let ch of raw){ if(mapNum[ch]) nums+=mapNum[ch]; }
+  let nums=''; for(let ch of raw){ if(mapNum[ch]) nums+=mapNum[ch]; }
   nums=nums.slice(0,3).padStart(3,'0');
   let letters=raw.slice(0,3).padEnd(3, raw[0]||'A');
-  const sugg=[
-    {num:nums, let:letters, desc:`${raw} → цифры похожи на буквы`},
-    {num:'707', let:letters, desc:`Популярный 707 + имя ${raw}`},
-    {num:'777', let:letters, desc:`Элитный 777 + имя ${raw}`},
-    {num:'010', let:letters, desc:`010 + имя ${raw}`},
-  ];
+  const sugg=[{num:nums, let:letters, desc:`${raw} → цифры похожи`},{num:'707', let:letters, desc:`707 + ${raw}`},{num:'777', let:letters, desc:`777 + ${raw}`}];
   const box=document.getElementById('nameResults');
   box.innerHTML=sugg.map(s=>{
     const cat=getCategory(s.num, s.let[0]===s.let[1]&&s.let[1]===s.let[2]);
@@ -173,18 +177,12 @@ function findByName(){
     return `<div class="name-result"><b>${s.num} ${s.let} - ${s.desc}</b><br><span style="color:#2a5db0;font-weight:800">${price.toLocaleString('ru-RU')} ₸ • ${cat.mrp} МРП</span> <button onclick="applySug('${s.num}','${s.let}')" style="margin-left:8px;padding:4px 8px;border-radius:6px;border:1px solid #2a5db0;background:#fff;color:#2a5db0;font-weight:700;cursor:pointer">Выбрать</button></div>`;
   }).join('');
 }
+function applySug(num, lettrs){document.getElementById('digits').value=num; document.getElementById('letters').value=lettrs; render();}
 
-function applySug(num, lettrs){
-  document.getElementById('digits').value=num;
-  document.getElementById('letters').value=lettrs;
-  render();
-  window.scrollTo({top:350, behavior:'smooth'});
-}
-
-// Ограничение только 3 цифры / 3 английские буквы + только английское имя
-document.getElementById('digits').addEventListener('input', e=>{ e.target.value=e.target.value.replace(/\D/g,'').slice(0,3); });
-document.getElementById('letters').addEventListener('input', e=>{ e.target.value=e.target.value.toUpperCase().replace(/[^A-Z]/g,'').slice(0,3); });
-document.getElementById('nameInput').addEventListener('input', e=>{ e.target.value=e.target.value.toUpperCase().replace(/[^A-Z]/g,'').slice(0,12); });
+document.getElementById('digits').addEventListener('input', e=>{e.target.value=e.target.value.replace(/\D/g,'').slice(0,3); updateResult();});
+document.getElementById('letters').addEventListener('input', e=>{e.target.value=e.target.value.toUpperCase().replace(/[^A-Z]/g,'').slice(0,3); updateResult();});
+document.getElementById('region').addEventListener('input', e=>{e.target.value=e.target.value.replace(/\D/g,'').slice(0,2); updateResult();});
+document.getElementById('nameInput').addEventListener('input', e=>{e.target.value=e.target.value.toUpperCase().replace(/[^A-Z]/g,'').slice(0,12);});
 
 initFilters();
 render();
