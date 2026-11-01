@@ -203,20 +203,25 @@ const dl=[],ins=[];while(k<ops.length&&ops[k].t!=='eq'){(ops[k].t==='del'?dl:ins
 const pr=Math.min(dl.length,ins.length);for(let x=0;x<pr;x++)out.push({t:'sub',a:dl[x].a,b:ins[x].b});
 for(let x=pr;x<dl.length;x++)out.push({t:'del',a:dl[x].a});for(let x=pr;x<ins.length;x++)out.push({t:'ins',b:ins[x].b})}
 return out}
-function showFB(el,heard,target){const A=words(heard),B=words(target);el.innerHTML='';
-const ul=document.createElement('ul');
-if(!A.length){const d=document.createElement('div');d.textContent='Я ничего не разобрал. Говори чётче и ближе к микрофону.';el.append(d)}
-else{const ops=diff(A,B);
-const l1=document.createElement('div');l1.append('Ты сказал: ');
-ops.forEach(o=>{if(o.t==='ins'){const g=document.createElement('span');g.className='gap';g.textContent='▢ ';l1.append(g)}else{const w=document.createElement('span');w.textContent=o.a+' ';if(o.t!=='eq')w.className='w';l1.append(w)}});
+const FW={hola:['испанское','«привет»'],gracias:['испанское','«спасибо»'],adios:['испанское','«до свидания»'],buenos:['испанское','«добрый»'],buenas:['испанское','«добрый»'],bonjour:['французское','«здравствуйте»'],bonsoir:['французское','«добрый вечер»'],merci:['французское','«спасибо»'],oui:['французское','«да»'],ciao:['итальянское','«привет» или «пока»'],grazie:['итальянское','«спасибо»'],danke:['немецкое','«спасибо»'],hallo:['немецкое','«привет»'],nein:['немецкое','«нет»'],salam:['арабское','«мир вам», то есть «привет»'],shukran:['арабское','«спасибо»'],privet:['русское','«привет»'],spasibo:['русское','«спасибо»'],rahmet:['казахское','«спасибо»'],konnichiwa:['японское','«добрый день»'],namaste:['индийское','«здравствуйте»']};
+function showFB(el,heard,target,meaning){const A=words(heard),B=words(target);el.innerHTML='';
+const ul=document.createElement('ul');const add=t=>{const li=document.createElement('li');li.textContent=t;ul.append(li)};
+const line=(label,txt,cls)=>{const d=document.createElement('div');d.append(label);if(txt){const x=document.createElement(cls==='ok'?'b':'span');if(cls)x.className=cls;x.textContent=txt;d.append(x)}el.append(d);return d};
+if(!A.length){line('Я ничего не разобрал. Говори чётче и ближе к микрофону.')}
+else{const ops=diff(A,B),eq=ops.filter(o=>o.t==='eq').length;
+const l1=document.createElement('div');l1.append('Ты сказал: ');let gap=false;
+ops.forEach(o=>{if(o.t==='ins'){if(!gap){const g=document.createElement('span');g.className='gap';g.textContent='▢ ';l1.append(g)}gap=true}else{gap=false;const w=document.createElement('span');w.textContent=o.a+' ';if(o.t!=='eq')w.className='w';l1.append(w)}});
 el.append(l1);
-ops.forEach(o=>{let t='';
-if(o.t==='sub'){t='Ты сказал «'+o.a+'», а нужно «'+o.b+'».';if(o.a.startsWith(o.b)||o.b.startsWith(o.a))t+=' Проверь окончание слова.'}
-else if(o.t==='del')t='Лишнее слово «'+o.a+'»: в этой фразе его нет.';
-else if(o.t==='ins'){t='Пропущено слово «'+o.b+'».';if(['a','an','the'].includes(o.b))t+=' Артикль короткий: произноси его слитно со следующим словом.'}
-if(t){const li=document.createElement('li');li.textContent=t;ul.append(li)}})}
-const l2=document.createElement('div');l2.append('Правильно: ');const b=document.createElement('b');b.className='ok';b.textContent=target;l2.append(b);
-if(A.length)el.append(l2);else{el.append(l2)}
+const fw=A.find(w=>FW[w]);
+if(fw)add('«'+fw+'» — это '+FW[fw][0]+' слово, оно значит '+FW[fw][1]+'. Здесь нужно сказать по-английски.');
+if(eq===0){if(!fw)add('Ни одно слово не совпало. Послушай фразу и повтори её целиком.')}
+else{let i=0;while(i<ops.length){if(ops[i].t==='eq'){i++;continue}
+const x=[],y=[];while(i<ops.length&&ops[i].t!=='eq'){const o=ops[i];if(o.t==='sub'){x.push(o.a);y.push(o.b)}else if(o.t==='del')x.push(o.a);else y.push(o.b);i++}
+if(x.length&&y.length){let t='Вместо «'+x.join(' ')+'» нужно «'+y.join(' ')+'».';if(x.length===1&&y.length===1&&(x[0].startsWith(y[0])||y[0].startsWith(x[0])))t+=' Проверь окончание слова.';add(t)}
+else if(x.length)add('Лишнее: «'+x.join(' ')+'». В этой фразе этого нет.');
+else{let t='Пропущено: «'+y.join(' ')+'».';if(y.length===1&&['a','an','the'].includes(y[0]))t+=' Артикль короткий: произноси его слитно со следующим словом.';add(t)}}}}
+line('Правильно: ',target,'ok');
+if(meaning){const m=document.createElement('div');m.textContent=meaning;el.append(m)}
 if(ul.children.length)el.append(ul);el.hidden=false}
 /* ---- звуки ---- */
 const SK='eng_snd';let snd=true,AC=null;try{snd=localStorage.getItem(SK)!=='0'}catch(e){}
@@ -267,7 +272,7 @@ stopRec();try{speechSynthesis.cancel()}catch(e){}tok++;
 const r=new SR();rec=r;r.lang='en-US';r.interimResults=false;r.maxAlternatives=5;let got=false;
 r.onresult=e=>{got=true;rec=null;setMic('idle');H([...e.results[0]].map(a=>a.transcript))};
 r.onerror=e=>{if(e.error==='not-allowed'||e.error==='service-not-allowed'){got=true;setMic('idle');msg('Нет доступа к микрофону. Разреши его в настройках браузера.','bad')}};
-r.onend=()=>{if(rec===r){rec=null;setMic('idle');if(!got)msg('Не услышал. Нажми на микрофон и повтори.','bad')}};
+r.onend=()=>{if(rec===r){rec=null;setMic('idle');if(!got){if(!$('fb').hidden||!$('fb2').hidden){$('micL').textContent=$('micL2').textContent='Не услышал. Нажми на микрофон и повтори'}else msg('Не услышал. Нажми на микрофон и повтори.','bad')}}};
 try{r.start();setMic('on');msg('Говори…')}catch(e){setMic('idle');msg('Нажми на микрофон ещё раз.','bad')}}
 function micTap(){if($('mic').classList.contains('on')){stopRec();msg('Микрофон выключен. Нажми, когда будешь готов.')}else listen()}
 
@@ -283,7 +288,7 @@ msg('');say(c[1],0.9,listen)}
 function judge(alts){const c=q[pos];
 if(isMatch(alts,c[1])){const n=tries===0?3:tries===1?2:1;if(tries>0)hard.add(c);award(n);$('fb').hidden=true;sfx('ok');msg('Верно! +'+n+' ⭐','ok');
 if(mode==='listen')setTimeout(choices,800);else setTimeout(next,900)}
-else{tries++;hard.add(c);sfx('bad');showFB($('fb'),alts[0],c[1]);
+else{tries++;hard.add(c);sfx('bad');showFB($('fb'),alts[0],c[1],'Значит: «'+c[2]+'»');
 if(tries>=3){msg('Идём дальше. К этой фразе вернёмся в конце.','bad');setTimeout(mode==='listen'?choices:next,3800)}
 else{msg('Не совсем. Слушай, как сказал ты, а потом как надо.','bad');
 setTimeout(()=>{if(alts[0])say(alts[0],0.9,()=>setTimeout(()=>say(c[1],0.8,listen),500));else say(c[1],0.8,listen)},800)}}}
@@ -315,7 +320,7 @@ function dJudge(alts){const s=sc.s[st];const hit=s[2].find(t=>isMatch(alts,t));
 if(hit){const n=Math.max(1,3-dt-(dh?1:0));award(n);$('fb2').hidden=true;sfx('ok');bub('u',hit);msg('Верно! +'+n+' ⭐','ok');dnext(900)}
 else{dt++;sfx('bad');if(dt>=2&&!dh)dshow();
 const h=norm(alts[0]||'');let tgt=s[2][0],bs=-1;s[2].forEach(t=>{const v=sim(h,norm(t));if(v>bs){bs=v;tgt=t}});
-showFB($('fb2'),alts[0],tgt);
+showFB($('fb2'),alts[0],tgt,'Задача: '+s[3]);
 if(dt>=4){msg('Идём дальше.','bad');bub('u',s[2][0],'(правильный ответ)');dnext(3800)}
 else{msg('Не совсем. Слушай, как сказал ты, а потом как надо.','bad');
 setTimeout(()=>{if(alts[0])say(alts[0],0.9,()=>setTimeout(()=>say(tgt,0.8,listen),500));else say(tgt,0.8,listen)},800)}}}
