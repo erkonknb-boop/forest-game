@@ -84,6 +84,11 @@ button:focus-visible{outline:3px solid #1b6fd1;outline-offset:2px}
 .b.u{background:#0b6b3a;color:#fff;align-self:flex-end}
 .task{background:#fff;border:2px dashed #0b6b3a;border-radius:12px;padding:10px 12px;font-size:16px;line-height:1.3}
 .list{font-size:15px;text-align:left;color:#fff;line-height:1.5}
+.rt{display:flex;gap:6px;align-items:center}
+button.chip{font-family:inherit}
+.fb{background:#fff;border:2px solid #c4361f;border-radius:12px;padding:10px 12px;font-size:15px;line-height:1.4}
+.fb .w{color:#c4361f;font-weight:800;text-decoration:underline}.fb .gap{color:#c4361f;font-weight:800}
+.fb b.ok{color:#168a4a}.fb ul{margin:6px 0 0 18px}.fb li{margin-top:3px}
 </style></head><body><div class="wrap">
 
 <div id="menu" class="scr">
@@ -93,13 +98,15 @@ button:focus-visible{outline:3px solid #1b6fd1;outline-offset:2px}
 <button class="big" id="mCards"><span>📇 Карточки</span><small id="cn"></small></button>
 <button class="big" id="mListen"><span>🎧 На слух</span><small>без текста</small></button>
 <button class="big" id="mDlg"><span>💬 Диалог</span><small>с продавцом, таксистом</small></button>
+<button class="big g js-snd" data-full="1" style="justify-content:center"></button>
 </div>
 
 <div id="app" class="scr" hidden>
-<div class="top"><button class="back" id="back1">← Меню</button><span id="prog"></span><span class="chip">⭐ <span class="js-stars">0</span></span></div>
+<div class="top"><button class="back" id="back1">← Меню</button><span id="prog"></span><span class="rt"><button class="chip js-snd" aria-label="Звуки"></button><span class="chip">⭐ <span class="js-stars">0</span></span></span></div>
 <div class="bar"><i id="fill"></i></div>
 <div class="sign"><div class="in"><span class="cat" id="cat"></span><div class="en" id="en"></div><div class="ru" id="ru"></div><div class="src" id="src"></div></div></div>
 <div class="stat" id="stat" aria-live="polite"></div>
+<div class="fb" id="fb" hidden></div>
 <div class="ch" id="ch" hidden></div>
 <div class="micwrap" id="micwrap"><button class="mic idle" id="mic" aria-label="Микрофон" aria-pressed="false"><span id="micI">🎤</span></button><div class="micl idle" id="micL"></div></div>
 <div class="row" id="row"><button id="again">🔊 Послушать</button><button id="slow">🐢 Медленно</button><button class="g" id="skip">Пропустить</button></div>
@@ -111,10 +118,11 @@ button:focus-visible{outline:3px solid #1b6fd1;outline-offset:2px}
 </div>
 
 <div id="dlg" class="scr" hidden>
-<div class="top"><button class="back" id="back3">← Меню</button><span id="prog2"></span><span class="chip">⭐ <span class="js-stars">0</span></span></div>
+<div class="top"><button class="back" id="back3">← Меню</button><span id="prog2"></span><span class="rt"><button class="chip js-snd" aria-label="Звуки"></button><span class="chip">⭐ <span class="js-stars">0</span></span></span></div>
 <div class="chat" id="chat"></div>
 <div class="task" id="task"></div>
 <div class="stat" id="stat2" aria-live="polite"></div>
+<div class="fb" id="fb2" hidden></div>
 <div class="micwrap"><button class="mic idle" id="mic2" aria-label="Микрофон" aria-pressed="false"><span id="micI2">🎤</span></button><div class="micl idle" id="micL2"></div></div>
 <div class="row"><button id="dagain">🔊 Реплика</button><button id="dreveal">👁 Ответ</button><button class="g" id="dskip">Пропустить</button></div>
 </div>
@@ -177,13 +185,55 @@ const SC=[
 ];
 const $=id=>document.getElementById(id);
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-const EX={"i'm":"i am","don't":"do not","doesn't":"does not","it's":"it is","i'll":"i will","where's":"where is","what's":"what is"};
+const EX={"i'm":"i am","i'll":"i will","i've":"i have","don't":"do not","doesn't":"does not","isn't":"is not","can't":"can not","it's":"it is","where's":"where is","what's":"what is","that's":"that is","let's":"let us","we're":"we are","you're":"you are","ok":"okay"};
+const NUM={"0":"zero","1":"one","2":"two","3":"three","4":"four","5":"five","6":"six","7":"seven","8":"eight","9":"nine","10":"ten","11":"eleven","12":"twelve","13":"thirteen","14":"fourteen","15":"fifteen","16":"sixteen","17":"seventeen","18":"eighteen","19":"nineteen","20":"twenty","30":"thirty","40":"forty","50":"fifty"};
+function words(s){let t=(s||'').toLowerCase().replace(/[’‘`]/g,"'").replace(/-/g,'').split(/\s+/).map(w=>w.replace(/[^a-z0-9']/g,'')).filter(Boolean).map(w=>EX[w]||NUM[w]||w).join(' ');
+t=t.replace(/\bcheckout\b/g,'check out').replace(/\bairconditioner\b/g,'air conditioner').replace(/\bbathroom\b/g,'bathroom');
+return t.split(' ').filter(Boolean)}
+/* строго: хотя бы одна из трёх лучших версий распознавания совпала со всеми словами */
+function isMatch(alts,target){const t=words(target).join(' ');return alts.slice(0,3).some(a=>words(a).join(' ')===t)}
+function diff(A,B){const n=A.length,m=B.length,L=[];for(let i=0;i<=n;i++)L[i]=new Array(m+1).fill(0);
+for(let i=n-1;i>=0;i--)for(let j=m-1;j>=0;j--)L[i][j]=A[i]===B[j]?L[i+1][j+1]+1:Math.max(L[i+1][j],L[i][j+1]);
+const ops=[];let i=0,j=0;
+while(i<n&&j<m){if(A[i]===B[j]){ops.push({t:'eq',a:A[i]});i++;j++}else if(L[i+1][j]>=L[i][j+1]){ops.push({t:'del',a:A[i]});i++}else{ops.push({t:'ins',b:B[j]});j++}}
+while(i<n)ops.push({t:'del',a:A[i++]});while(j<m)ops.push({t:'ins',b:B[j++]});
+const out=[];let k=0;
+while(k<ops.length){if(ops[k].t==='eq'){out.push(ops[k]);k++;continue}
+const dl=[],ins=[];while(k<ops.length&&ops[k].t!=='eq'){(ops[k].t==='del'?dl:ins).push(ops[k]);k++}
+const pr=Math.min(dl.length,ins.length);for(let x=0;x<pr;x++)out.push({t:'sub',a:dl[x].a,b:ins[x].b});
+for(let x=pr;x<dl.length;x++)out.push({t:'del',a:dl[x].a});for(let x=pr;x<ins.length;x++)out.push({t:'ins',b:ins[x].b})}
+return out}
+function showFB(el,heard,target){const A=words(heard),B=words(target);el.innerHTML='';
+const ul=document.createElement('ul');
+if(!A.length){const d=document.createElement('div');d.textContent='Я ничего не разобрал. Говори чётче и ближе к микрофону.';el.append(d)}
+else{const ops=diff(A,B);
+const l1=document.createElement('div');l1.append('Ты сказал: ');
+ops.forEach(o=>{if(o.t==='ins'){const g=document.createElement('span');g.className='gap';g.textContent='▢ ';l1.append(g)}else{const w=document.createElement('span');w.textContent=o.a+' ';if(o.t!=='eq')w.className='w';l1.append(w)}});
+el.append(l1);
+ops.forEach(o=>{let t='';
+if(o.t==='sub'){t='Ты сказал «'+o.a+'», а нужно «'+o.b+'».';if(o.a.startsWith(o.b)||o.b.startsWith(o.a))t+=' Проверь окончание слова.'}
+else if(o.t==='del')t='Лишнее слово «'+o.a+'»: в этой фразе его нет.';
+else if(o.t==='ins'){t='Пропущено слово «'+o.b+'».';if(['a','an','the'].includes(o.b))t+=' Артикль короткий: произноси его слитно со следующим словом.'}
+if(t){const li=document.createElement('li');li.textContent=t;ul.append(li)}})}
+const l2=document.createElement('div');l2.append('Правильно: ');const b=document.createElement('b');b.className='ok';b.textContent=target;l2.append(b);
+if(A.length)el.append(l2);else{el.append(l2)}
+if(ul.children.length)el.append(ul);el.hidden=false}
+/* ---- звуки ---- */
+const SK='eng_snd';let snd=true,AC=null;try{snd=localStorage.getItem(SK)!=='0'}catch(e){}
+function ac(){try{if(!AC){const C=window.AudioContext||window.webkitAudioContext;if(C)AC=new C()}if(AC&&AC.state==='suspended')AC.resume()}catch(e){}return AC}
+function tone(f,t0,d,type,v){const a=ac();if(!a)return;const o=a.createOscillator(),g=a.createGain(),t=a.currentTime+t0;o.type=type||'sine';o.frequency.value=f;
+g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(v||0.22,t+0.02);g.gain.exponentialRampToValueAtTime(0.0001,t+d);
+o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+d+0.05)}
+function sfx(k){if(!snd)return;try{if(k==='ok'){tone(659,0,.14);tone(880,.1,.26)}
+else if(k==='bad'){tone(233,0,.2,'sawtooth',.13);tone(175,.17,.32,'sawtooth',.13)}
+else if(k==='win'){[523,659,784,1047].forEach((f,i)=>tone(f,i*.13,.3))}}catch(e){}}
+function renderSnd(){document.querySelectorAll('.js-snd').forEach(b=>{b.textContent=b.dataset.full?(snd?'🔊 Звуки: включены':'🔇 Звуки: выключены'):(snd?'🔊':'🔇');b.setAttribute('aria-pressed',snd)})}
 let q=[],pos=0,rec=null,tok=0,tries=0,mode='',hard=new Set(),round=1,H=null,sess=0,again=null,micIds=['','2'];
 let sc=null,st=0,dt=0,dh=false,scIdx=0;
 const SCREENS=['menu','app','dmenu','dlg','rep','fin'];
 function go(id){SCREENS.forEach(s=>$(s).hidden=s!==id)}
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-function norm(s){return s.toLowerCase().replace(/[’‘`]/g,"'").split(/\s+/).map(w=>w.replace(/[^a-z0-9']/g,'')).map(w=>EX[w]||w).join(' ').replace(/[^a-z0-9 ]/g,'').replace(/\s+/g,' ').trim()}
+function norm(s){return words(s).join(' ')}
 function lev(a,b){const m=[];for(let i=0;i<=a.length;i++){m[i]=[i];for(let j=1;j<=b.length;j++)m[i][j]=i?0:j}
 for(let i=1;i<=a.length;i++)for(let j=1;j<=b.length;j++)m[i][j]=Math.min(m[i-1][j]+1,m[i][j-1]+1,m[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return m[a.length][b.length]}
 function sim(a,b){return 1-lev(a,b)/(Math.max(a.length,b.length)||1)}
@@ -225,30 +275,31 @@ function micTap(){if($('mic').classList.contains('on')){stopRec();msg('Микр�
 function startRun(list){q=list.slice();pos=0;hard=new Set();round=1;sess=0;H=judge;go('app');show()}
 function startCards(){mode='cards';again=startCards;startRun(D)}
 function startListen(){mode='listen';again=startListen;startRun(shuffle(D).slice(0,15))}
-function show(){const c=q[pos];tries=0;$('micwrap').hidden=false;$('row').hidden=false;$('ch').hidden=true;
+function show(){const c=q[pos];tries=0;$('fb').hidden=true;$('micwrap').hidden=false;$('row').hidden=false;$('ch').hidden=true;
 $('prog').textContent=(round>1?'Повтор · ':'')+(pos+1)+' из '+q.length;$('fill').style.width=(pos/q.length*100)+'%';
 if(mode==='listen'){$('cat').textContent='На слух';$('en').textContent='🎧';$('ru').textContent='Слушай и повтори вслух';$('src').textContent=''}
 else{$('cat').textContent=c[0];$('en').textContent=c[1];$('ru').textContent=c[2];$('src').textContent=c[3]?'Из фильма: '+c[3]:''}
 msg('');say(c[1],0.9,listen)}
-function judge(alts){const c=q[pos],t=norm(c[1]);let best=0;alts.forEach(a=>{best=Math.max(best,sim(norm(a),t))});
-if(best>=0.8){const n=tries===0?3:tries===1?2:1;if(tries>0)hard.add(c);award(n);msg('Верно! +'+n+' ⭐','ok');
+function judge(alts){const c=q[pos];
+if(isMatch(alts,c[1])){const n=tries===0?3:tries===1?2:1;if(tries>0)hard.add(c);award(n);$('fb').hidden=true;sfx('ok');msg('Верно! +'+n+' ⭐','ok');
 if(mode==='listen')setTimeout(choices,800);else setTimeout(next,900)}
-else{tries++;hard.add(c);
-if(tries>=3){msg('Идём дальше. К этой фразе вернёмся в конце.','bad');setTimeout(mode==='listen'?choices:next,1400)}
-else{msg('Почти. Послушай ещё раз и повтори.','bad','Я услышал: '+alts[0]);setTimeout(()=>say(c[1],0.8,listen),700)}}}
-function choices(){const c=q[pos];stopRec();$('micwrap').hidden=true;$('row').hidden=true;
+else{tries++;hard.add(c);sfx('bad');showFB($('fb'),alts[0],c[1]);
+if(tries>=3){msg('Идём дальше. К этой фразе вернёмся в конце.','bad');setTimeout(mode==='listen'?choices:next,3800)}
+else{msg('Не совсем. Слушай, как сказал ты, а потом как надо.','bad');
+setTimeout(()=>{if(alts[0])say(alts[0],0.9,()=>setTimeout(()=>say(c[1],0.8,listen),500));else say(c[1],0.8,listen)},800)}}}
+function choices(){const c=q[pos];stopRec();$('fb').hidden=true;$('micwrap').hidden=true;$('row').hidden=true;
 const others=shuffle(D.filter(x=>x[2]!==c[2])).slice(0,2).map(x=>x[2]);
 $('ch').innerHTML='';shuffle([c[2]].concat(others)).forEach(t=>{const b=document.createElement('button');b.textContent=t;b.onclick=()=>pick(b,t===c[2],c);$('ch').append(b)});
 $('ch').hidden=false;msg('Что это значит?')}
 function pick(b,ok,c){[...$('ch').children].forEach(x=>x.disabled=true);
-if(ok){b.classList.add('ok');award(1);msg('Верно! +1 ⭐','ok')}
-else{b.classList.add('no');[...$('ch').children].forEach(x=>{if(x.textContent===c[2])x.classList.add('ok')});hard.add(c);msg('Не то. Правильно: '+c[2],'bad')}
+if(ok){b.classList.add('ok');sfx('ok');award(1);msg('Верно! +1 ⭐','ok')}
+else{b.classList.add('no');sfx('bad');[...$('ch').children].forEach(x=>{if(x.textContent===c[2])x.classList.add('ok')});hard.add(c);msg('Не то. Правильно: '+c[2],'bad')}
 $('en').textContent=c[1];$('ru').textContent=c[2];setTimeout(next,1700)}
 function next(){pos++;if(pos>=q.length){endRound();return}show()}
 function endRound(){stopAll();
 if(hard.size&&round<3){$('repP').textContent='Карточек с ошибками: '+hard.size+'. Пройдём их ещё раз.';go('rep')}
 else finish(mode==='listen'?'Тренировка на слух пройдена':'Все карточки пройдены','Заработано в этой сессии: '+sess+' ⭐')}
-function finish(title,p){stopAll();$('finT').textContent=title;$('finP').textContent=p;$('finL').innerHTML='';
+function finish(title,p){stopAll();sfx('win');$('finT').textContent=title;$('finP').textContent=p;$('finL').innerHTML='';
 if(hard.size){const h=document.createElement('div');h.textContent='Ещё стоит повторить:';$('finL').append(h);hard.forEach(c=>{const d=document.createElement('div');d.textContent='• '+c[1]+' — '+c[2];$('finL').append(d)})}
 go('fin')}
 
@@ -256,16 +307,18 @@ go('fin')}
 function dmenuBuild(){$('dlist').innerHTML='';SC.forEach((s,i)=>{const b=document.createElement('button');b.textContent=s.e+' '+s.t+' · '+s.who;b.onclick=()=>{try{speechSynthesis.getVoices()}catch(e){}startDlg(i)};$('dlist').append(b)})}
 function startDlg(i){stopAll();scIdx=i;sc=SC[i];st=0;sess=0;hard=new Set();mode='dlg';again=()=>startDlg(scIdx);H=dJudge;$('chat').innerHTML='';go('dlg');dnpc()}
 function bub(cls,en,ru){const d=document.createElement('div');d.className='b '+cls;d.append(en);if(ru){const s=document.createElement('small');s.textContent=ru;d.append(s)}$('chat').append(d);$('chat').scrollTop=1e5}
-function dnpc(){const s=sc.s[st];dt=0;dh=false;$('prog2').textContent=sc.who+' · '+(st+1)+' из '+sc.s.length;
+function dnpc(){const s=sc.s[st];dt=0;dh=false;$('fb2').hidden=true;$('prog2').textContent=sc.who+' · '+(st+1)+' из '+sc.s.length;
 bub('n',s[0],s[1]);$('task').textContent='Твой ответ: '+s[3];msg('');say(s[0],0.9,listen)}
 function dshow(){const s=sc.s[st];dh=true;$('task').textContent='Твой ответ: '+s[3]+' → ';const b=document.createElement('b');b.textContent=s[2][0];$('task').append(b)}
 function dnext(ms){st++;if(st>=sc.s.length)setTimeout(()=>finish('Сценка пройдена','«'+sc.t+'» закончена. Заработано: '+sess+' ⭐'),ms);else setTimeout(dnpc,ms)}
-function dJudge(alts){const s=sc.s[st];let best=0,bt=s[2][0];
-s[2].forEach(t=>{const n=norm(t);alts.forEach(a=>{const v=sim(norm(a),n);if(v>best){best=v;bt=t}})});
-if(best>=0.8){const n=Math.max(1,3-dt-(dh?1:0));award(n);bub('u',bt);msg('Верно! +'+n+' ⭐','ok');dnext(900)}
-else{dt++;if(dt>=2&&!dh)dshow();
-if(dt>=4){msg('Идём дальше.','bad');bub('u',s[2][0],'(правильный ответ)');dnext(1400)}
-else{msg('Почти. Послушай образец и повтори.','bad','Я услышал: '+alts[0]);setTimeout(()=>say(s[2][0],0.8,listen),700)}}}
+function dJudge(alts){const s=sc.s[st];const hit=s[2].find(t=>isMatch(alts,t));
+if(hit){const n=Math.max(1,3-dt-(dh?1:0));award(n);$('fb2').hidden=true;sfx('ok');bub('u',hit);msg('Верно! +'+n+' ⭐','ok');dnext(900)}
+else{dt++;sfx('bad');if(dt>=2&&!dh)dshow();
+const h=norm(alts[0]||'');let tgt=s[2][0],bs=-1;s[2].forEach(t=>{const v=sim(h,norm(t));if(v>bs){bs=v;tgt=t}});
+showFB($('fb2'),alts[0],tgt);
+if(dt>=4){msg('Идём дальше.','bad');bub('u',s[2][0],'(правильный ответ)');dnext(3800)}
+else{msg('Не совсем. Слушай, как сказал ты, а потом как надо.','bad');
+setTimeout(()=>{if(alts[0])say(alts[0],0.9,()=>setTimeout(()=>say(tgt,0.8,listen),500));else say(tgt,0.8,listen)},800)}}}
 
 function toMenu(){stopAll();renderStats();go('menu')}
 $('cn').textContent=D.length+' фраз';
@@ -282,7 +335,9 @@ $('skip').onclick=()=>{hard.add(q[pos]);if(mode==='listen')choices();else next()
 $('dagain').onclick=()=>say(sc.s[st][0],0.9,listen);
 $('dreveal').onclick=dshow;
 $('dskip').onclick=()=>{stopAll();dnext(0)};
-setMic('idle');dmenuBuild();renderStats();go('menu');
+document.addEventListener('click',()=>ac(),true);
+document.querySelectorAll('.js-snd').forEach(b=>b.onclick=()=>{snd=!snd;try{localStorage.setItem(SK,snd?'1':'0')}catch(e){}renderSnd();if(snd)sfx('ok')});
+setMic('idle');dmenuBuild();renderStats();renderSnd();go('menu');
 </script></body></html>
 </template>
 
