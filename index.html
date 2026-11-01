@@ -41,83 +41,248 @@ body{background:#000;display:flex;justify-content:center;align-items:center}
 [hidden]{display:none!important}
 body{background:#e9edf1;color:#1b2430;min-height:100vh;padding:14px}
 .wrap{display:flex;flex-direction:column;gap:14px;max-width:520px;margin:0 auto}
-.top{display:flex;justify-content:space-between;font-size:14px;font-weight:700;color:#4a5666}
+.scr{display:flex;flex-direction:column;gap:14px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:14px;font-weight:700;color:#4a5666}
+.back{border:0;background:#fff;border:2px solid #cfd6de;color:#4a5666;border-radius:10px;padding:6px 10px;font-size:14px;font-weight:700}
+.chip{background:#fff;border-radius:10px;padding:6px 10px;font-size:14px;font-weight:800;color:#1b2430;border:2px solid #cfd6de;white-space:nowrap}
 .bar{height:6px;background:#cfd6de;border-radius:3px;overflow:hidden}.bar i{display:block;height:100%;width:0;background:#0b6b3a;transition:width .3s}
 .sign{background:#0b6b3a;border-radius:18px;padding:8px;box-shadow:0 6px 18px rgba(0,0,0,.25)}
-.in{border:3px solid #fff;border-radius:12px;padding:18px 16px 24px;text-align:center;color:#fff;min-height:230px;display:flex;flex-direction:column;justify-content:center;gap:14px}
+.in{border:3px solid #fff;border-radius:12px;padding:18px 16px 24px;text-align:center;color:#fff;min-height:200px;display:flex;flex-direction:column;justify-content:center;gap:14px}
 .cat{align-self:flex-start;font-size:13px;font-weight:700;background:#fff;color:#0b6b3a;border-radius:6px;padding:3px 9px}
 .en{font-size:34px;font-weight:800;line-height:1.15}
 .ru{font-size:19px;color:#c9ecd7}
 .src{font-size:13px;color:#c9ecd7}
 .stat{min-height:48px;text-align:center;font-size:18px;font-weight:700}
 .stat.ok{color:#168a4a}.stat.bad{color:#c4361f}.stat small{display:block;font-size:14px;font-weight:400;color:#4a5666;margin-top:2px}
-.mic{align-self:center;width:96px;height:96px;border-radius:50%;border:0;background:#e5482d;color:#fff;font-size:38px;box-shadow:0 6px 16px rgba(229,72,45,.45)}
-.mic.on{animation:p 1s infinite}@keyframes p{50%{transform:scale(1.08)}}
-@media(prefers-reduced-motion:reduce){.mic.on{animation:none;outline:5px solid #ffc20e}}
+.micwrap{display:flex;flex-direction:column;align-items:center;gap:8px}
+.mic{position:relative;width:96px;height:96px;border-radius:50%;border:0;color:#fff;font-size:38px;transition:background .2s}
+.mic.idle{background:#7a8594;box-shadow:0 4px 10px rgba(0,0,0,.2)}
+.mic.idle::after{content:"";position:absolute;left:24px;right:24px;top:46px;height:5px;background:#fff;border-radius:3px;transform:rotate(-40deg);box-shadow:0 0 0 2px #7a8594}
+.mic.sp{background:#1b6fd1;box-shadow:0 4px 10px rgba(27,111,209,.4)}
+.mic.on{background:#e5482d;animation:p 1.1s infinite}
+@keyframes p{0%{box-shadow:0 0 0 0 rgba(229,72,45,.55)}100%{box-shadow:0 0 0 28px rgba(229,72,45,0)}}
+@media(prefers-reduced-motion:reduce){.mic.on{animation:none;outline:6px solid #ffc20e}}
+.micl{font-size:14px;font-weight:700;color:#4a5666;text-align:center;min-height:36px;max-width:280px}
+.micl.on{color:#c4361f}.micl.sp{color:#1b6fd1}
 .row{display:flex;gap:10px}.row button,.big{flex:1;padding:14px 8px;border-radius:12px;border:0;font-size:16px;font-weight:700;background:#ffc20e;color:#1b2430}
-.row button.g{background:#fff;border:2px solid #cfd6de;color:#4a5666}
-.big{width:100%;padding:18px;font-size:19px}
+.row button.g,.big.g{background:#fff;border:2px solid #cfd6de;color:#4a5666}
+.big{width:100%;padding:18px;font-size:19px;text-align:left;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.big small{font-size:13px;font-weight:600;opacity:.75}
 button:focus-visible{outline:3px solid #1b6fd1;outline-offset:2px}
-.hello{color:#fff;text-align:center;gap:12px}.hello h1{font-size:28px;line-height:1.2}.hello p{font-size:16px;color:#c9ecd7}
+.hello{color:#fff;text-align:center;gap:12px;min-height:150px}.hello h1{font-size:26px;line-height:1.2}.hello p{font-size:16px;color:#c9ecd7}
+.stats{display:flex;gap:10px}
+.stats>div{flex:1;background:#fff;border-radius:14px;padding:12px;text-align:center;border:2px solid #cfd6de}
+.stats b{display:block;font-size:30px;line-height:1.1}.stats span{font-size:13px;color:#4a5666;font-weight:700}
+.today{text-align:center;font-size:14px;font-weight:700;color:#4a5666}
+.ch{display:flex;flex-direction:column;gap:10px}
+.ch button{padding:15px;border-radius:12px;border:2px solid #cfd6de;background:#fff;font-size:18px;font-weight:700;color:#1b2430;text-align:left}
+.ch button.ok{background:#d6f3e1;border-color:#168a4a}.ch button.no{background:#fbdcd5;border-color:#c4361f}
+.chat{display:flex;flex-direction:column;gap:8px;max-height:34vh;overflow:auto;padding:4px}
+.b{max-width:88%;padding:10px 12px;border-radius:14px;font-size:17px;line-height:1.25;font-weight:600}
+.b small{display:block;font-size:13px;font-weight:400;opacity:.75;margin-top:3px}
+.b.n{background:#fff;align-self:flex-start;border:1px solid #cfd6de}
+.b.u{background:#0b6b3a;color:#fff;align-self:flex-end}
+.task{background:#fff;border:2px dashed #0b6b3a;border-radius:12px;padding:10px 12px;font-size:16px;line-height:1.3}
+.list{font-size:15px;text-align:left;color:#fff;line-height:1.5}
 </style></head><body><div class="wrap">
-<div id="start"><div class="sign"><div class="in hello"><h1>Английский для поездки в США</h1><p>Слышишь слово, повторяешь вслух. Верно, идём дальше. Неверно, повторяем.</p></div></div><button class="big" id="go" style="margin-top:14px">Начать</button></div>
-<div id="app" hidden>
-<div class="top"><span id="prog"></span><span id="catn"></span></div>
+
+<div id="menu" class="scr">
+<div class="sign"><div class="in hello"><h1>Английский для поездки в США</h1><p>Слышишь фразу и повторяешь вслух. Выбери режим.</p></div></div>
+<div class="stats"><div><b>🔥 <span class="js-st">0</span></b><span>дней подряд</span></div><div><b>⭐ <span class="js-stars">0</span></b><span>звёздочек</span></div></div>
+<div class="today" id="todayN"></div>
+<button class="big" id="mCards"><span>📇 Карточки</span><small id="cn"></small></button>
+<button class="big" id="mListen"><span>🎧 На слух</span><small>без текста</small></button>
+<button class="big" id="mDlg"><span>💬 Диалог</span><small>с продавцом, таксистом</small></button>
+</div>
+
+<div id="app" class="scr" hidden>
+<div class="top"><button class="back" id="back1">← Меню</button><span id="prog"></span><span class="chip">⭐ <span class="js-stars">0</span></span></div>
 <div class="bar"><i id="fill"></i></div>
 <div class="sign"><div class="in"><span class="cat" id="cat"></span><div class="en" id="en"></div><div class="ru" id="ru"></div><div class="src" id="src"></div></div></div>
 <div class="stat" id="stat" aria-live="polite"></div>
-<button class="mic" id="mic" aria-label="Говорить">🎤</button>
-<div class="row"><button id="again">🔊 Послушать</button><button id="slow">🐢 Медленно</button><button class="g" id="skip">Пропустить</button></div>
+<div class="ch" id="ch" hidden></div>
+<div class="micwrap" id="micwrap"><button class="mic idle" id="mic" aria-label="Микрофон" aria-pressed="false"><span id="micI">🎤</span></button><div class="micl idle" id="micL"></div></div>
+<div class="row" id="row"><button id="again">🔊 Послушать</button><button id="slow">🐢 Медленно</button><button class="g" id="skip">Пропустить</button></div>
 </div>
-<div id="fin" hidden><div class="sign"><div class="in hello"><h1>Все карточки пройдены</h1><p>Отличная работа. Можно пройти заново.</p></div></div><button class="big" id="redo" style="margin-top:14px">Пройти заново</button></div>
+
+<div id="dmenu" class="scr" hidden>
+<div class="top"><button class="back" id="back2">← Меню</button><span>Выбери сценку</span><span class="chip">⭐ <span class="js-stars">0</span></span></div>
+<div class="ch" id="dlist"></div>
+</div>
+
+<div id="dlg" class="scr" hidden>
+<div class="top"><button class="back" id="back3">← Меню</button><span id="prog2"></span><span class="chip">⭐ <span class="js-stars">0</span></span></div>
+<div class="chat" id="chat"></div>
+<div class="task" id="task"></div>
+<div class="stat" id="stat2" aria-live="polite"></div>
+<div class="micwrap"><button class="mic idle" id="mic2" aria-label="Микрофон" aria-pressed="false"><span id="micI2">🎤</span></button><div class="micl idle" id="micL2"></div></div>
+<div class="row"><button id="dagain">🔊 Реплика</button><button id="dreveal">👁 Ответ</button><button class="g" id="dskip">Пропустить</button></div>
+</div>
+
+<div id="rep" class="scr" hidden>
+<div class="sign"><div class="in hello"><h1>Повтор сложных слов</h1><p id="repP"></p></div></div>
+<button class="big" id="repGo" style="justify-content:center">Повторить</button>
+</div>
+
+<div id="fin" class="scr" hidden>
+<div class="sign"><div class="in hello"><h1 id="finT"></h1><p id="finP"></p><div class="list" id="finL"></div></div></div>
+<button class="big" id="finAgain" style="justify-content:center">Ещё раз</button>
+<button class="big g" id="finMenu" style="justify-content:center">В меню</button>
+</div>
+
 </div>
 <script>
 const D=[
-["Приветствие","Hello","Привет"],["Приветствие","Good morning","Доброе утро"],["Приветствие","How are you?","Как дела?"],["Приветствие","Nice to meet you","Приятно познакомиться"],["Приветствие","Thank you very much","Большое спасибо"],["Приветствие","Excuse me","Извините (чтобы обратиться)"],["Приветствие","Sorry","Простите"],["Приветствие","I don't understand","Я не понимаю"],["Приветствие","Could you speak slower, please?","Говорите помедленнее, пожалуйста"],
-["Аэропорт","Where is the gate?","Где выход на посадку?"],["Аэропорт","Where is baggage claim?","Где выдача багажа?"],["Аэропорт","Here is my passport","Вот мой паспорт"],["Аэропорт","I'm here for vacation","Я здесь в отпуске"],["Аэропорт","I'm staying for two weeks","Я пробуду две недели"],
-["Такси","Can you take me to this address?","Отвезёте меня по этому адресу?"],["Такси","How much is the fare?","Сколько стоит поездка?"],["Такси","Please stop here","Остановитесь здесь, пожалуйста"],["Такси","Where is the bus stop?","Где автобусная остановка?"],["Такси","Keep the change","Сдачи не надо"],
-["Отель","I have a reservation","У меня есть бронь"],["Отель","What time is check out?","Во сколько выезд?"],["Отель","Can I have the Wi-Fi password?","Можно пароль от Wi-Fi?"],["Отель","My room key doesn't work","Ключ от номера не работает"],["Отель","I need extra towels","Мне нужны ещё полотенца"],
-["Кафе","Table for two, please","Столик на двоих, пожалуйста"],["Кафе","Can I see the menu?","Можно посмотреть меню?"],["Кафе","I would like a coffee","Я бы хотел кофе"],["Кафе","What do you recommend?","Что вы порекомендуете?"],["Кафе","Can I have the check, please?","Можно счёт, пожалуйста?"],["Кафе","To go, please","С собой, пожалуйста"],["Кафе","No ice, please","Без льда, пожалуйста"],["Кафе","Is the tip included?","Чаевые включены?"],
-["Магазин","How much is this?","Сколько это стоит?"],["Магазин","Do you have a smaller size?","Есть размер поменьше?"],["Магазин","Can I pay by card?","Можно оплатить картой?"],["Магазин","I'm just looking","Я просто смотрю"],["Магазин","Where is the fitting room?","Где примерочная?"],
-["Помощь","Can you help me?","Вы можете мне помочь?"],["Помощь","I'm lost","Я заблудился"],["Помощь","Where is the bathroom?","Где туалет?"],["Помощь","Call an ambulance","Вызовите скорую"],["Помощь","I need a doctor","Мне нужен врач"],["Помощь","Where is the nearest pharmacy?","Где ближайшая аптека?"],["Помощь","I lost my phone","Я потерял телефон"],
+["Приветствие","Hello","Привет"],["Приветствие","Good morning","Доброе утро"],["Приветствие","Good evening","Добрый вечер"],["Приветствие","How are you?","Как дела?"],["Приветствие","Nice to meet you","Приятно познакомиться"],["Приветствие","I'm from Kazakhstan","Я из Казахстана"],["Приветствие","Thank you very much","Большое спасибо"],["Приветствие","Excuse me","Извините (чтобы обратиться)"],["Приветствие","Sorry","Простите"],["Приветствие","I don't understand","Я не понимаю"],["Приветствие","Could you speak slower, please?","Говорите помедленнее, пожалуйста"],["Приветствие","See you later","Увидимся позже"],["Приветствие","Have a nice day","Хорошего дня"],
+["Аэропорт","Where is the gate?","Где выход на посадку?"],["Аэропорт","Where is baggage claim?","Где выдача багажа?"],["Аэропорт","Here is my passport","Вот мой паспорт"],["Аэропорт","I'm here for vacation","Я здесь в отпуске"],["Аэропорт","I'm staying for two weeks","Я пробуду две недели"],["Аэропорт","Where is the check-in desk?","Где стойка регистрации?"],["Аэропорт","I have a connecting flight","У меня пересадка"],["Аэропорт","Where is customs?","Где таможня?"],["Аэропорт","I have nothing to declare","Мне нечего декларировать"],["Аэропорт","My luggage is missing","Мой багаж потерялся"],["Аэропорт","Which terminal is it?","Какой это терминал?"],["Аэропорт","Is the flight delayed?","Рейс задерживается?"],
+["Такси","Can you take me to this address?","Отвезёте меня по этому адресу?"],["Такси","How much is the fare?","Сколько стоит поездка?"],["Такси","Please stop here","Остановитесь здесь, пожалуйста"],["Такси","Where is the bus stop?","Где автобусная остановка?"],["Такси","Keep the change","Сдачи не надо"],["Такси","Could you turn on the meter?","Включите счётчик, пожалуйста"],["Такси","How long will it take?","Сколько это займёт?"],["Такси","I'm in a hurry","Я спешу"],["Такси","Take me to the airport, please","Отвезите меня в аэропорт, пожалуйста"],["Такси","Where is the subway station?","Где станция метро?"],["Такси","Which bus goes downtown?","Какой автобус идёт в центр?"],
+["Отель","I have a reservation","У меня есть бронь"],["Отель","What time is check out?","Во сколько выезд?"],["Отель","Can I have the Wi-Fi password?","Можно пароль от Wi-Fi?"],["Отель","My room key doesn't work","Ключ от номера не работает"],["Отель","I need extra towels","Мне нужны ещё полотенца"],["Отель","Is breakfast included?","Завтрак включён?"],["Отель","Can I leave my luggage here?","Можно оставить багаж здесь?"],["Отель","The air conditioner is not working","Кондиционер не работает"],["Отель","Could I have a late check out?","Можно выехать попозже?"],["Отель","Can you call me a taxi?","Вызовите мне такси, пожалуйста"],["Отель","I would like a quiet room","Мне нужна тихая комната"],
+["Кафе","Table for two, please","Столик на двоих, пожалуйста"],["Кафе","Can I see the menu?","Можно посмотреть меню?"],["Кафе","I would like a coffee","Я бы хотел кофе"],["Кафе","What do you recommend?","Что вы порекомендуете?"],["Кафе","Can I have the check, please?","Можно счёт, пожалуйста?"],["Кафе","To go, please","С собой, пожалуйста"],["Кафе","No ice, please","Без льда, пожалуйста"],["Кафе","Is the tip included?","Чаевые включены?"],["Кафе","I'll have the same","Мне то же самое"],["Кафе","Can I have some water?","Можно воды?"],["Кафе","Is this dish spicy?","Это блюдо острое?"],["Кафе","I'm allergic to nuts","У меня аллергия на орехи"],["Кафе","Could we have separate checks?","Можно раздельные счета?"],["Кафе","The food is delicious","Еда очень вкусная"],["Кафе","Do you have vegetarian options?","Есть вегетарианские блюда?"],
+["Магазин","How much is this?","Сколько это стоит?"],["Магазин","Do you have a smaller size?","Есть размер поменьше?"],["Магазин","Can I pay by card?","Можно оплатить картой?"],["Магазин","I'm just looking","Я просто смотрю"],["Магазин","Where is the fitting room?","Где примерочная?"],["Магазин","Do you have this in blue?","Есть это в синем цвете?"],["Магазин","Can I try it on?","Можно примерить?"],["Магазин","Where is the cashier?","Где касса?"],["Магазин","Do you take cash?","Вы принимаете наличные?"],["Магазин","Can I get a receipt?","Можно чек?"],["Магазин","I would like to return this","Я хочу это вернуть"],["Магазин","Is there a discount?","Есть скидка?"],
+["Помощь","Can you help me?","Вы можете мне помочь?"],["Помощь","I'm lost","Я заблудился"],["Помощь","Where is the bathroom?","Где туалет?"],["Помощь","Call an ambulance","Вызовите скорую"],["Помощь","I need a doctor","Мне нужен врач"],["Помощь","Where is the nearest pharmacy?","Где ближайшая аптека?"],["Помощь","I lost my phone","Я потерял телефон"],["Помощь","Please call the police","Вызовите полицию, пожалуйста"],["Помощь","I need help right now","Мне нужна помощь прямо сейчас"],["Помощь","I don't feel well","Мне нехорошо"],["Помощь","Where is the nearest hospital?","Где ближайшая больница?"],["Помощь","I lost my wallet","Я потерял кошелёк"],
+["Город","How do I get to Times Square?","Как добраться до Таймс-сквер?"],["Город","Is it far from here?","Это далеко отсюда?"],["Город","Turn left at the corner","Поверните налево на углу"],["Город","Go straight ahead","Идите прямо"],["Город","Where can I buy a ticket?","Где купить билет?"],["Город","What time does it open?","Во сколько открывается?"],["Город","Can you take a photo of us?","Вы нас сфотографируете?"],["Город","Is this seat taken?","Это место занято?"],
 ["Кино и мультики","To infinity and beyond","До бесконечности и дальше","История игрушек"],["Кино и мультики","Just keep swimming","Просто продолжай плыть","В поисках Немо"],["Кино и мультики","Hakuna Matata","Хакуна Матата, никаких забот","Король Лев"],["Кино и мультики","I'll be back","Я ещё вернусь","Терминатор"],["Кино и мультики","Houston, we have a problem","Хьюстон, у нас проблема","Аполлон 13"],["Кино и мультики","May the Force be with you","Да пребудет с тобой Сила","Звёздные войны"]
+];
+/* сценки: [реплика собеседника, перевод, [допустимые ответы], подсказка по-русски] */
+const SC=[
+{t:"Кафе",who:"Официант",e:"🍽",s:[
+["Hi! Welcome. How many people?","Привет! Добро пожаловать. Сколько вас?",["Table for two, please"],"Попроси столик на двоих"],
+["Here is the menu. What would you like to drink?","Вот меню. Что будете пить?",["I would like a coffee"],"Скажи, что хочешь кофе"],
+["Anything to eat?","Что-нибудь поесть?",["What do you recommend?"],"Спроси, что порекомендуют"],
+["Our burger is very popular. Would you like it?","Наш бургер очень популярен. Хотите?",["Yes, please"],"Согласись"],
+["Would you like anything else?","Что-нибудь ещё?",["Can I have the check, please?"],"Попроси счёт"]]},
+{t:"Такси",who:"Таксист",e:"🚕",s:[
+["Hello! Where are you going?","Здравствуйте! Куда едем?",["Can you take me to this address?"],"Попроси отвезти по адресу"],
+["Sure. It will take about twenty minutes.","Конечно. Это займёт минут двадцать.",["How much is the fare?"],"Спроси цену"],
+["It is around thirty dollars.","Примерно тридцать долларов.",["Okay, thank you very much","Thank you very much"],"Поблагодари"],
+["We are here. Is this the right place?","Приехали. Это то место?",["Please stop here"],"Попроси остановиться здесь"],
+["That is thirty dollars.","С вас тридцать долларов.",["Keep the change"],"Скажи, что сдачи не надо"]]},
+{t:"Магазин",who:"Продавец",e:"🛍",s:[
+["Hi! Can I help you?","Привет! Вам помочь?",["I'm just looking"],"Скажи, что просто смотришь"],
+["Let me know if you need anything.","Скажите, если что-то понадобится.",["Do you have a smaller size?"],"Спроси размер поменьше"],
+["Yes, here you go.","Да, вот, пожалуйста.",["Where is the fitting room?"],"Спроси, где примерочная"],
+["It is forty dollars. How will you pay?","Сорок долларов. Как будете платить?",["Can I pay by card?"],"Спроси, можно ли картой"],
+["Of course. Here is your card.","Конечно. Вот ваша карта.",["Can I get a receipt?"],"Попроси чек"]]},
+{t:"Паспортный контроль",who:"Офицер",e:"🛂",s:[
+["Next, please. Passport?","Следующий. Паспорт?",["Here is my passport"],"Подай паспорт"],
+["What is the purpose of your visit?","Какова цель визита?",["I'm here for vacation"],"Скажи, что в отпуске"],
+["How long are you staying?","Как долго пробудете?",["I'm staying for two weeks"],"Скажи, что две недели"],
+["Enjoy your stay. Welcome.","Приятного пребывания. Добро пожаловать.",["Thank you very much"],"Поблагодари"]]},
+{t:"Отель",who:"Ресепшн",e:"🏨",s:[
+["Welcome. Do you have a reservation?","Добро пожаловать. У вас есть бронь?",["I have a reservation"],"Скажи, что бронь есть"],
+["Your room is on the fifth floor.","Ваш номер на пятом этаже.",["Can I have the Wi-Fi password?"],"Спроси пароль от Wi-Fi"],
+["Sure, here it is. Anything else?","Конечно, вот он. Что-то ещё?",["What time is check out?"],"Спроси, во сколько выезд"],
+["Check out is at eleven.","Выезд в одиннадцать.",["Could I have a late check out?"],"Попроси выехать попозже"],
+["Let me check. Anything else?","Сейчас проверю. Что-то ещё?",["Thank you very much"],"Поблагодари"]]}
 ];
 const $=id=>document.getElementById(id);
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 const EX={"i'm":"i am","don't":"do not","doesn't":"does not","it's":"it is","i'll":"i will","where's":"where is","what's":"what is"};
-let q=[],pos=0,done=0,rec=null,tok=0,tries=0;
+let q=[],pos=0,rec=null,tok=0,tries=0,mode='',hard=new Set(),round=1,H=null,sess=0,again=null,micIds=['','2'];
+let sc=null,st=0,dt=0,dh=false,scIdx=0;
+const SCREENS=['menu','app','dmenu','dlg','rep','fin'];
+function go(id){SCREENS.forEach(s=>$(s).hidden=s!==id)}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function norm(s){return s.toLowerCase().replace(/[’‘`]/g,"'").split(/\s+/).map(w=>w.replace(/[^a-z0-9']/g,'')).map(w=>EX[w]||w).join(' ').replace(/[^a-z0-9 ]/g,'').replace(/\s+/g,' ').trim()}
 function lev(a,b){const m=[];for(let i=0;i<=a.length;i++){m[i]=[i];for(let j=1;j<=b.length;j++)m[i][j]=i?0:j}
 for(let i=1;i<=a.length;i++)for(let j=1;j<=b.length;j++)m[i][j]=Math.min(m[i-1][j]+1,m[i][j-1]+1,m[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return m[a.length][b.length]}
 function sim(a,b){return 1-lev(a,b)/(Math.max(a.length,b.length)||1)}
-function stopRec(){if(rec){rec.onresult=rec.onerror=rec.onend=null;try{rec.abort()}catch(e){}rec=null}$('mic').classList.remove('on')}
+
+/* ---- серия дней и звёздочки ---- */
+const KEY='eng_trip_v1';
+function load(){const d={stars:0,streak:0,last:''};try{return Object.assign(d,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){return d}}
+function save(s){try{localStorage.setItem(KEY,JSON.stringify(s))}catch(e){}}
+function ymd(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function yest(){const y=new Date();y.setDate(y.getDate()-1);return ymd(y)}
+function curStreak(s){return(s.last===ymd(new Date())||s.last===yest())?s.streak:0}
+function renderStats(){const s=load();document.querySelectorAll('.js-st').forEach(e=>e.textContent=curStreak(s));document.querySelectorAll('.js-stars').forEach(e=>e.textContent=s.stars);
+$('todayN').textContent=s.last===ymd(new Date())?'Сегодня занятие засчитано ✓':'Пройди хотя бы одну фразу, чтобы засчитать день'}
+function award(n){const s=load(),t=ymd(new Date());s.stars+=n;sess+=n;if(s.last!==t){s.streak=(s.last===yest())?s.streak+1:1;s.last=t}save(s);renderStats()}
+
+/* ---- микрофон: три понятных состояния ---- */
+function setMic(s){micIds.forEach(k=>{const m=$('mic'+k);if(!m)return;m.className='mic '+s;m.setAttribute('aria-pressed',s==='on');
+$('micI'+k).textContent=s==='on'?'⏹':s==='sp'?'🔊':'🎤';
+const l=$('micL'+k);l.className='micl '+s;l.textContent=s==='on'?'Слушаю… говори сейчас. Нажми, чтобы остановить':s==='sp'?'Идёт озвучка, послушай':'Микрофон выключен. Нажми и говори'})}
+function stopRec(){if(rec){rec.onresult=rec.onerror=rec.onend=null;try{rec.abort()}catch(e){}rec=null}setMic('idle')}
+function stopAll(){stopRec();try{speechSynthesis.cancel()}catch(e){}tok++}
 function say(t,rate,cb){stopRec();try{speechSynthesis.cancel()}catch(e){}const my=++tok;
 if(!window.speechSynthesis){cb&&cb();return}
 const u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=rate;
 const v=speechSynthesis.getVoices().find(x=>(x.lang||'').replace('_','-')==='en-US');if(v)u.voice=v;
-u.onend=u.onerror=()=>{if(my===tok&&cb)cb()};speechSynthesis.speak(u)}
-function msg(t,c,sub){$('stat').className='stat '+(c||'');$('stat').innerHTML='';$('stat').append(t);if(sub){const s=document.createElement('small');s.textContent=sub;$('stat').append(s)}}
+u.onend=u.onerror=()=>{if(my===tok){if(cb)cb();else setMic('idle')}};setMic('sp');speechSynthesis.speak(u)}
+function msg(t,c,sub){[$('stat'),$('stat2')].forEach(el=>{el.className='stat '+(c||'');el.innerHTML='';el.append(t);if(sub){const s=document.createElement('small');s.textContent=sub;el.append(s)}})}
 function listen(){
-if(!SR){msg('Распознавание речи тут не работает. Открой сайт в Chrome.','bad');return}
+if(!SR){msg('Распознавание речи тут не работает. Открой сайт в Chrome.','bad');setMic('idle');return}
 stopRec();try{speechSynthesis.cancel()}catch(e){}tok++;
 const r=new SR();rec=r;r.lang='en-US';r.interimResults=false;r.maxAlternatives=5;let got=false;
-r.onresult=e=>{got=true;judge([...e.results[0]].map(a=>a.transcript))};
-r.onerror=e=>{if(e.error==='not-allowed'||e.error==='service-not-allowed'){got=true;msg('Нет доступа к микрофону. Разреши его в настройках браузера.','bad')}};
-r.onend=()=>{$('mic').classList.remove('on');if(!got)msg('Не услышал. Нажми на микрофон и повтори.','bad')};
-try{r.start();$('mic').classList.add('on');msg('Говори…')}catch(e){msg('Нажми на микрофон ещё раз.','bad')}}
+r.onresult=e=>{got=true;rec=null;setMic('idle');H([...e.results[0]].map(a=>a.transcript))};
+r.onerror=e=>{if(e.error==='not-allowed'||e.error==='service-not-allowed'){got=true;setMic('idle');msg('Нет доступа к микрофону. Разреши его в настройках браузера.','bad')}};
+r.onend=()=>{if(rec===r){rec=null;setMic('idle');if(!got)msg('Не услышал. Нажми на микрофон и повтори.','bad')}};
+try{r.start();setMic('on');msg('Говори…')}catch(e){setMic('idle');msg('Нажми на микрофон ещё раз.','bad')}}
+function micTap(){if($('mic').classList.contains('on')){stopRec();msg('Микрофон выключен. Нажми, когда будешь готов.')}else listen()}
+
+/* ---- карточки и режим на слух ---- */
+function startRun(list){q=list.slice();pos=0;hard=new Set();round=1;sess=0;H=judge;go('app');show()}
+function startCards(){mode='cards';again=startCards;startRun(D)}
+function startListen(){mode='listen';again=startListen;startRun(shuffle(D).slice(0,15))}
+function show(){const c=q[pos];tries=0;$('micwrap').hidden=false;$('row').hidden=false;$('ch').hidden=true;
+$('prog').textContent=(round>1?'Повтор · ':'')+(pos+1)+' из '+q.length;$('fill').style.width=(pos/q.length*100)+'%';
+if(mode==='listen'){$('cat').textContent='На слух';$('en').textContent='🎧';$('ru').textContent='Слушай и повтори вслух';$('src').textContent=''}
+else{$('cat').textContent=c[0];$('en').textContent=c[1];$('ru').textContent=c[2];$('src').textContent=c[3]?'Из фильма: '+c[3]:''}
+msg('');say(c[1],0.9,listen)}
 function judge(alts){const c=q[pos],t=norm(c[1]);let best=0;alts.forEach(a=>{best=Math.max(best,sim(norm(a),t))});
-if(best>=0.8){done++;msg('Верно!','ok');fill();setTimeout(next,900)}
-else{tries++;msg('Почти. Послушай ещё раз и повтори.','bad','Я услышал: '+alts[0]);setTimeout(()=>say(c[1],0.8,listen),700)}}
-function fill(){$('prog').textContent='Пройдено '+done+' из '+D.length;$('fill').style.width=(done/D.length*100)+'%'}
-function show(){const c=q[pos];tries=0;$('cat').textContent=c[0];$('catn').textContent='';$('en').textContent=c[1];$('ru').textContent=c[2];$('src').textContent=c[3]?'Из фильма: '+c[3]:'';msg('');fill();say(c[1],0.9,listen)}
-function next(){pos++;if(pos>=q.length){stopRec();$('app').hidden=true;$('fin').hidden=false;return}show()}
-function begin(){q=D.slice();pos=0;done=0;$('fin').hidden=true;$('start').hidden=true;$('app').hidden=false;show()}
-$('go').onclick=()=>{try{speechSynthesis.getVoices()}catch(e){}begin()};
-$('redo').onclick=begin;
-$('mic').onclick=listen;
+if(best>=0.8){const n=tries===0?3:tries===1?2:1;if(tries>0)hard.add(c);award(n);msg('Верно! +'+n+' ⭐','ok');
+if(mode==='listen')setTimeout(choices,800);else setTimeout(next,900)}
+else{tries++;hard.add(c);
+if(tries>=3){msg('Идём дальше. К этой фразе вернёмся в конце.','bad');setTimeout(mode==='listen'?choices:next,1400)}
+else{msg('Почти. Послушай ещё раз и повтори.','bad','Я услышал: '+alts[0]);setTimeout(()=>say(c[1],0.8,listen),700)}}}
+function choices(){const c=q[pos];stopRec();$('micwrap').hidden=true;$('row').hidden=true;
+const others=shuffle(D.filter(x=>x[2]!==c[2])).slice(0,2).map(x=>x[2]);
+$('ch').innerHTML='';shuffle([c[2]].concat(others)).forEach(t=>{const b=document.createElement('button');b.textContent=t;b.onclick=()=>pick(b,t===c[2],c);$('ch').append(b)});
+$('ch').hidden=false;msg('Что это значит?')}
+function pick(b,ok,c){[...$('ch').children].forEach(x=>x.disabled=true);
+if(ok){b.classList.add('ok');award(1);msg('Верно! +1 ⭐','ok')}
+else{b.classList.add('no');[...$('ch').children].forEach(x=>{if(x.textContent===c[2])x.classList.add('ok')});hard.add(c);msg('Не то. Правильно: '+c[2],'bad')}
+$('en').textContent=c[1];$('ru').textContent=c[2];setTimeout(next,1700)}
+function next(){pos++;if(pos>=q.length){endRound();return}show()}
+function endRound(){stopAll();
+if(hard.size&&round<3){$('repP').textContent='Карточек с ошибками: '+hard.size+'. Пройдём их ещё раз.';go('rep')}
+else finish(mode==='listen'?'Тренировка на слух пройдена':'Все карточки пройдены','Заработано в этой сессии: '+sess+' ⭐')}
+function finish(title,p){stopAll();$('finT').textContent=title;$('finP').textContent=p;$('finL').innerHTML='';
+if(hard.size){const h=document.createElement('div');h.textContent='Ещё стоит повторить:';$('finL').append(h);hard.forEach(c=>{const d=document.createElement('div');d.textContent='• '+c[1]+' — '+c[2];$('finL').append(d)})}
+go('fin')}
+
+/* ---- диалоги ---- */
+function dmenuBuild(){$('dlist').innerHTML='';SC.forEach((s,i)=>{const b=document.createElement('button');b.textContent=s.e+' '+s.t+' · '+s.who;b.onclick=()=>{try{speechSynthesis.getVoices()}catch(e){}startDlg(i)};$('dlist').append(b)})}
+function startDlg(i){stopAll();scIdx=i;sc=SC[i];st=0;sess=0;hard=new Set();mode='dlg';again=()=>startDlg(scIdx);H=dJudge;$('chat').innerHTML='';go('dlg');dnpc()}
+function bub(cls,en,ru){const d=document.createElement('div');d.className='b '+cls;d.append(en);if(ru){const s=document.createElement('small');s.textContent=ru;d.append(s)}$('chat').append(d);$('chat').scrollTop=1e5}
+function dnpc(){const s=sc.s[st];dt=0;dh=false;$('prog2').textContent=sc.who+' · '+(st+1)+' из '+sc.s.length;
+bub('n',s[0],s[1]);$('task').textContent='Твой ответ: '+s[3];msg('');say(s[0],0.9,listen)}
+function dshow(){const s=sc.s[st];dh=true;$('task').textContent='Твой ответ: '+s[3]+' → ';const b=document.createElement('b');b.textContent=s[2][0];$('task').append(b)}
+function dnext(ms){st++;if(st>=sc.s.length)setTimeout(()=>finish('Сценка пройдена','«'+sc.t+'» закончена. Заработано: '+sess+' ⭐'),ms);else setTimeout(dnpc,ms)}
+function dJudge(alts){const s=sc.s[st];let best=0,bt=s[2][0];
+s[2].forEach(t=>{const n=norm(t);alts.forEach(a=>{const v=sim(norm(a),n);if(v>best){best=v;bt=t}})});
+if(best>=0.8){const n=Math.max(1,3-dt-(dh?1:0));award(n);bub('u',bt);msg('Верно! +'+n+' ⭐','ok');dnext(900)}
+else{dt++;if(dt>=2&&!dh)dshow();
+if(dt>=4){msg('Идём дальше.','bad');bub('u',s[2][0],'(правильный ответ)');dnext(1400)}
+else{msg('Почти. Послушай образец и повтори.','bad','Я услышал: '+alts[0]);setTimeout(()=>say(s[2][0],0.8,listen),700)}}}
+
+function toMenu(){stopAll();renderStats();go('menu')}
+$('cn').textContent=D.length+' фраз';
+$('mCards').onclick=()=>{try{speechSynthesis.getVoices()}catch(e){}startCards()};
+$('mListen').onclick=()=>{try{speechSynthesis.getVoices()}catch(e){}startListen()};
+$('mDlg').onclick=()=>{stopAll();go('dmenu')};
+['back1','back2','back3','finMenu'].forEach(id=>$(id).onclick=toMenu);
+$('finAgain').onclick=()=>again&&again();
+$('repGo').onclick=()=>{q=[...hard];hard=new Set();round++;pos=0;go('app');show()};
+$('mic').onclick=micTap;$('mic2').onclick=micTap;
 $('again').onclick=()=>say(q[pos][1],0.9,listen);
 $('slow').onclick=()=>say(q[pos][1],0.55,listen);
-$('skip').onclick=()=>{q.push(q[pos]);next()};
+$('skip').onclick=()=>{hard.add(q[pos]);if(mode==='listen')choices();else next()};
+$('dagain').onclick=()=>say(sc.s[st][0],0.9,listen);
+$('dreveal').onclick=dshow;
+$('dskip').onclick=()=>{stopAll();dnext(0)};
+setMic('idle');dmenuBuild();renderStats();go('menu');
 </script></body></html>
 </template>
 
