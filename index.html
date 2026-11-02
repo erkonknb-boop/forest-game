@@ -256,6 +256,7 @@ const SC=[
 ];
 const $=id=>document.getElementById(id);
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+const SESSION_LIMIT=15;
 const EX={"i'm":"i am","i'll":"i will","i've":"i have","don't":"do not","doesn't":"does not","isn't":"is not","can't":"can not","it's":"it is","where's":"where is","what's":"what is","that's":"that is","let's":"let us","we're":"we are","you're":"you are","ok":"okay"};
 const NUM={"0":"zero","1":"one","2":"two","3":"three","4":"four","5":"five","6":"six","7":"seven","8":"eight","9":"nine","10":"ten","11":"eleven","12":"twelve","13":"thirteen","14":"fourteen","15":"fifteen","16":"sixteen","17":"seventeen","18":"eighteen","19":"nineteen","20":"twenty","30":"thirty","40":"forty","50":"fifty"};
 function words(s){let t=(s||'').toLowerCase().replace(/[’‘`]/g,"'").replace(/-/g,'').split(/\s+/).map(w=>w.replace(/[^a-z0-9']/g,'')).filter(Boolean).map(w=>EX[w]||NUM[w]||w).join(' ');
@@ -350,14 +351,14 @@ function micTap(){if($('mic').classList.contains('on')){stopRec();msg('Микр�
 /* ---- карточки и режим на слух ---- */
 function startRun(list){q=list.slice();pos=0;hard=new Set();round=1;sess=0;H=judge;go('app');show()}
 function startCards(){mode='cards';again=startCards;startRun(D)}
-function startListen(){mode='listen';again=startListen;startRun(shuffle(D).slice(0,15))}
+function startListen(){mode='listen';again=startListen;startRun(shuffle(D).slice(0,SESSION_LIMIT))}
 function show(){const c=q[pos];tries=0;$('fb').hidden=true;$('micwrap').hidden=false;$('row').hidden=false;$('ch').hidden=true;
 $('prog').textContent=(round>1?'Повтор · ':'')+(pos+1)+' из '+q.length;$('fill').style.width=(pos/q.length*100)+'%';
 if(mode==='listen'){$('cat').textContent='На слух';$('en').textContent='🎧';$('ru').textContent='Слушай и повтори вслух';$('src').textContent=''}
 else{$('cat').textContent=c[0];$('en').textContent=c[1];$('ru').textContent=c[2];$('src').textContent=c[3]?'Из фильма: '+c[3]:''}
 msg('');say(c[1],0.9,listen)}
 function judge(alts){const c=q[pos];
-if(isMatch(alts,c[1])){const n=tries===0?3:tries===1?2:1;if(tries>0)hard.add(c);award(n);$('fb').hidden=true;sfx('ok');msg('Верно! +'+n+' ⭐','ok');
+if(isMatch(alts,c[1])){const n=tries===0?3:tries===1?2:1;if(tries>0)hard.add(c);award(n);$('fb').hidden=true;$('fb').innerHTML='';sfx('ok');msg('Верно! +'+n+' ⭐','ok');
 if(mode==='listen')setTimeout(choices,800);else setTimeout(next,900)}
 else{tries++;hard.add(c);sfx('bad');showFB($('fb'),alts[0],c[1],'Значит: «'+c[2]+'»');
 if(tries>=3){msg('Идём дальше. К этой фразе вернёмся в конце.','bad');setTimeout(mode==='listen'?choices:next,3800)}
@@ -416,13 +417,13 @@ document.querySelectorAll('.js-snd').forEach(b=>b.onclick=()=>{snd=!snd;try{loca
 
 /* ---- пишу на слух ---- */
 const PIC={'Приветствие':'👋','Аэропорт':'✈️','Такси':'🚕','Отель':'🏨','Кафе':'☕','Магазин':'🛍','Помощь':'🆘','Город':'🏙','Кино и мультики':'🎬'};
-let dq=[],dp=0,dT=[],dPos=0,dErr=0,dHint=false,dDone=false,dWords=[];
+let dq=[],dp=0,dT=[],dPos=0,dErr=0,dDone=false,dWords=[],dHintWords=new Set();
 function dmsg(t,c){const e=$('stat3');e.className='stat '+(c||'');e.textContent=t}
-function startDict(){mode='dict';again=startDict;sess=0;hard=new Set();dq=shuffle(D).slice(0,15);dp=0;go('dict');dcard()}
+function startDict(){mode='dict';again=startDict;sess=0;hard=new Set();dq=shuffle(D).slice(0,SESSION_LIMIT);dp=0;go('dict');dcard()}
 function dcard(){const c=dq[dp];
 const t=c[1].toLowerCase().replace(/[’‘`]/g,"'").replace(/[^a-z0-9' ]/g,'').replace(/\s+/g,' ').trim();
 dWords=t.split(' ');dT=[];dWords.forEach((w,wi)=>{[...w].forEach(ch=>dT.push({ch,w:wi,v:'',st:''}))});
-dPos=0;dErr=0;dHint=false;dDone=false;dskipApos();
+dPos=0;dErr=0;dDone=false;dHintWords=new Set();dskipApos();
 $('prog3').textContent=(dp+1)+' из '+dq.length;$('fill3').style.width=(dp/dq.length*100)+'%';
 $('dpic').textContent=PIC[c[0]]||'🎧';$('dtr').textContent='';$('dkCont').disabled=true;dmsg('');
 drender();dfocus();say(c[1],0.9,()=>{})}
@@ -433,7 +434,8 @@ const e=document.createElement('div');e.className='sl'+(s.st?' '+s.st:'')+(k===d
 function dfocus(){const i=$('dcap');i.value='';try{i.focus()}catch(e){}}
 function dcurWord(){return dPos<dT.length?dT[dPos].w:dWords.length-1}
 function dfinish(){dDone=true;drender();const c=dq[dp];
-const n=dHint?1:dErr===0?3:dErr<=2?2:1;if(dHint||dErr>2)hard.add(c);award(n);sfx('ok');
+const touched=dHintWords.size>0||dErr>2;
+const n=touched?(dErr<=2?2:1):3;if(touched)hard.add(c);award(n);sfx('ok');
 $('dtr').textContent=c[1]+' — '+c[2];dmsg('Верно! +'+n+' ⭐','ok');$('dkCont').disabled=false;$('dcap').blur();
 say(c[1],0.9,()=>{})}
 function dType(ch){if(dDone||dPos>=dT.length)return;const s=dT[dPos];
@@ -449,7 +451,7 @@ $('mDict').onclick=()=>{try{speechSynthesis.getVoices()}catch(e){}startDict()};
 $('dkAgain').onclick=()=>{say(dq[dp][1],0.9,()=>{});dfocus()};
 $('dkSlow').onclick=()=>{say(dq[dp][1],0.55,()=>{});dfocus()};
 $('dkWord').onclick=()=>{say(dWords[dcurWord()],0.8,()=>{});dfocus()};
-$('dkHint').onclick=()=>{if(dDone||dPos>=dT.length)return;dHint=true;const s=dT[dPos];s.v=s.ch;s.st='hn';dPos++;dskipApos();
+$('dkHint').onclick=()=>{if(dDone||dPos>=dT.length)return;const s=dT[dPos];dHintWords.add(s.w);s.v=s.ch;s.st='hn';dPos++;dskipApos();
 if(dPos>=dT.length){dfinish();return}drender();dfocus()};
 $('dkSkip').onclick=()=>{if(mode!=='dict')return;if(!dDone)hard.add(dq[dp]);dp++;if(dp>=dq.length)finish('Диктант пройден','Заработано в этой сессии: '+sess+' ⭐');else dcard()};
 $('dkPrev').onclick=()=>{if(dp>0){dp--;dcard()}};
@@ -517,8 +519,9 @@ th:first-child,td:first-child{text-align:left}
 
 <script>
 var store={get:function(k,d){try{var v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+var MAX_FILLS=1000;
 var fills=store.get('fuel_fills',[]);
-function save(){store.set('fuel_fills',fills)}
+function save(){if(fills.length>MAX_FILLS)fills=fills.slice(fills.length-MAX_FILLS);store.set('fuel_fills',fills)}
 function num(id){var v=String(document.getElementById(id).value).replace(/\s/g,'').replace(',','.');return parseFloat(v)}
 function note(t,ok){var n=document.getElementById('note');n.textContent=t;n.className='note '+(ok?'ok':'err')}
 function addFill(){
@@ -527,7 +530,6 @@ function addFill(){
  var last=fills.length?fills[fills.length-1].odo:0;
  if(fills.length&&odo<=last){note('Пробег должен быть больше прошлого: '+last+' км',false);return}
  fills.push({date:new Date().toISOString(),odo:odo,liters:l,price:p});
- fills.sort(function(a,b){return a.odo-b.odo});
  save();
  document.getElementById('odo').value='';document.getElementById('liters').value='';
  render();
@@ -538,7 +540,7 @@ function render(){
  for(var i=1;i<fills.length;i++){tk+=fills[i].odo-fills[i-1].odo;tl+=fills[i].liters}
  if(tk>0){
   document.getElementById('avg').textContent=(tl/tk*100).toFixed(1);
-  document.getElementById('msg').textContent='Проехал '+tk+' км, потратил '+tl.toFixed(1)+' л';
+  document.getElementById('msg').textContent='Проехал '+tk+' км, долито на заправках '+tl.toFixed(1)+' л';
  }else{
   document.getElementById('avg').textContent='—';
   document.getElementById('msg').textContent=fills.length?'Нужна ещё одна заправка, чтобы посчитать':'Запиши две заправки, и здесь появится расход';
@@ -573,8 +575,7 @@ render();
 <div class="plate-wrap"><div class="plate"><div class="plate-kz"><i>🇰🇿</i>KZ</div><div class="plate-main"><input id="digits" value="" maxlength="3" inputmode="numeric" placeholder="000"><input id="letters" value="" maxlength="3" placeholder="AAA"></div><div class="plate-reg"><input id="region" value="" maxlength="2" inputmode="numeric" placeholder="05"></div></div></div>
 <div class="plate-hint">777 = 3 цифры • OOE = 3 английские буквы • 05 = регион (2 цифры)</div>
 <div class="result-box hidden" id="resultBox"><div class="free" id="resultStatus">Выбранный ГРНЗ свободен</div><div style="font-size:12px;color:#666;margin-top:4px" id="resultCat"></div><div class="price" id="resultPrice"></div></div></div>
-<div class="card hidden" id="filterCard"><label>Фильтр по категории</label><div class="filter-bar" id="filterBar"></div><div class="grid" id="grid"></div>
-<div class="small"><b>Официально 2026:</b> случайный 2,8 МРП, кастом 10 МРП (43 250 ₸), зеркальные 15 МРП, зеркальные+AAA 72 МРП, 010…707 57/114 МРП, 100–999 137/194 МРП, 001–009, 777 228/285 МРП</div></div>
+<div class="card hidden" id="filterCard"><label>Фильтр по категории</label><div class="filter-bar" id="filterBar"></div><div class="grid" id="grid"></div></div>
 </div>
 <div class="bottom"><button class="btn" style="margin:0" onclick="search()">Поиск</button></div>
 <script>
@@ -617,11 +618,17 @@ function findByName(){
 const raw=$('nameInput').value.toUpperCase().replace(/[^A-Z]/g,'').slice(0,12);$('nameInput').value=raw;
 if(raw.length<2){$('nameResults').innerHTML='<div class="name-result">Напиши имя на английском, например DIAS</div>';return}
 const map={A:'4',O:'0',S:'5',E:'3',I:'1',Z:'2',B:'8',D:'0',L:'1',G:'6',Q:'9'};
-let nums='';for(const ch of raw)if(map[ch])nums+=map[ch];
-nums=nums.slice(0,3).padStart(3,'0');
+let nums='';for(const ch of raw.slice(0,3))nums+=map[ch]||'';
+let tail='';
+if(!nums){tail='В этом имени нет букв, похожих на цифры.'}
+nums=nums.slice(0,3);
+if(nums&&nums.length<3)tail='Похожих букв нашлось только '+nums.length+', поэтому номер не трёхзначный.';
 const letters=raw.slice(0,3).padEnd(3,raw[0]);
-const s=[{n:nums,t:`${raw}: цифры похожи на буквы`},{n:'707',t:`707 + ${raw}`},{n:'777',t:`777 + ${raw}`}];
-$('nameResults').innerHTML=s.map(x=>{const m=getMrp(x.n,isSame(letters));return`<div class="name-result"><b>${x.n} ${letters}</b> — ${x.t}<br><span style="color:#2a5db0;font-weight:800">${(m*MRP).toLocaleString('ru-RU')} ₸ • ${m} МРП</span> <button data-n="${x.n}" data-l="${letters}" style="margin-left:8px;padding:4px 8px;border-radius:6px;border:1px solid #2a5db0;background:#fff;color:#2a5db0;font-weight:700;cursor:pointer">Выбрать</button></div>`}).join('');
+const s=[];
+if(nums)s.push({n:nums,t:`${raw}: цифры из похожих букв имени (${nums})`});
+s.push({n:'707',t:`707 + ${raw}`});
+s.push({n:'777',t:`777 + ${raw}`});
+$('nameResults').innerHTML=s.map(x=>{const m=getMrp(x.n,isSame(letters));return`<div class="name-result"><b>${x.n.padStart(3,'0')} ${letters}</b> — ${x.t}<br><span style="color:#2a5db0;font-weight:800">${(m*MRP).toLocaleString('ru-RU')} ₸ • ${m} МРП</span> <button data-n="${x.n.padStart(3,'0')}" data-l="${letters}" style="margin-left:8px;padding:4px 8px;border-radius:6px;border:1px solid #2a5db0;background:#fff;color:#2a5db0;font-weight:700;cursor:pointer">Выбрать</button></div>`}).join('')+(tail?'<div class="name-result" style="border-color:#e0a100;background:#fffaf0">'+tail+'</div>':'');
 $('nameResults').onclick=e=>{const b=e.target.closest('button');if(!b)return;$('digits').value=b.dataset.n;$('letters').value=b.dataset.l;hideRes()}}
 $('digits').addEventListener('input',e=>{e.target.value=e.target.value.replace(/\D/g,'').slice(0,3);hideRes()});
 $('letters').addEventListener('input',e=>{e.target.value=e.target.value.toUpperCase().replace(/[^A-Z]/g,'').slice(0,3);hideRes()});
